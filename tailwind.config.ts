@@ -9,11 +9,15 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+        primaryDark: "#2F3E46",
+        secondaryDark: "#354F52",
+        primaryGreen: "#52796F",
+        secondaryGreen: "#84A98C",
+        lightGray: "#CAD2C5",
+        lightGraySec: "#fafcf5",
       },
     },
   },
-  plugins: [],
+  plugins: [require("daisyui")],
 };
 export default config;
