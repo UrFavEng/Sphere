@@ -4,6 +4,8 @@ import { useSignUpMutation } from "../store/apislice";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { Eye } from "lucide-react";
+import { PulseLoader } from "react-spinners";
+import Swal from "sweetalert2";
 interface data {
   username: string;
   email: string;
@@ -13,7 +15,7 @@ const SignUP = () => {
   const router = useRouter();
   const [showPass, setShowPass] = useState<boolean>(false);
 
-  const [signup] = useSignUpMutation();
+  const [signup, { isLoading }] = useSignUpMutation();
   const { handleSubmit, register } = useForm<data>();
   const onSubmit: SubmitHandler<data> = (data) => {
     signup(data)
@@ -24,7 +26,20 @@ const SignUP = () => {
         router.push("/");
       })
       .catch((rejected) => {
-        console.log(rejected);
+        if (rejected.status == 400) {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: rejected.data.error.message,
+          });
+        }
+        if (rejected.status == 500) {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Server error, try later",
+          });
+        }
       });
   };
   return (
@@ -178,9 +193,15 @@ const SignUP = () => {
               </div>
 
               <div className="col-span-6 sm:flex sm:items-center sm:gap-4">
-                <button className=" py-2 px-3 bg-lightGray rounded-lg shadow-xl text-[14px] font-medium text-primaryDark">
-                  Create an account
-                </button>
+                {isLoading ? (
+                  <>
+                    <PulseLoader color="#CAD2C5" size={10} />
+                  </>
+                ) : (
+                  <button className=" py-2 px-3 bg-lightGray rounded-lg shadow-xl text-[14px] font-medium text-primaryDark">
+                    Create an account
+                  </button>
+                )}
 
                 <p className="mt-4 text-sm text-lightGraySec sm:mt-0">
                   Already have an account?

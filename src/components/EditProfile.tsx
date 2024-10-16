@@ -103,7 +103,7 @@ const EditProfile = ({ setEditPropfile, dataUser }: EditProfileProps) => {
           onClick={() => setEditPropfile(false)}
           className=" cursor-default absolute h-[100%] w-[100%] top-0 left-0 bg-[#00000032]"
         ></div>
-        <div className="popup px-8 pt-6 pb-4 relative z-30 bg-lightGraySec shadow-xl  rounded-xl w-[780px]  h-fit border-2 border-t-0 border-r-0 border-primaryDark">
+        <div className="popup mx-4 px-8 pt-6 pb-4 relative z-30 bg-lightGraySec shadow-xl  rounded-xl w-[780px]  h-fit border-2 border-b-0 border-t-0 border-r-0 border-primaryDark">
           <h3 className=" font-bold text-secondaryDark text-[28px]">
             Edit Profile
           </h3>
@@ -139,13 +139,13 @@ const EditProfile = ({ setEditPropfile, dataUser }: EditProfileProps) => {
               {...register("username")}
               type="text"
               placeholder="FullName"
-              className=" h-[34px] text-primaryDark pl-3 shadow-md bg-lightGraySec border-secondaryDark border-b-2 border-l-2  focus:border-2 transition-all ease-in-out duration-75 w-full mt-2 placeholder:text-primaryDark placeholder:text-[14px] placeholder:font-medium  outline-none rounded-lg"
+              className=" h-[34px] text-primaryDark pl-3 shadow-md bg-lightGray border-secondaryDark border-l-2  focus:border-2 transition-all ease-in-out duration-75 w-full mt-2 placeholder:text-secondaryDark placeholder:text-[14px] placeholder:font-medium  outline-none rounded-lg"
             />
             <input
               {...register("email")}
               type="email"
               placeholder="Email"
-              className=" h-[34px] text-primaryDark mt-4 pl-3 shadow-md bg-lightGraySec border-secondaryDark border-b-2 border-l-2  focus:border-2 transition-all ease-in-out duration-75 w-full  placeholder:text-primaryDark placeholder:text-[14px] placeholder:font-medium  outline-none rounded-lg"
+              className=" h-[34px] text-primaryDark mt-4 pl-3 shadow-md bg-lightGray border-secondaryDark  border-l-2  focus:border-2 transition-all ease-in-out duration-75 w-full  placeholder:text-secondaryDark placeholder:text-[14px] placeholder:font-medium  outline-none rounded-lg"
             />
             <div>
               <label
@@ -156,7 +156,7 @@ const EditProfile = ({ setEditPropfile, dataUser }: EditProfileProps) => {
               </label>
               <div className=" relative">
                 <input
-                  className=" h-[34px] text-primaryDark mt-1 pl-3 shadow-md bg-lightGraySec border-secondaryDark border-b-2 border-l-2  focus:border-2 transition-all ease-in-out duration-75 w-full  placeholder:text-primaryDark placeholder:text-[14px] placeholder:font-medium  outline-none rounded-lg"
+                  className=" h-[34px] text-primaryDark mt-1 pl-3 shadow-md bg-lightGray border-secondaryDark border-l-2  focus:border-2 transition-all ease-in-out duration-75 w-full  placeholder:text-secondaryDark placeholder:text-[14px] placeholder:font-medium  outline-none rounded-lg"
                   type={showPass ? "text" : "password"}
                   id="password"
                   {...register("password")}
@@ -170,7 +170,7 @@ const EditProfile = ({ setEditPropfile, dataUser }: EditProfileProps) => {
               <div className=" relative">
                 {" "}
                 <input
-                  className=" text-primaryDark h-[34px] placeholder:text-[12px]  mt-3 pl-3 shadow-md bg-lightGraySec border-secondaryDark border-b-2 border-l-2  focus:border-2 transition-all ease-in-out duration-75 w-full  placeholder:text-primaryDark  placeholder:font-medium  outline-none rounded-lg"
+                  className=" text-primaryDark h-[34px] placeholder:text-[12px]  mt-3 pl-3 shadow-md bg-lightGray border-secondaryDark border-l-2  focus:border-2 transition-all ease-in-out duration-75 w-full  placeholder:text-secondaryDark  placeholder:font-medium  outline-none rounded-lg"
                   placeholder="Confirm password"
                   type={showPass ? "text" : "password"}
                 />{" "}

@@ -3,7 +3,7 @@ import React from "react";
 
 const QuickLinks = () => {
   return (
-    <div className="justify-self-end px-4 h-fit  py-4 w-[85%]  rounded-lg shadow-xl bg-lightGraySec">
+    <>
       <h1 className=" text-primaryDark font-semibold text-[20px] flex items-center justify-between">
         Quick links
         <span className=" text-[14px] text-secondaryDark">
@@ -30,7 +30,7 @@ const QuickLinks = () => {
           My Reviews
         </li>
       </ul>
-    </div>
+    </>
   );
 };
 

@@ -30,7 +30,7 @@ const Article = ({ art }: ArticleProps) => {
   return (
     <div
       key={art.documentId}
-      className=" bg-lightGraySec mb-8 place-self-start shadow-xl py-4 px-4 rounded-lg"
+      className=" bg-lightGraySec mb-4 md:mb-8 place-self-start shadow-xl py-4 px-4 rounded-lg"
     >
       <div className=" flex items-start justify-between">
         <div className=" flex items-start gap-2">

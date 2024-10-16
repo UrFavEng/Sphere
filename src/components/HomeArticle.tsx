@@ -10,7 +10,7 @@ const HomeArticle = () => {
   console.log(data, error);
   const [addArticle, setAddArticle] = useState<boolean>(false);
   return (
-    <div className="w-full col-span-2 justify-self-center  ">
+    <div className="w-full sm:col-span-2 justify-self-center  ">
       <Add setAddArticle={setAddArticle} />
 
       {data?.data.map((art) => (

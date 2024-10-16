@@ -128,9 +128,9 @@ const UpdateArticle = ({ setEditArticle, art }: UpdateArticleProps) => {
           onClick={() => setEditArticle(false)}
           className=" cursor-default absolute h-[100%] w-[100%] top-0 left-0 bg-[#00000032]"
         ></div>
-        <div className="popup px-8 pt-6 pb-4 relative z-30 bg-lightGraySec shadow-xl  rounded-xl w-[780px] min-h-[500px] border-2 border-t-0 border-r-0 border-primaryDark">
+        <div className="popup mx-4 px-8 pt-6 pb-4 relative z-30 bg-lightGraySec shadow-xl  rounded-xl w-[780px] min-h-[500px] border-2 border-b-0 border-t-0 border-r-0 border-primaryDark">
           <h3 className=" font-bold text-secondaryDark text-[28px]">
-            Add article
+            Update article
           </h3>
           <form className=" relative" onSubmit={handleSubmit(onSubmit)}>
             <Splide
@@ -153,7 +153,7 @@ const UpdateArticle = ({ setEditArticle, art }: UpdateArticleProps) => {
                     </label>
                     <input
                       {...register("title")}
-                      className=" mt-2 font-medium h-[34px] pl-3 shadow-md bg-lightGraySec border-secondaryDark border-b-2 border-l-2  focus:border-2 transition-all ease-in-out duration-75 w-full text-primaryDark placeholder:text-[14px] placeholder:font-medium placeholder:text-secondaryGreen outline-none rounded-lg"
+                      className=" mt-2 font-medium h-[34px] pl-3 shadow-md bg-lightGray border-secondaryDark  border-l-2  focus:border-2 transition-all ease-in-out duration-75 w-full text-primaryDark placeholder:text-[14px] placeholder:font-medium placeholder:text-secondaryDark outline-none rounded-lg"
                       type="text"
                       placeholder="title of article"
                       id="title"
@@ -168,14 +168,14 @@ const UpdateArticle = ({ setEditArticle, art }: UpdateArticleProps) => {
                     </label>
                     <textarea
                       {...register("content")}
-                      className=" pt-3 mt-2 font-medium h-[134px] pl-3 shadow-md bg-lightGraySec border-secondaryDark border-b-2 border-l-2  focus:border-2 transition-all ease-in-out duration-75 w-full text-primaryDark placeholder:text-[14px] placeholder:font-medium placeholder:text-secondaryGreen outline-none rounded-lg"
+                      className=" pt-3 mt-2 font-medium h-[134px] pl-3 shadow-md bg-lightGray border-secondaryDark border-l-2  focus:border-2 transition-all ease-in-out duration-75 w-full text-primaryDark placeholder:text-[14px] placeholder:font-medium placeholder:text-secondaryDark outline-none rounded-lg"
                       placeholder="title of article"
                       id="content"
                     ></textarea>
                   </div>
                   <div className="">
                     <select
-                      className="  mt-2 font-medium h-[34px] pl-3 shadow-md bg-lightGraySec border-secondaryDark border-b-2 border-l-2  focus:border-2 transition-all ease-in-out duration-75 w-full text-primaryDark placeholder:text-[14px] placeholder:font-medium placeholder:text-secondaryGreen outline-none rounded-lg"
+                      className="  mt-2 font-medium h-[34px] pl-3 shadow-md bg-lightGray border-secondaryDark border-l-2  focus:border-2 transition-all ease-in-out duration-75 w-full text-primaryDark placeholder:text-[14px] placeholder:font-medium placeholder:text-secondaryDark outline-none rounded-lg"
                       title="category"
                     >
                       <option value="">Category</option>
@@ -214,7 +214,7 @@ const UpdateArticle = ({ setEditArticle, art }: UpdateArticleProps) => {
                         ))}
                         {tags.length < 4 && (
                           <input
-                            className="flex-grow mt-2 font-medium h-[34px]  pl-3 shadow-md bg-lightGraySec border-secondaryDark border-b-2 border-l-2  focus:border-2 transition-all ease-in-out duration-75  text-primaryDark placeholder:text-[14px] placeholder:font-medium placeholder:text-secondaryGreen outline-none rounded-lg"
+                            className="flex-grow mt-2 font-medium h-[34px]  pl-3 shadow-md bg-lightGray border-secondaryDark border-l-2  focus:border-2 transition-all ease-in-out duration-75  text-primaryDark placeholder:text-[14px] placeholder:font-medium placeholder:text-secondaryDark outline-none rounded-lg"
                             type="text"
                             // className="flex-grow outline-none p-1 text-gray-700"
                             placeholder="Enter a tag and press Enter"
@@ -252,12 +252,14 @@ const UpdateArticle = ({ setEditArticle, art }: UpdateArticleProps) => {
                     className="file-input mt-1 file-input-bordered file-input-md w-full max-w-full file:bg-primaryGreen"
                   />{" "}
                   {selectedImage ? (
-                    <div className=" mb-8 w-[550px] m-auto">
+                    <div className=" mb-8 max--[550px] m-auto">
                       {" "}
                       <Image
+                        width={800}
+                        height={300}
                         src={selectedImage}
                         alt=""
-                        className=" max-h-[300px] m-auto mt-8 shadow-lg rounded-lg  object-contain"
+                        className=" max-h-[300px] w-fit m-auto mt-8 shadow-lg rounded-lg  object-contain"
                       />{" "}
                       {image && (
                         <button

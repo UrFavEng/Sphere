@@ -229,7 +229,9 @@ export interface getmeRES {
   email: string;
   id: number;
   image: GetAllArticlesImage;
-
+  bio: string;
+  location: string;
+  expertise: string;
   publishedAt: string;
   reviews: GetAllArticlesReview[];
   updatedAt: string;

@@ -123,7 +123,7 @@ const AddArticle = ({ setAddArticle }: AddArticleProps) => {
           onClick={() => setAddArticle(false)}
           className=" cursor-default absolute h-[100%] w-[100%] top-0 left-0 bg-[#00000032]"
         ></div>
-        <div className="popup px-8 pt-6 pb-4 relative z-30 bg-lightGraySec shadow-xl  rounded-xl w-[780px] min-h-[500px] border-2 border-t-0 border-r-0 border-primaryDark">
+        <div className="popup mx-4 px-8 pt-6 pb-4 relative z-30 bg-lightGraySec shadow-xl  rounded-xl w-[780px] min-h-[500px] border-2 border-b-0 border-t-0 border-r-0 border-primaryDark">
           <h3 className=" font-bold text-secondaryDark text-[28px]">
             Add article
           </h3>
@@ -148,9 +148,9 @@ const AddArticle = ({ setAddArticle }: AddArticleProps) => {
                     </label>
                     <input
                       {...register("title")}
-                      className=" mt-2 font-medium h-[34px] pl-3 shadow-md bg-lightGraySec border-secondaryDark border-b-2 border-l-2  focus:border-2 transition-all ease-in-out duration-75 w-full text-primaryDark placeholder:text-[14px] placeholder:font-medium placeholder:text-secondaryGreen outline-none rounded-lg"
+                      className=" mt-2 font-medium h-[34px] pl-3 shadow-md bg-lightGray border-secondaryDark border-l-2  focus:border-2 transition-all ease-in-out duration-75 w-full text-primaryDark placeholder:text-[14px] placeholder:font-medium placeholder:text-secondaryDark outline-none rounded-lg"
                       type="text"
-                      placeholder="title of article"
+                      placeholder="Title of article"
                       id="title"
                     />
                   </div>
@@ -163,14 +163,14 @@ const AddArticle = ({ setAddArticle }: AddArticleProps) => {
                     </label>
                     <textarea
                       {...register("content")}
-                      className=" pt-3 mt-2 font-medium h-[134px] pl-3 shadow-md bg-lightGraySec border-secondaryDark border-b-2 border-l-2  focus:border-2 transition-all ease-in-out duration-75 w-full text-primaryDark placeholder:text-[14px] placeholder:font-medium placeholder:text-secondaryGreen outline-none rounded-lg"
-                      placeholder="title of article"
+                      className=" pt-3 mt-2 font-medium h-[134px] pl-3 shadow-md bg-lightGray border-secondaryDark  border-l-2  focus:border-2 transition-all ease-in-out duration-75 w-full text-primaryDark placeholder:text-[14px] placeholder:font-medium placeholder:text-secondaryDark outline-none rounded-lg"
+                      placeholder="Content of article"
                       id="content"
                     ></textarea>
                   </div>
                   <div className="">
                     <select
-                      className="  mt-2 font-medium h-[34px] pl-3 shadow-md bg-lightGraySec border-secondaryDark border-b-2 border-l-2  focus:border-2 transition-all ease-in-out duration-75 w-full text-primaryDark placeholder:text-[14px] placeholder:font-medium placeholder:text-secondaryGreen outline-none rounded-lg"
+                      className="  mt-2 font-medium h-[34px] pl-3 shadow-md bg-lightGray border-secondaryDark border-l-2  focus:border-2 transition-all ease-in-out duration-75 w-full text-primaryDark placeholder:text-[14px] placeholder:font-medium placeholder:text-secondaryDark outline-none rounded-lg"
                       title="category"
                     >
                       <option value="">Category</option>
@@ -209,7 +209,7 @@ const AddArticle = ({ setAddArticle }: AddArticleProps) => {
                         ))}
                         {tags.length < 4 && (
                           <input
-                            className="flex-grow mt-2 font-medium h-[34px]  pl-3 shadow-md bg-lightGraySec border-secondaryDark border-b-2 border-l-2  focus:border-2 transition-all ease-in-out duration-75  text-primaryDark placeholder:text-[14px] placeholder:font-medium placeholder:text-secondaryGreen outline-none rounded-lg"
+                            className="flex-grow mt-2 font-medium h-[34px]  pl-3 shadow-md bg-lightGray border-secondaryDark border-l-2   focus:border-2 transition-all ease-in-out duration-75  text-primaryDark placeholder:text-[14px] placeholder:font-medium placeholder:text-secondaryDark outline-none rounded-lg"
                             type="text"
                             // className="flex-grow outline-none p-1 text-gray-700"
                             placeholder="Enter a tag and press Enter"
@@ -250,6 +250,8 @@ const AddArticle = ({ setAddArticle }: AddArticleProps) => {
                     <div className=" mb-8 w-[550px] m-auto">
                       {" "}
                       <Image
+                        width={800}
+                        height={300}
                         src={selectedImage}
                         alt=""
                         className=" max-h-[300px] m-auto mt-8 shadow-lg rounded-lg  object-contain"

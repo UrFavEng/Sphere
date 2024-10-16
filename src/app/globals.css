@@ -10,3 +10,22 @@ html {
 .splide__pagination__page {
   background-color: #84a98c !important;
 }
+.scroll-hidden::-webkit-scrollbar {
+  height: 0;
+  background: transparent;
+}
+.scroll-hidden {
+  scrollbar-width: none; /* Firefox */
+}
+.logo-svg {
+  transition: fill 0.3s ease;
+}
+
+.main-logo:hover .logo-svg {
+  fill: #84a98c; /* لون جديد عند التحويم */
+}
+.file-input {
+  background-color: #cad2c5 !important;
+  color: #2f3e46 !important;
+  font-weight: 500;
+}

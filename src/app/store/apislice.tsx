@@ -34,7 +34,7 @@ export const apiSlice = createApi({
         body,
         headers: {
           // "Content-Type": "multipart/form-data",
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUsImlhdCI6MTcyODg1MDY5OSwiZXhwIjoxNzMxNDQyNjk5fQ.ViY1e5L0Ymc3nbWgtVRROxx-Ua2z7nRjc5ET3U95_ts`,
+          Authorization: `Bearer ${localStorage.getItem("JWTSphere")}`,
         },
       }),
       invalidatesTags: ["dataUser"],
@@ -43,7 +43,7 @@ export const apiSlice = createApi({
       query: () => ({
         url: "users/me?populate[image]=*&populate[articles][populate][image]=*&populate[articles][populate][user][populate]=image&populate[articles][populate][reviews][populate][user][populate]=image&populate[articles][populate][category]=*&populate[reviews][populate][article][populate][image]=*&populate[reviews][populate][article][populate][user][populate]=image&populate[reviews][populate][user][populate]=image",
         headers: {
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUsImlhdCI6MTcyODg1MDY5OSwiZXhwIjoxNzMxNDQyNjk5fQ.ViY1e5L0Ymc3nbWgtVRROxx-Ua2z7nRjc5ET3U95_ts`,
+          Authorization: `Bearer ${localStorage.getItem("JWTSphere")}`,
         },
       }),
       providesTags: ["dataUser"],
@@ -80,7 +80,7 @@ export const apiSlice = createApi({
           method: "POST",
           body: formData,
           headers: {
-            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUsImlhdCI6MTcyODg1MDY5OSwiZXhwIjoxNzMxNDQyNjk5fQ.ViY1e5L0Ymc3nbWgtVRROxx-Ua2z7nRjc5ET3U95_ts`,
+            Authorization: `Bearer ${localStorage.getItem("JWTSphere")}`,
           },
         };
       },
@@ -92,7 +92,7 @@ export const apiSlice = createApi({
         method: "PUT",
         body: { image: imageUrl },
         headers: {
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUsImlhdCI6MTcyODg1MDY5OSwiZXhwIjoxNzMxNDQyNjk5fQ.ViY1e5L0Ymc3nbWgtVRROxx-Ua2z7nRjc5ET3U95_ts`,
+          Authorization: `Bearer ${localStorage.getItem("JWTSphere")}`,
         },
       }),
       invalidatesTags: ["dataUser"],
@@ -103,7 +103,7 @@ export const apiSlice = createApi({
         method: "POST",
         body: { data: body },
         headers: {
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUsImlhdCI6MTcyODg1MDY5OSwiZXhwIjoxNzMxNDQyNjk5fQ.ViY1e5L0Ymc3nbWgtVRROxx-Ua2z7nRjc5ET3U95_ts`,
+          Authorization: `Bearer ${localStorage.getItem("JWTSphere")}`,
         },
       }),
       invalidatesTags: ["dataUser"],
@@ -113,7 +113,7 @@ export const apiSlice = createApi({
         url: `articles/${id}`,
         method: "DELETE",
         headers: {
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUsImlhdCI6MTcyODg1MDY5OSwiZXhwIjoxNzMxNDQyNjk5fQ.ViY1e5L0Ymc3nbWgtVRROxx-Ua2z7nRjc5ET3U95_ts`,
+          Authorization: `Bearer ${localStorage.getItem("JWTSphere")}`,
         },
       }),
     }),
@@ -123,7 +123,7 @@ export const apiSlice = createApi({
         method: "PUT",
         body: { data: body },
         headers: {
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUsImlhdCI6MTcyODg1MDY5OSwiZXhwIjoxNzMxNDQyNjk5fQ.ViY1e5L0Ymc3nbWgtVRROxx-Ua2z7nRjc5ET3U95_ts`,
+          Authorization: `Bearer ${localStorage.getItem("JWTSphere")}`,
         },
       }),
       invalidatesTags: ["dataUser"],
