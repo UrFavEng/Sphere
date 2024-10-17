@@ -30,7 +30,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const pathname = usePathname(); // Get the current route
-  const hideNavbarRoutes = ["/signup"]; // List of routes where the Navbar should be hidden
+  const hideNavbarRoutes = ["/signup", "/login"]; // List of routes where the Navbar should be hidden
 
   return (
     <Provider store={store}>
