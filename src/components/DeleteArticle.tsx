@@ -1,20 +1,34 @@
 import { useDeleteArticleMutation } from "@/app/store/apislice";
 import React from "react";
+import { PulseLoader } from "react-spinners";
+import Swal from "sweetalert2";
 interface PropsDeleteArticle {
   setDeleteArticle: (val: boolean) => void;
   id: string;
 }
 const DeleteArticle = ({ setDeleteArticle, id }: PropsDeleteArticle) => {
-  const [deleteArticle] = useDeleteArticleMutation();
+  const [deleteArticle, { isLoading: loadingDeleteArticle }] =
+    useDeleteArticleMutation();
 
   const handleDelete = async () => {
-    if (confirm("Are you sure you want to delete this article?")) {
-      try {
-        await deleteArticle(id).unwrap();
-        alert("Article deleted successfully!");
-      } catch (error) {
-        console.error("Failed to delete the article:", error);
-      }
+    try {
+      await deleteArticle(id).unwrap();
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "Done",
+        timer: 1500,
+        showConfirmButton: false,
+      });
+    } catch (error) {
+      console.log(error);
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: "Error, try later",
+        timer: 1500,
+        showConfirmButton: false,
+      });
     }
   };
   return (
@@ -34,19 +48,27 @@ const DeleteArticle = ({ setDeleteArticle, id }: PropsDeleteArticle) => {
             Delete Article
           </h3>
           <div className=" flex items-center gap-2 mt-6">
-            {" "}
-            <button
-              onClick={() => setDeleteArticle(false)}
-              className="text-lightGraySec py-1 px-3 rounded-lg transition-all ease-in-out hover:scale-105 hover:shadow-xl  bg-primaryDark"
-            >
-              Cancle
-            </button>
-            <button
-              onClick={() => handleDelete()}
-              className=" text-lightGraySec py-1 px-3 rounded-lg transition-all ease-in-out hover:scale-105 hover:shadow-xl  bg-orange-600"
-            >
-              Delete
-            </button>
+            {loadingDeleteArticle ? (
+              <>
+                {" "}
+                <PulseLoader color="#2F3E46" size={10} />
+              </>
+            ) : (
+              <>
+                <button
+                  onClick={() => setDeleteArticle(false)}
+                  className="text-lightGraySec py-1 px-3 rounded-lg transition-all ease-in-out hover:scale-105 hover:shadow-xl  bg-primaryDark"
+                >
+                  Cancle
+                </button>
+                <button
+                  onClick={() => handleDelete()}
+                  className=" text-lightGraySec py-1 px-3 rounded-lg transition-all ease-in-out hover:scale-105 hover:shadow-xl  bg-orange-600"
+                >
+                  Delete
+                </button>
+              </>
+            )}{" "}
           </div>
         </div>
       </div>

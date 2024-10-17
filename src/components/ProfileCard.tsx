@@ -13,6 +13,11 @@ const ProfileCard = ({ setSection }: ProfileCardProps) => {
   const [editPropfile, setEditPropfile] = useState<boolean>();
 
   const { data } = useGetMeQuery();
+  const handleLogout = () => {
+    localStorage.removeItem("JWTSphere");
+
+    window.location.href = "/";
+  };
   return (
     <>
       <div className="  hidden sm:block">
@@ -73,7 +78,10 @@ const ProfileCard = ({ setSection }: ProfileCardProps) => {
           >
             <Pencil size={14} /> Setting
           </p>
-          <p className="flex items-center gap-2 cursor-pointer font-medium text-primaryDark hover:text-orange-700 transition-all ease-in-out">
+          <p
+            onClick={handleLogout}
+            className="flex items-center gap-2 cursor-pointer font-medium text-primaryDark hover:text-orange-700 transition-all ease-in-out"
+          >
             <LogOut size={14} className=" mt-1" /> Log out
           </p>
           {editPropfile && (
@@ -138,7 +146,7 @@ const ProfileCard = ({ setSection }: ProfileCardProps) => {
         <hr className="border-gray-200  dark:border-gray-700 my-2" />
         <p
           onClick={() => setEditPropfile(true)}
-          className="flex items-center gap-2 text-[18px] cursor-pointer font-medium text-primaryDark hover:text-secondaryGreen transition-all ease-in-out"
+          className="flex items-center gap-2 text-[16px] cursor-pointer font-medium text-primaryDark hover:text-secondaryGreen transition-all ease-in-out"
         >
           <Pencil size={14} /> Setting
         </p>

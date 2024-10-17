@@ -18,7 +18,11 @@ const SignUP = () => {
   const [showErrPass, setShowErrPass] = useState<boolean>(false);
 
   const [signup, { isLoading }] = useSignUpMutation();
-  const { handleSubmit, register } = useForm<data>();
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm<data>();
   const onSubmit: SubmitHandler<data> = (data) => {
     setShowErrPass(false);
     const confirmPasswordValue = confirmPasswordRef.current?.value;
@@ -139,7 +143,11 @@ const SignUP = () => {
                   className="mt-1 font-medium w-full h-[34px] pl-3 shadow-md bg-lightGray border-secondaryDark border-b-2 border-l-2  focus:border-2 transition-all ease-in-out duration-75  text-primaryDark placeholder:text-[14px] placeholder:font-medium  placeholder:text-primaryGreen outline-none rounded-lg"
                 />
               </div>
-
+              {errors.username?.message && (
+                <p className=" font-medium text-[16px] col-span-4 text-orange-700">
+                  {errors.username.message}
+                </p>
+              )}
               <div className="col-span-6">
                 <label
                   htmlFor="Email"
@@ -200,7 +208,7 @@ const SignUP = () => {
                   className=" top-[50%] right-3 cursor-pointer absolute"
                 />
               </div>
-              {true && (
+              {showErrPass && (
                 <p className=" col-span-4 text-orange-700 font-medium text-[16px] sm:text-[22px]">
                   Passwords do not match
                 </p>

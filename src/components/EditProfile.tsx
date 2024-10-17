@@ -61,7 +61,7 @@ const EditProfile = ({ setEditPropfile, dataUser }: EditProfileProps) => {
         console.log(imageUrl);
         // Step 3: Update the user with the new image URL
         await updateUser({ userId, imageUrl })
-          .then((d) => {
+          .then(() => {
             Swal.fire({
               position: "center",
               icon: "success",
@@ -70,7 +70,7 @@ const EditProfile = ({ setEditPropfile, dataUser }: EditProfileProps) => {
               showConfirmButton: false,
             });
           })
-          .catch((e) =>
+          .catch(() =>
             Swal.fire({
               position: "center",
               icon: "error",

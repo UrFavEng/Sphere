@@ -12,8 +12,16 @@ import { usePathname, useRouter } from "next/navigation";
 import React, { useState } from "react";
 import Dropdown from "./MainDropdown";
 import Image from "next/image";
+import AddArticle from "./AddArticle";
+import EditProfile from "./EditProfile";
+import { getmeRES } from "@/app/store/types";
 
 const Navbar = () => {
+  const handleLogout = () => {
+    localStorage.removeItem("JWTSphere");
+
+    window.location.href = "/";
+  };
   const pathname = usePathname(); // Get the current route
   const hideNavbarRoutes = ["/profile"]; // List of routes where the Navbar should be hidden
   const { data } = useGetAllCatsQuery();
@@ -39,6 +47,8 @@ const Navbar = () => {
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
   };
+  const [addArticle, setAddArticle] = useState(false);
+  const [editPropfile, setEditPropfile] = useState(false);
   return (
     <>
       {" "}
@@ -52,7 +62,10 @@ const Navbar = () => {
             />
           </form>
         </div>
-        <h2 className="flex main-logo items-center gap-1 text-primaryDark cursor-pointer hover:text-secondaryGreen transition-all ease-in-out font-bold tracking-[1px] text-[24px]">
+        <h2
+          onClick={() => router.push("/")}
+          className="flex main-logo items-center gap-1 text-primaryDark cursor-pointer hover:text-secondaryGreen transition-all ease-in-out font-bold tracking-[1px] text-[24px]"
+        >
           <svg
             id="logo-84"
             width="42"
@@ -112,6 +125,7 @@ const Navbar = () => {
                 Log in
               </button>
               <button
+                onClick={() => router.push("/signup")}
                 type="button"
                 className="shadow-xl rounded-lg transition-all ease-in-out hover:bg-secondaryGreen font-medium text-[16px] hover:text-primaryDark text-lightGraySec bg-primaryDark border-l-[1px] border-lightGraySec py-[6px] px-[10px] rounde"
               >
@@ -143,14 +157,15 @@ const Navbar = () => {
       </div>
       <>
         {/* Navbar */}
-        <div className="px-4 py-3 lg:hidden flex items-center justify-between gap-2 bg-lightGraySec relative z-10">
-          <div>
+        <div className="px-4 py-3 lg:hidden  shadow-sm flex items-center justify-between gap-2 bg-lightGraySec relative z-10">
+          <div className="justify-start  basis-[33%]">
             {" "}
             <div>
               {/* Button to toggle the sidebar */}
               <div
                 className={` ${
-                  !userData && " flex items-center gap-3 flex-row-reverse"
+                  !userData &&
+                  "  justify-end flex items-center gap-3 flex-row-reverse"
                 } content`}
               >
                 {!userData && (
@@ -190,7 +205,13 @@ const Navbar = () => {
                 }`}
               >
                 <div className=" w-full">
-                  <h2 className="flex pl-4  py-4  hover:bg-secondaryDark  main-logoo items-center gap-1 text-lightGraySec cursor-pointer hover:text-lightGray transition-all ease-in-out font-bold tracking-[1px] text-[24px]">
+                  <h2
+                    onClick={() => {
+                      router.push("/");
+                      setIsOpen(false);
+                    }}
+                    className="flex pl-4  py-4  hover:bg-secondaryDark  main-logoo items-center gap-1 text-lightGraySec cursor-pointer hover:text-lightGray transition-all ease-in-out font-bold tracking-[1px] text-[24px]"
+                  >
                     <svg
                       id="logo-84"
                       width="42"
@@ -218,6 +239,7 @@ const Navbar = () => {
                     <>
                       {" "}
                       <Link
+                        onClick={() => setIsOpen(false)}
                         href="/profile"
                         className="flex p-4 items-center  mt- text-sm text-gray-600 transition-colors duration-300 transform dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white"
                       >
@@ -252,9 +274,13 @@ const Navbar = () => {
                       Main Sections
                     </h2>
                     <li className=" py-2">
-                      <a className=" font-semibold text-[20px] hover:text-lightGraySec">
+                      <Link
+                        onClick={() => setIsOpen(false)}
+                        href={"/"}
+                        className=" font-semibold text-[20px] hover:text-lightGraySec"
+                      >
                         Articles
-                      </a>
+                      </Link>
                     </li>
                     <li>
                       <a className=" font-semibold text-[20px] hover:text-lightGraySec">
@@ -273,7 +299,13 @@ const Navbar = () => {
                       Add
                     </h2>
                     <li className=" py-2">
-                      <a className=" font-semibold text-[20px] hover:text-lightGraySec">
+                      <a
+                        onClick={() => {
+                          setAddArticle(true);
+                          setIsOpen(false);
+                        }}
+                        className=" font-semibold text-[20px] hover:text-lightGraySec"
+                      >
                         Article
                       </a>
                     </li>
@@ -295,12 +327,21 @@ const Navbar = () => {
                     <hr className="border-gray-200 dark:border-gray-700" />
                     <ul className="menu p-4 text-base-content mt-4">
                       <li>
-                        <a className=" font-semibold py-2 text-[18px] hover:text-lightGraySec">
+                        <a
+                          onClick={() => {
+                            setEditPropfile(true);
+                            setIsOpen(false);
+                          }}
+                          className=" font-semibold py-2 text-[18px] hover:text-lightGraySec"
+                        >
                           Settings
                         </a>
                       </li>
                       <li>
-                        <a className=" font-semibold py-2 text-[18px] hover:text-lightGraySec">
+                        <a
+                          onClick={handleLogout}
+                          className=" font-semibold py-2 text-[18px]  hover:text-orange-700"
+                        >
                           Sign out
                         </a>
                       </li>
@@ -311,6 +352,7 @@ const Navbar = () => {
                     <hr className="border-lightGraySec" />
 
                     <button
+                      onClick={() => router.push("/signup")}
                       type="button"
                       className="flex pl-4 w-full  border-b-[1.5px] border-gray-200 dark:border-gray-700 py-2  hover:bg-secondaryDark  items-center gap-1 text-lightGraySec cursor-pointer hover:text-lightGray transition-all ease-in-out font-bold tracking-[1px] text-[18px]"
                     >
@@ -327,7 +369,10 @@ const Navbar = () => {
               </div>
             </div>
           </div>
-          <h2 className="flex basis-[24%] sm:basis-auto justify-end sm:justify-normal main-logo items-center gap-1 text-primaryDark cursor-pointer hover:text-secondaryGreen transition-all ease-in-out font-bold tracking-[1px] text-[24px]">
+          <h2
+            onClick={() => router.push("/")}
+            className="flex basis-[33%]  justify-center  main-logo items-center gap-1 text-primaryDark cursor-pointer hover:text-secondaryGreen transition-all ease-in-out font-bold tracking-[1px] text-[24px]"
+          >
             <svg
               id="logo-84"
               width="42"
@@ -349,7 +394,7 @@ const Navbar = () => {
             <ChevronsUpDown size={20} />
           </span> */}
           </h2>
-          <div className="flex items-center gap-2">
+          <div className=" basis-[33%] justify-end  flex items-center gap-2">
             <p>
               <Search
                 size={28}
@@ -371,7 +416,7 @@ const Navbar = () => {
                     {" "}
                     <button
                       type="button"
-                      className=" underline font-medium text-[16px] sm:text-[18px] text-primaryDark hover:text-secondaryGreen transition-all ease-in-out"
+                      className=" underline font-medium text-[16px] hidden sm:block sm:text-[18px] text-primaryDark hover:text-secondaryGreen transition-all ease-in-out"
                     >
                       Log in
                     </button>
@@ -387,31 +432,69 @@ const Navbar = () => {
               )}
             </div>
           </div>
-        </div>
-
+        </div>{" "}
         {/* Search Bar */}
         <div
           className={`${
             searchVisible ? "max-h-20 opacity-100" : "max-h-0 opacity-0"
           } overflow-hidden text-center transition-all border-t-[1.5px] ease-in-out duration-500 lg:hidden  bg-lightGraySec`}
         >
-          <input
-            type="text"
-            placeholder="Search..."
-            className="w-[85%] my-2 px-4 py-2 bg-lightGray text-primaryDark border-none outline-none border border-gray-300 rounded-lg shadow-md"
-          />
+          <form onSubmit={handleSubmit} className=" relative w-full">
+            <input
+              type="text"
+              placeholder="Search..."
+              className="w-[85%] my-2 px-4 py-2 bg-lightGray text-primaryDark border-none outline-none border border-gray-300 rounded-lg shadow-md"
+            />
+            <button type="submit">
+              {" "}
+              <Search
+                size={28}
+                className={`text-primaryDark  absolute right-[10%] top-[50%] translate-y-[-50%] hover:text-secondaryGreen cursor-pointer transition ease-in-out`}
+                onClick={() => setSearchVisible(!searchVisible)} // Toggle search bar visibility
+              />
+            </button>
+          </form>
         </div>
+        {!hideNavbarRoutes.includes(pathname) && (
+          <div className="hidden md:block lg:hidden  sm:shadow-lg bg-lightGraySec py-[10px] sm:border-b-[1.5px]  border-solid border-secondaryDark">
+            {" "}
+            <div className=" w-full hidden md:flex items-center justify-center gap-10">
+              <Link
+                href={"/"}
+                className=" text-[14px] lg:text-[18px] font-medium text-primaryDark hover:text-secondaryGreen transition-all ease-in-out cursor-pointer flex flex-row-reverse items-center gap-1 "
+              >
+                Article
+                <Newspaper size={16} className=" " />
+              </Link>
+              <span className=" text-[14px] lg:text-[18px] font-medium text-primaryDark hover:text-secondaryGreen transition-all ease-in-out cursor-pointer flex flex-row-reverse items-center gap-1 ">
+                Video
+                <TvMinimalPlay size={16} className=" " />
+              </span>
+              <span className=" text-[14px] lg:text-[18px] font-medium text-primaryDark hover:text-secondaryGreen transition-all ease-in-out cursor-pointer flex flex-row-reverse items-center gap-1 ">
+                Audio
+                <AudioLines size={16} className=" " />
+              </span>
+            </div>
+          </div>
+        )}
       </>
       {!hideNavbarRoutes.includes(pathname) && (
-        <div className="py-3 bg-lightGraySec lg:hidden border-t-[1.5px]   overflow-y-auto whitespace-nowrap scroll-hidden">
+        <div className="py-3 bg-lightGraySec md:hidden border-t-[1.5px]   overflow-y-auto whitespace-nowrap scroll-hidden">
           {data?.data.map((item) => (
-            <Link key={item.name} href={""}>
+            <Link key={item.name} href={`/articles/${item.name}`}>
               <span className="mx-4 capitalize text-primaryDark text-sm leading-5 transition-all ease-in-out duration-300 transform font-medium text-[12px] hover:underline md:my-0">
                 {item.name}
               </span>
             </Link>
           ))}
         </div>
+      )}
+      {addArticle && <AddArticle setAddArticle={setAddArticle} />}
+      {editPropfile && (
+        <EditProfile
+          setEditPropfile={setEditPropfile}
+          dataUser={userData as getmeRES}
+        />
       )}
     </>
   );

@@ -42,7 +42,11 @@ export default function Dropdown() {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isOpen]);
+  const handleLogout = () => {
+    localStorage.removeItem("JWTSphere");
 
+    window.location.href = "/";
+  };
   return (
     <div ref={dropdownRef} className="relative cursor-default inline-block ">
       <button
@@ -125,8 +129,8 @@ export default function Dropdown() {
         </p>
         <hr className="border-gray-200 dark:border-gray-700" />
         <a
-          href="#"
-          className="block px-4 py-3 text-sm text-gray-600 capitalize transition-colors duration-300 transform dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white"
+          onClick={() => handleLogout()}
+          className="block px-4 py-3 text-sm text-gray-600 capitalize transition-colors duration-300 transform dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-orange-700 cursor-pointer"
         >
           Sign Out
         </a>

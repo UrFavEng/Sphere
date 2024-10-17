@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
-  allreviewsByUser,
+  // allreviewsByUser,
   GetAllArticles,
   getAllCats,
   getmeRES,
@@ -13,7 +13,7 @@ export const apiSlice = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:1337/api/",
   }),
-  tagTypes: ["dataUser"],
+  tagTypes: ["dataUser", "article"],
   endpoints: (builder) => ({
     signUp: builder.mutation<SignupRES, SignupREQ>({
       query: (body) => ({
@@ -51,19 +51,22 @@ export const apiSlice = createApi({
     getAllArticles: builder.query<GetAllArticles, void>({
       query: () =>
         `articles?populate[image]=*&populate[reviews][populate]=user.image&populate[user][populate]=image&populate[category][populate]=*&populate[comments][populate]=users_permissions_user.image&sort=createdAt:desc`,
+      providesTags: ["article"],
     }),
-    getAllReviewsByUser: builder.query<allreviewsByUser, string | undefined>({
-      query: (documentId) =>
-        `reviews?populate[article][populate]=image&populate[article][populate]=user.image&populate[article][populate]=category&filters[user][documentId]=${documentId}`,
-    }),
+    // getAllReviewsByUser: builder.query<allreviewsByUser, string | undefined>({
+    //   query: (documentId) =>
+    //     `reviews?populate[article][populate]=image&populate[article][populate]=user.image&populate[article][populate]=category&filters[user][documentId]=${documentId}`,
+    // }),
 
     getAllArticlesByCat: builder.query<GetAllArticles, string>({
       query: (cat) =>
         `articles?populate[image]=*&populate[reviews][populate]=user.image&populate[user][populate]=image&populate[category][populate]=*&populate[comments][populate]=users_permissions_user.image&filters[category][name][$eq]=${cat}&sort=createdAt:desc`,
+      providesTags: ["article"],
     }),
     getAllArticlesByTitle: builder.query<GetAllArticles, string>({
       query: (name) =>
         `articles?populate[image]=*&populate[reviews][populate]=user.image&populate[user][populate]=image&populate[category][populate]=*&populate[comments][populate]=users_permissions_user.image&filters[$or][0][title][$contains]=${name}&filters[$or][1][content][$contains]=${name}&sort=createdAt:desc`,
+      providesTags: ["article"],
     }),
     getAllCats: builder.query<getAllCats, void>({
       query: () => `categories`,
@@ -106,7 +109,18 @@ export const apiSlice = createApi({
           Authorization: `Bearer ${localStorage.getItem("JWTSphere")}`,
         },
       }),
-      invalidatesTags: ["dataUser"],
+      invalidatesTags: ["dataUser", "article"],
+    }),
+    addReview: builder.mutation({
+      query: (body) => ({
+        url: `reviews`,
+        method: "POST",
+        body: { data: body },
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("JWTSphere")}`,
+        },
+      }),
+      invalidatesTags: ["dataUser", "article"],
     }),
     deleteArticle: builder.mutation<void, string>({
       query: (id) => ({
@@ -116,6 +130,28 @@ export const apiSlice = createApi({
           Authorization: `Bearer ${localStorage.getItem("JWTSphere")}`,
         },
       }),
+      invalidatesTags: ["dataUser", "article"],
+    }),
+    deleteReview: builder.mutation<void, string>({
+      query: (id) => ({
+        url: `reviews/${id}`,
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("JWTSphere")}`,
+        },
+      }),
+      invalidatesTags: ["dataUser", "article"],
+    }),
+    updateReview: builder.mutation({
+      query: ({ body, id }) => ({
+        url: `reviews/${id}`,
+        method: "PUT",
+        body: { data: body },
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("JWTSphere")}`,
+        },
+      }),
+      invalidatesTags: ["dataUser", "article"],
     }),
     updateArticleContet: builder.mutation({
       query: ({ articleId, body }) => ({
@@ -126,7 +162,7 @@ export const apiSlice = createApi({
           Authorization: `Bearer ${localStorage.getItem("JWTSphere")}`,
         },
       }),
-      invalidatesTags: ["dataUser"],
+      invalidatesTags: ["dataUser", "article"],
     }),
     uploadImage: builder.mutation({
       query: (formData) => ({
@@ -134,6 +170,7 @@ export const apiSlice = createApi({
         method: "POST",
         body: formData,
       }),
+      invalidatesTags: ["dataUser"],
     }),
   }),
 });
@@ -149,11 +186,14 @@ export const {
   useGetAllArticlesByCatQuery,
   useGetAllArticlesByTitleQuery,
   useGetMeQuery,
-  useGetAllReviewsByUserQuery,
+  // useGetAllReviewsByUserQuery,
   useUpdataUserMutation,
   useUploadUserImageMutation,
   useUpdateUserMutation,
   useAddArticleMutation,
   useGetArticleByIdQuery,
   useDeleteArticleMutation,
+  useAddReviewMutation,
+  useDeleteReviewMutation,
+  useUpdateReviewMutation,
 } = apiSlice;

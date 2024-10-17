@@ -115,7 +115,7 @@ const AddArticle = ({ setAddArticle }: AddArticleProps) => {
       try {
         const fulfilled = await addArticle(body)
           .unwrap()
-          .then((e) => {
+          .then(() => {
             setAddArticle(false);
             Swal.fire({
               position: "center",

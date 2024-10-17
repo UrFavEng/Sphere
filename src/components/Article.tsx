@@ -30,7 +30,7 @@ const Article = ({ art }: ArticleProps) => {
   return (
     <div
       key={art.documentId}
-      className=" bg-lightGraySec mb-4 md:mb-8 place-self-start shadow-xl py-4 px-4 rounded-lg"
+      className=" bg-lightGraySec mb-4 md:mb-5 place-self-start shadow-xl py-4 px-4 rounded-lg"
     >
       <div className=" flex items-start justify-between">
         <div className=" flex items-start gap-2">
@@ -52,7 +52,9 @@ const Article = ({ art }: ArticleProps) => {
               {art?.user?.username}
             </h2>{" "}
             <p className=" text-[10px]  mt-[-2px] font-medium text-primaryGreen">
-              {art?.publishedAt && formatDate(art?.publishedAt as string)}{" "}
+              {art?.publishedAt
+                ? formatDate(art?.publishedAt as string)
+                : formatDate(art?.createdAt as string)}{" "}
             </p>
           </div>
         </div>
@@ -135,6 +137,7 @@ const Article = ({ art }: ArticleProps) => {
         <ReviewArticle
           setReviewsArticle={setReviewsArticle}
           reviews={art.reviews}
+          idArt={art.documentId}
         />
       )}
       {commentsArticle && (

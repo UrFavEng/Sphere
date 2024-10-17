@@ -10,6 +10,8 @@ import "@splidejs/react-splide/css"; // أو استيراد نمط معين
 import Image from "next/image";
 import { KeyboardEvent, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { PulseLoader } from "react-spinners";
+import Swal from "sweetalert2";
 interface UpdateArticleProps {
   setEditArticle: (val: boolean) => void;
   art: GetAllArticlesArticle;
@@ -69,7 +71,8 @@ const UpdateArticle = ({ setEditArticle, art }: UpdateArticleProps) => {
     setCurrentSlide(newIndex.index);
   };
 
-  const [updateArticleContent] = useUpdateArticleContetMutation();
+  const [updateArticleContent, { isLoading: loadingUpdateArticle }] =
+    useUpdateArticleContetMutation();
   const onSubmit: SubmitHandler<data> = async (data) => {
     const body = {
       title: data.title,
@@ -80,8 +83,23 @@ const UpdateArticle = ({ setEditArticle, art }: UpdateArticleProps) => {
       .unwrap()
       .then((fulfilled) => {
         console.log(fulfilled);
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Done",
+          timer: 1500,
+          showConfirmButton: false,
+        });
+        setEditArticle(false);
       })
       .catch((rejected) => {
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "Error, try later",
+          timer: 1500,
+          showConfirmButton: false,
+        });
         console.log(rejected);
       });
   };
@@ -98,7 +116,8 @@ const UpdateArticle = ({ setEditArticle, art }: UpdateArticleProps) => {
       setImage(file);
     }
   };
-  const [uploadImage] = useUploadImageMutation();
+  const [uploadImage, { isLoading: loadingUploadImage }] =
+    useUploadImageMutation();
   const handleUploadImage = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const formData = new FormData();
@@ -112,7 +131,21 @@ const UpdateArticle = ({ setEditArticle, art }: UpdateArticleProps) => {
     try {
       const result = await uploadImage(formData).unwrap();
       console.log("Upload successful:", result);
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "Done",
+        timer: 1500,
+        showConfirmButton: false,
+      });
     } catch (error) {
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: "Error, try later",
+        timer: 1500,
+        showConfirmButton: false,
+      });
       console.error("Upload failed:", error);
     }
   };
@@ -262,23 +295,49 @@ const UpdateArticle = ({ setEditArticle, art }: UpdateArticleProps) => {
                         className=" max-h-[300px] w-fit m-auto mt-8 shadow-lg rounded-lg  object-contain"
                       />{" "}
                       {image && (
-                        <button
-                          onClick={handleUploadImage}
-                          className=" text-center cursor-pointer bg-primaryDark hover:bg-secondaryGreen hover:text-primaryDark transition-all ease-in-out font-medium text-lightGraySec py-2 w-fit mx-auto px-3 rounded-lg shadow-xl mt-2"
-                        >
-                          Upload
-                        </button>
+                        <>
+                          {loadingUploadImage ? (
+                            <>
+                              {" "}
+                              <PulseLoader color="#2F3E46" size={10} />
+                            </>
+                          ) : (
+                            <>
+                              {" "}
+                              <button
+                                onClick={handleUploadImage}
+                                className=" text-center cursor-pointer bg-primaryDark hover:bg-secondaryGreen hover:text-primaryDark transition-all ease-in-out font-medium text-lightGraySec py-2 w-fit mx-auto px-3 rounded-lg shadow-xl mt-2"
+                              >
+                                Upload
+                              </button>
+                            </>
+                          )}{" "}
+                        </>
                       )}
                     </div>
                   ) : (
                     <></>
                   )}
-                  <button
-                    type="submit"
-                    className=" font-semibold text-[18px] bg-primaryDark hover:bg-secondaryDark transition-all ease-in-out text-lightGraySec hover:text-white py-2 px-5 rounded-lg shadow-sm absolute bottom-4 left-3"
-                  >
-                    Add
-                  </button>
+                  {loadingUpdateArticle || loadingUploadImage ? (
+                    <>
+                      {" "}
+                      <PulseLoader
+                        color="#2F3E46"
+                        size={10}
+                        className=" mt-4"
+                      />
+                    </>
+                  ) : (
+                    <>
+                      {" "}
+                      <button
+                        type="submit"
+                        className=" font-semibold text-[18px] bg-primaryDark hover:bg-secondaryDark transition-all ease-in-out text-lightGraySec hover:text-white py-2 px-5 rounded-lg shadow-sm absolute bottom-4 left-3"
+                      >
+                        Add
+                      </button>
+                    </>
+                  )}
                 </div>
               </SplideSlide>
             </Splide>
