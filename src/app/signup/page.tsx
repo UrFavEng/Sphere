@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useSignUpMutation } from "../store/apislice";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
@@ -13,34 +13,42 @@ interface data {
 }
 const SignUP = () => {
   const router = useRouter();
+  const confirmPasswordRef = useRef<HTMLInputElement>(null); // useRef for Confirm Password
   const [showPass, setShowPass] = useState<boolean>(false);
+  const [showErrPass, setShowErrPass] = useState<boolean>(false);
 
   const [signup, { isLoading }] = useSignUpMutation();
   const { handleSubmit, register } = useForm<data>();
   const onSubmit: SubmitHandler<data> = (data) => {
-    signup(data)
-      .unwrap()
-      .then((fulfilled) => {
-        localStorage.setItem("JWTSphere", `${fulfilled.jwt}`);
-        console.log(fulfilled);
-        router.push("/");
-      })
-      .catch((rejected) => {
-        if (rejected.status == 400) {
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: rejected.data.error.message,
-          });
-        }
-        if (rejected.status == 500) {
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: "Server error, try later",
-          });
-        }
-      });
+    setShowErrPass(false);
+    const confirmPasswordValue = confirmPasswordRef.current?.value;
+    if (data.password === confirmPasswordValue) {
+      signup(data)
+        .unwrap()
+        .then((fulfilled) => {
+          localStorage.setItem("JWTSphere", `${fulfilled.jwt}`);
+          console.log(fulfilled);
+          router.push("/");
+        })
+        .catch((rejected) => {
+          if (rejected.status == 400) {
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: rejected.data.error.message,
+            });
+          }
+          if (rejected.status == 500) {
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: "Server error, try later",
+            });
+          }
+        });
+    } else {
+      setShowErrPass(true);
+    }
   };
   return (
     <section className=" overflow-hidden max-h-[115vh] sm:max-h-[100vh]">
@@ -128,7 +136,7 @@ const SignUP = () => {
                 <input
                   type="text"
                   {...register("username", { required: "Name is required" })}
-                  className="mt-1 w-full h-[34px] pl-3 shadow-md bg-lightGraySec border-secondaryDark border-b-2 border-l-2  focus:border-2 transition-all ease-in-out duration-75  placeholder:text-primaryDark placeholder:text-[14px] placeholder:font-medium text-primaryGreen outline-none rounded-lg"
+                  className="mt-1 font-medium w-full h-[34px] pl-3 shadow-md bg-lightGray border-secondaryDark border-b-2 border-l-2  focus:border-2 transition-all ease-in-out duration-75  text-primaryDark placeholder:text-[14px] placeholder:font-medium  placeholder:text-primaryGreen outline-none rounded-lg"
                 />
               </div>
 
@@ -145,7 +153,7 @@ const SignUP = () => {
                   id="Email"
                   type="email"
                   {...register("email", { required: "Email is required" })}
-                  className="mt-1 w-full h-[34px] pl-3 shadow-md bg-lightGraySec border-secondaryDark border-b-2 border-l-2  focus:border-2 transition-all ease-in-out duration-75  placeholder:text-primaryDark placeholder:text-[14px] placeholder:font-medium text-primaryGreen outline-none rounded-lg"
+                  className="mt-1 w-full h-[34px] pl-3 shadow-md bg-lightGray font-medium  border-secondaryDark border-b-2 border-l-2  focus:border-2 transition-all ease-in-out duration-75  text-primaryDark placeholder:text-[14px] placeholder:font-medium placeholder:text-primaryGreen outline-none rounded-lg"
                 />
               </div>
 
@@ -163,7 +171,7 @@ const SignUP = () => {
                   {...register("password", {
                     required: "Password is required",
                   })}
-                  className="mt-1 w-full h-[34px] pl-3 shadow-md bg-lightGraySec border-secondaryDark border-b-2 border-l-2  focus:border-2 transition-all ease-in-out duration-75  placeholder:text-primaryDark placeholder:text-[14px] placeholder:font-medium text-primaryGreen outline-none rounded-lg"
+                  className="mt-1 w-full h-[34px] pl-3 shadow-md bg-lightGray border-secondaryDark border-b-2 border-l-2  focus:border-2 transition-all ease-in-out duration-75  placeholder:text-primaryDark placeholder:text-[14px] placeholder:font-medium text-primaryGreen outline-none rounded-lg"
                 />{" "}
                 <Eye
                   onClick={() => setShowPass(!showPass)}
@@ -181,9 +189,10 @@ const SignUP = () => {
                 </label>
 
                 <input
+                  ref={confirmPasswordRef} // useRef for Confirm Password
                   id="PasswordConfirmation"
                   type={`${showPass ? "text" : "password"}`}
-                  className="mt-1 w-full h-[34px] pl-3 shadow-md bg-lightGraySec border-secondaryDark border-b-2 border-l-2  focus:border-2 transition-all ease-in-out duration-75  placeholder:text-primaryDark placeholder:text-[14px] placeholder:font-medium text-primaryGreen outline-none rounded-lg"
+                  className="mt-1 w-full h-[34px] pl-3 shadow-md bg-lightGray border-secondaryDark border-b-2 border-l-2  focus:border-2 transition-all ease-in-out duration-75  placeholder:text-primaryDark placeholder:text-[14px] placeholder:font-medium text-primaryGreen outline-none rounded-lg"
                 />
                 <Eye
                   onClick={() => setShowPass(!showPass)}
@@ -191,7 +200,11 @@ const SignUP = () => {
                   className=" top-[50%] right-3 cursor-pointer absolute"
                 />
               </div>
-
+              {true && (
+                <p className=" col-span-4 text-orange-700 font-medium text-[16px] sm:text-[22px]">
+                  Passwords do not match
+                </p>
+              )}
               <div className="col-span-6 sm:flex sm:items-center sm:gap-4">
                 {isLoading ? (
                   <>

@@ -1,12 +1,21 @@
 import { useGetMeQuery } from "@/app/store/apislice";
-import React from "react";
+import { Pencil } from "lucide-react";
+import React, { useState } from "react";
+import EditProfile from "./EditProfile";
+import { getmeRES } from "@/app/store/types";
 
 const InfoUser = () => {
+  const [editPropfile, setEditPropfile] = useState<boolean>();
   const { data: userData } = useGetMeQuery();
   return (
     <>
-      <h2 className="  text-secondaryDark text-[18px] font-medium ">
-        About you
+      <h2 className="  flex items-center gap-2 text-secondaryDark text-[18px] font-medium ">
+        About you{" "}
+        <Pencil
+          onClick={() => setEditPropfile(true)}
+          size={16}
+          className=" cursor-pointer text-secondaryDark hover:text-secondaryGreen"
+        />
       </h2>
       <div>
         <p className=" mt-2 text-primaryDark text-[13px] leading-[16px] font-medium ">
@@ -22,6 +31,12 @@ const InfoUser = () => {
           {userData?.location}{" "}
         </p>
       </div>
+      {editPropfile && (
+        <EditProfile
+          dataUser={userData as getmeRES}
+          setEditPropfile={setEditPropfile}
+        />
+      )}
     </>
   );
 };

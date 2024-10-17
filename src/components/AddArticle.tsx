@@ -10,6 +10,8 @@ import {
 } from "@/app/store/apislice";
 import { SubmitHandler, useForm } from "react-hook-form";
 import Image from "next/image";
+import { PulseLoader } from "react-spinners";
+import Swal from "sweetalert2";
 interface AddArticleProps {
   setAddArticle: (val: boolean) => void;
 }
@@ -72,8 +74,10 @@ const AddArticle = ({ setAddArticle }: AddArticleProps) => {
 
   //add article
   const { handleSubmit, register } = useForm<data>();
-  const [addArticle] = useAddArticleMutation();
-  const [uploadImage] = useUploadImageMutation();
+  const [addArticle, { isLoading: loadingAddArticle }] =
+    useAddArticleMutation();
+  const [uploadImage, { isLoading: loadingUploadImage }] =
+    useUploadImageMutation();
   const onSubmit: SubmitHandler<data> = async (data) => {
     let idImage;
 
@@ -87,11 +91,17 @@ const AddArticle = ({ setAddArticle }: AddArticleProps) => {
         const fulfilled = await uploadImage(formData).unwrap();
         idImage = fulfilled[0].id; // تأكد من استخدام المفتاح الصحيح للـ ID
       } catch (error) {
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "Error uploading image, try later",
+          timer: 1500,
+          showConfirmButton: false,
+        });
         console.log("Error uploading image:", error);
         return; // إيقاف العملية إذا حدث خطأ في رفع الصورة
       }
     }
-
     // إنشاء المقال إذا كان المستخدم موجودًا
     if (user) {
       const body = {
@@ -103,9 +113,27 @@ const AddArticle = ({ setAddArticle }: AddArticleProps) => {
       };
 
       try {
-        const fulfilled = await addArticle(body).unwrap();
+        const fulfilled = await addArticle(body)
+          .unwrap()
+          .then((e) => {
+            setAddArticle(false);
+            Swal.fire({
+              position: "center",
+              icon: "success",
+              title: "Done",
+              timer: 1500,
+              showConfirmButton: false,
+            });
+          });
         console.log("Article created successfully:", fulfilled);
       } catch (error) {
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "Error add article , try later",
+          timer: 1500,
+          showConfirmButton: false,
+        });
         console.log("Error creating article:", error);
       }
     }
@@ -254,18 +282,27 @@ const AddArticle = ({ setAddArticle }: AddArticleProps) => {
                         height={300}
                         src={selectedImage}
                         alt=""
-                        className=" max-h-[300px] m-auto mt-8 shadow-lg rounded-lg  object-contain"
+                        className=" max-h-[300px] w-fit m-auto mt-8 shadow-lg rounded-lg  object-contain"
                       />{" "}
                     </div>
                   ) : (
                     <></>
                   )}
-                  <button
-                    type="submit"
-                    className=" font-semibold text-[18px] bg-primaryDark hover:bg-secondaryDark transition-all ease-in-out text-lightGraySec hover:text-white py-2 px-5 rounded-lg shadow-sm absolute bottom-4 left-3"
-                  >
-                    Add
-                  </button>
+                  {loadingUploadImage || loadingAddArticle ? (
+                    <div className="absolute bottom-4 left-3">
+                      <PulseLoader color="#2F3E46" size={10} />
+                    </div>
+                  ) : (
+                    <>
+                      {" "}
+                      <button
+                        type="submit"
+                        className=" font-semibold text-[18px] bg-primaryDark hover:bg-secondaryDark transition-all ease-in-out text-lightGraySec hover:text-white py-2 px-5 rounded-lg shadow-sm absolute bottom-4 left-3"
+                      >
+                        Add
+                      </button>
+                    </>
+                  )}
                 </div>
               </SplideSlide>
             </Splide>

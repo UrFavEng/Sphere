@@ -16,14 +16,16 @@ const ArticlesCat = ({ params }: ArticlesCatProps) => {
 
   return (
     <>
-      <div className=" container mx-auto  py-6 grid grid-cols-4 ">
+      <div className=" container mx-auto  py-6 px-4 xl:px-0 grid md:grid-cols-3 xl:grid-cols-4 ">
         <CategoryArticle />
         <div className="w-full col-span-2 justify-self-center  ">
           {" "}
           <Add setAddArticle={setAddArticle} />{" "}
           {data && <ArticlesCatHome data={data} />}
         </div>
-        <QuickLinks />{" "}
+        <div className="justify-self-end hidden xl:block px-4 h-fit    py-4 w-[85%]  rounded-lg shadow-xl bg-lightGraySec">
+          <QuickLinks />
+        </div>
         {addArticle && <AddArticle setAddArticle={setAddArticle} />}
       </div>
     </>

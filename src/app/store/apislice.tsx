@@ -50,7 +50,7 @@ export const apiSlice = createApi({
     }),
     getAllArticles: builder.query<GetAllArticles, void>({
       query: () =>
-        "articles?populate[image]=*&populate[reviews][populate]=user.image&populate[user][populate]=image&populate[category][populate]=*&populate[comments][populate]=users_permissions_user.image",
+        `articles?populate[image]=*&populate[reviews][populate]=user.image&populate[user][populate]=image&populate[category][populate]=*&populate[comments][populate]=users_permissions_user.image&sort=createdAt:desc`,
     }),
     getAllReviewsByUser: builder.query<allreviewsByUser, string | undefined>({
       query: (documentId) =>
@@ -59,11 +59,11 @@ export const apiSlice = createApi({
 
     getAllArticlesByCat: builder.query<GetAllArticles, string>({
       query: (cat) =>
-        `articles?populate[image]=*&populate[reviews][populate]=user.image&populate[user][populate]=image&populate[category][populate]=*&populate[comments][populate]=users_permissions_user.image&filters[category][name][$eq]=${cat}`,
+        `articles?populate[image]=*&populate[reviews][populate]=user.image&populate[user][populate]=image&populate[category][populate]=*&populate[comments][populate]=users_permissions_user.image&filters[category][name][$eq]=${cat}&sort=createdAt:desc`,
     }),
     getAllArticlesByTitle: builder.query<GetAllArticles, string>({
       query: (name) =>
-        `articles?populate[image]=*&populate[reviews][populate]=user.image&populate[user][populate]=image&populate[category][populate]=*&populate[comments][populate]=users_permissions_user.image&filters[$or][0][title][$contains]=${name}&filters[$or][1][content][$contains]=${name}`,
+        `articles?populate[image]=*&populate[reviews][populate]=user.image&populate[user][populate]=image&populate[category][populate]=*&populate[comments][populate]=users_permissions_user.image&filters[$or][0][title][$contains]=${name}&filters[$or][1][content][$contains]=${name}&sort=createdAt:desc`,
     }),
     getAllCats: builder.query<getAllCats, void>({
       query: () => `categories`,

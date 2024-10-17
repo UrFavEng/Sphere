@@ -185,37 +185,68 @@ const Navbar = () => {
 
               {/* Sidebar */}
               <div
-                className={`fixed flex items-start justify-between flex-col p-0 top-0 left-0 z-[999] w-[290px] rounded-r-lg border-r-2 border-lightGraySec min-h-full bg-base-200  transition-transform duration-300 ${
+                className={`fixed overflow-hidden flex items-start justify-between flex-col p-0 top-0 left-0 z-[999] w-[290px] rounded-r-lg border-r-2 border-lightGraySec min-h-full bg-base-200  transition-transform duration-300 ${
                   isOpen ? "translate-x-0" : "-translate-x-full"
                 }`}
               >
                 <div className=" w-full">
-                  {" "}
-                  <Link
-                    href="/profile"
-                    className="flex p-4 items-center  mt- text-sm text-gray-600 transition-colors duration-300 transform dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white"
-                  >
-                    <Image
-                      width={48}
-                      height={48}
-                      className="flex-shrink-0 border-[1px] border-white border-solid object-cover mx-1 rounded-full w-12 h-12"
-                      src={
-                        userData?.image?.url
-                          ? userData?.image?.url
-                          : "/undraw_male_avatar_g98d.svg"
-                      }
-                      alt="jane avatar"
-                    />
-                    <div className="mx-1">
-                      <h1 className="text-[18px] font-semibold text-lightGraySec">
-                        {userData?.username}
-                      </h1>
-                      <p className="text-[12px] text-lightGraySec">
-                        {userData?.email}
-                      </p>
-                    </div>
-                  </Link>
+                  <h2 className="flex pl-4  py-4  hover:bg-secondaryDark  main-logoo items-center gap-1 text-lightGraySec cursor-pointer hover:text-lightGray transition-all ease-in-out font-bold tracking-[1px] text-[24px]">
+                    <svg
+                      id="logo-84"
+                      width="42"
+                      height="24"
+                      viewBox="0 0 40 28"
+                      fill="#fafcf5"
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="logoo-svg"
+                    >
+                      <path
+                        className="ccustom logo-path"
+                        fillRule="evenodd"
+                        clipRule="evenodd"
+                        d="M9.98578 4.11462L0 14C1.99734 15.9773 4.27899 17.6437 6.76664 18.9474C7.45424 20.753 8.53203 22.4463 10 23.8995C15.5229 29.3668 24.4772 29.3668 30 23.8995C31.468 22.4463 32.5458 20.753 33.2334 18.9473C35.721 17.6437 38.0027 15.9773 40 14L30.0223 4.12266C30.0149 4.11527 30.0075 4.10788 30 4.1005C24.4772 -1.36683 15.5229 -1.36683 10 4.1005C9.99527 4.10521 9.99052 4.10991 9.98578 4.11462ZM29.0445 20.7309C26.1345 21.7031 23.0797 22.201 20 22.201C16.9203 22.201 13.8656 21.7031 10.9556 20.7309C11.2709 21.145 11.619 21.5424 12 21.9196C16.4183 26.2935 23.5817 26.2935 28 21.9196C28.381 21.5424 28.7292 21.145 29.0445 20.7309ZM12.2051 5.8824C12.9554 6.37311 13.7532 6.79302 14.588 7.13536C16.3038 7.83892 18.1428 8.20104 20 8.20104C21.8572 8.20104 23.6962 7.83892 25.412 7.13536C26.2468 6.79302 27.0446 6.3731 27.795 5.88238C23.4318 1.77253 16.5682 1.77254 12.2051 5.8824Z"
+                      />
+                    </svg>
+                    Sphere
+                    {/* <span className=" absolute bottom-[0%] right-[50%] translate-x-[-50%] text-primaryDark hover:text-secondaryGreen">
+            <ChevronsUpDown size={20} />
+          </span> */}
+                  </h2>
                   <hr className="border-gray-200 dark:border-gray-700" />
+
+                  {userData ? (
+                    <>
+                      {" "}
+                      <Link
+                        href="/profile"
+                        className="flex p-4 items-center  mt- text-sm text-gray-600 transition-colors duration-300 transform dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white"
+                      >
+                        <Image
+                          width={48}
+                          height={48}
+                          className="flex-shrink-0 border-[1px] border-white border-solid object-cover mx-1 rounded-full w-12 h-12"
+                          src={
+                            userData?.image?.url
+                              ? userData?.image?.url
+                              : "/undraw_male_avatar_g98d.svg"
+                          }
+                          alt="jane avatar"
+                        />
+                        <div className="mx-1">
+                          <h1 className="text-[18px] font-semibold text-lightGraySec">
+                            {userData?.username}
+                          </h1>
+                          <p className="text-[12px] text-lightGraySec">
+                            {userData?.email}
+                          </p>
+                        </div>
+                      </Link>
+                      <hr className="border-gray-200 dark:border-gray-700" />
+                    </>
+                  ) : (
+                    <></>
+                  )}
+
                   <ul className="menu p-4 text-base-content mt-4">
                     <h2 className=" text-lightGraySec font-bold text-[20px]">
                       Main Sections
@@ -258,26 +289,45 @@ const Navbar = () => {
                     </li>
                   </ul>
                 </div>
-                <div className=" w-full">
-                  {" "}
-                  <hr className="border-gray-200 dark:border-gray-700" />
-                  <ul className="menu p-4 text-base-content mt-4">
-                    <li>
-                      <a className=" font-semibold py-2 text-[18px] hover:text-lightGraySec">
-                        Settings
-                      </a>
-                    </li>
-                    <li>
-                      <a className=" font-semibold py-2 text-[18px] hover:text-lightGraySec">
-                        Sign out
-                      </a>
-                    </li>
-                  </ul>{" "}
-                </div>
+                {userData ? (
+                  <div className=" w-full">
+                    {" "}
+                    <hr className="border-gray-200 dark:border-gray-700" />
+                    <ul className="menu p-4 text-base-content mt-4">
+                      <li>
+                        <a className=" font-semibold py-2 text-[18px] hover:text-lightGraySec">
+                          Settings
+                        </a>
+                      </li>
+                      <li>
+                        <a className=" font-semibold py-2 text-[18px] hover:text-lightGraySec">
+                          Sign out
+                        </a>
+                      </li>
+                    </ul>{" "}
+                  </div>
+                ) : (
+                  <div className=" w-full">
+                    <hr className="border-lightGraySec" />
+
+                    <button
+                      type="button"
+                      className="flex pl-4 w-full  border-b-[1.5px] border-gray-200 dark:border-gray-700 py-2  hover:bg-secondaryDark  items-center gap-1 text-lightGraySec cursor-pointer hover:text-lightGray transition-all ease-in-out font-bold tracking-[1px] text-[18px]"
+                    >
+                      Sign up
+                    </button>
+                    <button
+                      type="button"
+                      className="flex pl-4 w-full  py-2  hover:bg-secondaryDark items-center gap-1 text-lightGraySec cursor-pointer hover:text-lightGray transition-all ease-in-out font-bold tracking-[1px] text-[18px]"
+                    >
+                      Log in
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           </div>
-          <h2 className="flex main-logo items-center gap-1 text-primaryDark cursor-pointer hover:text-secondaryGreen transition-all ease-in-out font-bold tracking-[1px] text-[24px]">
+          <h2 className="flex basis-[24%] sm:basis-auto justify-end sm:justify-normal main-logo items-center gap-1 text-primaryDark cursor-pointer hover:text-secondaryGreen transition-all ease-in-out font-bold tracking-[1px] text-[24px]">
             <svg
               id="logo-84"
               width="42"
@@ -294,7 +344,7 @@ const Navbar = () => {
                 d="M9.98578 4.11462L0 14C1.99734 15.9773 4.27899 17.6437 6.76664 18.9474C7.45424 20.753 8.53203 22.4463 10 23.8995C15.5229 29.3668 24.4772 29.3668 30 23.8995C31.468 22.4463 32.5458 20.753 33.2334 18.9473C35.721 17.6437 38.0027 15.9773 40 14L30.0223 4.12266C30.0149 4.11527 30.0075 4.10788 30 4.1005C24.4772 -1.36683 15.5229 -1.36683 10 4.1005C9.99527 4.10521 9.99052 4.10991 9.98578 4.11462ZM29.0445 20.7309C26.1345 21.7031 23.0797 22.201 20 22.201C16.9203 22.201 13.8656 21.7031 10.9556 20.7309C11.2709 21.145 11.619 21.5424 12 21.9196C16.4183 26.2935 23.5817 26.2935 28 21.9196C28.381 21.5424 28.7292 21.145 29.0445 20.7309ZM12.2051 5.8824C12.9554 6.37311 13.7532 6.79302 14.588 7.13536C16.3038 7.83892 18.1428 8.20104 20 8.20104C21.8572 8.20104 23.6962 7.83892 25.412 7.13536C26.2468 6.79302 27.0446 6.3731 27.795 5.88238C23.4318 1.77253 16.5682 1.77254 12.2051 5.8824Z"
               />
             </svg>
-            Sphere
+            <span className=" hidden sm:block">Sphere</span>
             {/* <span className=" absolute bottom-[0%] right-[50%] translate-x-[-50%] text-primaryDark hover:text-secondaryGreen">
             <ChevronsUpDown size={20} />
           </span> */}
@@ -317,17 +367,18 @@ const Navbar = () => {
               ) : (
                 <>
                   {" "}
-                  <div className=" flex items-center gap-4">
+                  <div className=" flex items-center gap-2 md::gap-4">
                     {" "}
                     <button
                       type="button"
-                      className=" underline font-medium text-[18px] text-primaryDark hover:text-secondaryGreen transition-all ease-in-out"
+                      className=" underline font-medium text-[16px] sm:text-[18px] text-primaryDark hover:text-secondaryGreen transition-all ease-in-out"
                     >
                       Log in
                     </button>
                     <button
+                      onClick={() => router.push("/signup")}
                       type="button"
-                      className="shadow-xl rounded-lg transition-all ease-in-out hover:bg-secondaryGreen font-medium text-[16px] hover:text-primaryDark text-lightGraySec bg-primaryDark border-l-[1px] border-lightGraySec py-[6px] px-[10px] rounde"
+                      className="shadow-xl rounded-lg transition-all ease-in-out hover:bg-secondaryGreen font-medium text-[14px] sm:text-[16px] hover:text-primaryDark text-lightGraySec bg-primaryDark border-l-[1px] border-lightGraySec py-[6px] px-[10px] rounde"
                     >
                       Sign up
                     </button>
