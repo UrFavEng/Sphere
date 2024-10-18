@@ -4,6 +4,8 @@ import {
   GetAllArticles,
   getAllCats,
   getmeRES,
+  LoginRequest,
+  LoginResponse,
   SignupREQ,
   SignupRES,
 } from "./types";
@@ -23,7 +25,13 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: ["dataUser"],
     }),
-
+    login: builder.mutation<LoginResponse, LoginRequest>({
+      query: (credentials) => ({
+        url: "/auth/local",
+        method: "POST",
+        body: credentials,
+      }),
+    }),
     updataUser: builder.mutation<
       SignupRES,
       { body: FormData; id: string | undefined }
@@ -41,7 +49,7 @@ export const apiSlice = createApi({
     }),
     getMe: builder.query<getmeRES, void>({
       query: () => ({
-        url: "users/me?populate[image]=*&populate[articles][populate][image]=*&populate[articles][populate][user][populate][image]=*&populate[articles][populate][reviews][populate][user][populate][image]=*&populate[articles][populate][comments][populate][user][populate][image]=*&populate[articles][populate][reviews][populate][article][populate][image]=*&populate[reviews][populate][user][populate][image]=*&populate[reviews][populate][article][populate][image]=*&populate[comments][populate][user][populate][image]=*&populate[comments][populate][article][populate][image]=*&populate[comments][populate][article][populate][user][populate][image]=*",
+        url: "users/me?populate[image]=*&populate[articles][populate][image]=*&populate[articles][populate][category]=*&populate[articles][populate][user][populate][image]=*&populate[articles][populate][reviews][populate][user][populate][image]=*&populate[articles][populate][comments][populate][user][populate][image]=*&populate[articles][populate][reviews][populate][article][populate][image]=*&populate[reviews][populate][user][populate][image]=*&populate[reviews][populate][article][populate][image]=*&populate[comments][populate][user][populate][image]=*&populate[comments][populate][article][populate][image]=*&populate[comments][populate][article][populate][user][populate][image]=*",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("JWTSphere")}`,
         },
@@ -231,4 +239,5 @@ export const {
   useAddCommentMutation,
   useDeleteCommentMutation,
   useUpdateCommentMutation,
+  useLoginMutation,
 } = apiSlice;

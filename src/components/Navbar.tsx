@@ -119,6 +119,7 @@ const Navbar = () => {
             <div className=" flex items-center gap-4">
               {" "}
               <button
+                onClick={() => router.push("/login")}
                 type="button"
                 className=" underline font-medium text-[18px] text-primaryDark hover:text-secondaryGreen transition-all ease-in-out"
               >
@@ -359,6 +360,7 @@ const Navbar = () => {
                       Sign up
                     </button>
                     <button
+                      onClick={() => router.push("/login")}
                       type="button"
                       className="flex pl-4 w-full  py-2  hover:bg-secondaryDark items-center gap-1 text-lightGraySec cursor-pointer hover:text-lightGray transition-all ease-in-out font-bold tracking-[1px] text-[18px]"
                     >
@@ -415,6 +417,7 @@ const Navbar = () => {
                   <div className=" flex items-center gap-2 md::gap-4">
                     {" "}
                     <button
+                      onClick={() => router.push("/login")}
                       type="button"
                       className=" underline font-medium text-[16px] hidden sm:block sm:text-[18px] text-primaryDark hover:text-secondaryGreen transition-all ease-in-out"
                     >

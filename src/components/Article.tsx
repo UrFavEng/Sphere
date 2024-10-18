@@ -91,19 +91,24 @@ const Article = ({ art }: ArticleProps) => {
           {art?.content && <> {art?.content}</>}
         </p>
         <div className="">
-          <span className=" text-primaryGreen block w-[8%] mt-3 text-[16px] font-bold border-t-2 border-primaryDark">
-            Tags
-          </span>
-          <p className=" mt-[-4px]">
-            <span className="text-[12px] font-medium cursor-pointer text-secondaryDark hover:text-secondaryGreen transition-all ease-in-out">
-              {art.tags?.map((tag) => (
-                <span key={tag} className=" capitalize">
-                  {" "}
-                  {tag}{" "}
+          {art?.tags && art?.tags?.length && (
+            <>
+              {" "}
+              <span className=" text-primaryGreen block w-[8%] mt-3 text-[16px] font-bold border-t-2 border-primaryDark">
+                Tags
+              </span>
+              <p className=" mt-[-4px]">
+                <span className="text-[12px] font-medium cursor-pointer text-secondaryDark hover:text-secondaryGreen transition-all ease-in-out">
+                  {art.tags?.map((tag) => (
+                    <span key={tag} className=" capitalize">
+                      {" "}
+                      {tag}{" "}
+                    </span>
+                  ))}
                 </span>
-              ))}
-            </span>
-          </p>
+              </p>
+            </>
+          )}
         </div>
         <div className="mt-4 border-2 shadow-sm rounded-lg overflow-hidden">
           {art?.image?.url && (

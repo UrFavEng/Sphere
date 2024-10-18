@@ -13,6 +13,8 @@ import InfoUser from "@/components/InfoUser";
 import { Pencil, Trash2 } from "lucide-react";
 import DeleteCommment from "@/components/DeleteCommment";
 import EditComment from "@/components/EditComment";
+import DeleteReview from "@/components/DeleteReview";
+import EditReview from "@/components/EditReview";
 function formatDate(dateStr: string): string {
   const date = new Date(dateStr);
   const options: Intl.DateTimeFormatOptions = {
@@ -24,6 +26,8 @@ function formatDate(dateStr: string): string {
 }
 const Profile = () => {
   const [deleteCommment, setDeleteComment] = useState(false);
+  const [deleteReview, setDeleteReview] = useState(false);
+  const [showEditReview, setShowEditReview] = useState(false);
   const [updateCommment, setUpdateComment] = useState(false);
   const [section, setSection] = useState<string>("Articles");
   const [addArticle, setAddArticle] = useState<boolean>();
@@ -70,6 +74,18 @@ const Profile = () => {
                             key={rev?.documentId}
                             className="w-full bg-lightGraySec mb-8 place-self-start shadow-xl py-4 px-4 rounded-lg"
                           >
+                            {deleteReview && (
+                              <DeleteReview
+                                idReview={rev.documentId}
+                                setDeleteReview={setDeleteReview}
+                              />
+                            )}{" "}
+                            {showEditReview && (
+                              <EditReview
+                                setShowEdit={setShowEditReview}
+                                review={rev}
+                              />
+                            )}
                             <div className=" flex items-start justify-between">
                               <div className=" flex items-start gap-2">
                                 {" "}
@@ -175,10 +191,23 @@ const Profile = () => {
                                       />
                                     </div>
                                   </div>{" "}
-                                  <p className=" text-[10px] tracking-tight text-secondaryDark">
+                                  <p className=" flex items-start gap-2 text-[10px] tracking-tight text-secondaryDark">
                                     {rev?.publishedAt
                                       ? formatDate(rev?.publishedAt)
-                                      : formatDate(rev?.createdAt)}
+                                      : formatDate(rev?.createdAt)}{" "}
+                                    <p className=" flex items-center gap-2">
+                                      {" "}
+                                      <Pencil
+                                        size={14}
+                                        onClick={() => setShowEditReview(true)}
+                                        className="text-primaryDark cursor-pointer"
+                                      />
+                                      <Trash2
+                                        size={14}
+                                        onClick={() => setDeleteReview(true)}
+                                        className="text-orange-600   cursor-pointer"
+                                      />
+                                    </p>
                                   </p>
                                 </div>
 
@@ -408,6 +437,18 @@ const Profile = () => {
                             key={rev?.documentId}
                             className="w-full bg-lightGraySec mb-8 place-self-start shadow-xl py-4 px-4 rounded-lg"
                           >
+                            {deleteReview && (
+                              <DeleteReview
+                                idReview={rev.documentId}
+                                setDeleteReview={setDeleteReview}
+                              />
+                            )}{" "}
+                            {showEditReview && (
+                              <EditReview
+                                setShowEdit={setShowEditReview}
+                                review={rev}
+                              />
+                            )}
                             <div className=" flex items-start justify-between">
                               <div className=" flex items-start gap-2">
                                 {" "}
@@ -485,7 +526,7 @@ const Profile = () => {
                                 key={rev.documentId}
                                 className=" bg-lightGray my-2 rounded-lg  py-2 px-3"
                               >
-                                <div className=" flex justify-between">
+                                <div className=" flex justify-between items-start">
                                   {" "}
                                   <div className=" flex gap-3">
                                     <div>
@@ -513,10 +554,23 @@ const Profile = () => {
                                       />
                                     </div>
                                   </div>{" "}
-                                  <p className=" text-[10px] tracking-tight text-secondaryDark">
+                                  <p className=" flex mt-1 items-center gap-2 text-[10px] tracking-tight text-secondaryDark">
                                     {rev?.publishedAt
                                       ? formatDate(rev?.publishedAt)
                                       : formatDate(rev?.createdAt)}
+                                    <p className=" flex items-center gap-2">
+                                      {" "}
+                                      <Pencil
+                                        size={14}
+                                        onClick={() => setShowEditReview(true)}
+                                        className="text-primaryDark cursor-pointer"
+                                      />
+                                      <Trash2
+                                        size={14}
+                                        onClick={() => setDeleteReview(true)}
+                                        className="text-orange-600   cursor-pointer"
+                                      />
+                                    </p>
                                   </p>
                                 </div>
 
@@ -649,18 +703,34 @@ const Profile = () => {
                                         {data?.username}
                                       </h1>
                                       {/* <Rating
-                                        className="ml-[-8px]"
-                                        name="read-only"
-                                        value={rev.rating}
-                                        readOnly
-                                        size="small"
-                                      /> */}
+                                          className="ml-[-8px]"
+                                          name="read-only"
+                                          value={rev.rating}
+                                          readOnly
+                                          size="small"
+                                        /> */}
                                     </div>
                                   </div>{" "}
-                                  <p className=" text-[10px] tracking-tight text-secondaryDark">
+                                  <p className=" flex items-center gap-2 text-[8px] tracking-tight text-secondaryDark">
                                     {rev?.publishedAt
                                       ? formatDate(rev?.publishedAt)
                                       : formatDate(rev?.createdAt)}
+                                    {data?.documentId ==
+                                      rev?.user?.documentId && (
+                                      <p className=" flex items-center gap-2">
+                                        {" "}
+                                        <Pencil
+                                          size={14}
+                                          onClick={() => setUpdateComment(true)}
+                                          className="text-primaryDark cursor-pointer"
+                                        />
+                                        <Trash2
+                                          size={14}
+                                          onClick={() => setDeleteComment(true)}
+                                          className="text-orange-600   cursor-pointer"
+                                        />
+                                      </p>
+                                    )}
                                   </p>
                                 </div>
 
@@ -671,6 +741,18 @@ const Profile = () => {
                                 </div>
                               </div>
                             </div>
+                            {deleteCommment && (
+                              <DeleteCommment
+                                idComment={rev.documentId}
+                                setDeleteComment={setDeleteComment}
+                              />
+                            )}
+                            {updateCommment && (
+                              <EditComment
+                                rev={rev}
+                                setShowEditComment={setUpdateComment}
+                              />
+                            )}
                           </div>
                         )
                     )}

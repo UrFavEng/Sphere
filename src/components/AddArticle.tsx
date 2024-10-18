@@ -5,6 +5,7 @@ import { Splide, SplideSlide } from "@splidejs/react-splide";
 import "@splidejs/react-splide/css"; // أو استيراد نمط معين
 import {
   useAddArticleMutation,
+  useGetAllCatsQuery,
   useGetMeQuery,
   useUploadImageMutation,
 } from "@/app/store/apislice";
@@ -18,6 +19,7 @@ interface AddArticleProps {
 interface data {
   title: string;
   content: string;
+  category: string;
   user: string;
   tags: string[];
   image: string;
@@ -27,6 +29,7 @@ const AddArticle = ({ setAddArticle }: AddArticleProps) => {
   const [inputValue, setInputValue] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const { data: user } = useGetMeQuery();
+  const { data: cats } = useGetAllCatsQuery();
 
   // Handle adding new tags
   const addTag = (event: KeyboardEvent<HTMLInputElement>) => {
@@ -73,7 +76,11 @@ const AddArticle = ({ setAddArticle }: AddArticleProps) => {
   };
 
   //add article
-  const { handleSubmit, register } = useForm<data>();
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm<data>();
   const [addArticle, { isLoading: loadingAddArticle }] =
     useAddArticleMutation();
   const [uploadImage, { isLoading: loadingUploadImage }] =
@@ -106,6 +113,7 @@ const AddArticle = ({ setAddArticle }: AddArticleProps) => {
     if (user) {
       const body = {
         title: data.title,
+        category: data.category,
         content: data.content,
         tags, // يجب أن تكون tags معرّفة مسبقًا
         user: user?.documentId, // أو أي مفتاح يمثل ID المستخدم
@@ -183,7 +191,7 @@ const AddArticle = ({ setAddArticle }: AddArticleProps) => {
                       Title
                     </label>
                     <input
-                      {...register("title")}
+                      {...register("title", { required: "Title is required" })}
                       className=" mt-2 font-medium h-[34px] pl-3 shadow-md bg-lightGray border-secondaryDark border-l-2  focus:border-2 transition-all ease-in-out duration-75 w-full text-primaryDark placeholder:text-[14px] placeholder:font-medium placeholder:text-secondaryDark outline-none rounded-lg"
                       type="text"
                       placeholder="Title of article"
@@ -198,7 +206,9 @@ const AddArticle = ({ setAddArticle }: AddArticleProps) => {
                       Content
                     </label>
                     <textarea
-                      {...register("content")}
+                      {...register("content", {
+                        required: "Content is required",
+                      })}
                       className=" pt-3 mt-2 font-medium h-[134px] pl-3 shadow-md bg-lightGray border-secondaryDark  border-l-2  focus:border-2 transition-all ease-in-out duration-75 w-full text-primaryDark placeholder:text-[14px] placeholder:font-medium placeholder:text-secondaryDark outline-none rounded-lg"
                       placeholder="Content of article"
                       id="content"
@@ -206,16 +216,24 @@ const AddArticle = ({ setAddArticle }: AddArticleProps) => {
                   </div>
                   <div className="">
                     <select
+                      {...register("category", {
+                        required: "Category is required",
+                      })}
                       className="  mt-2 font-medium h-[34px] pl-3 shadow-md bg-lightGray border-secondaryDark border-l-2  focus:border-2 transition-all ease-in-out duration-75 w-full text-primaryDark placeholder:text-[14px] placeholder:font-medium placeholder:text-secondaryDark outline-none rounded-lg"
                       title="category"
                     >
-                      <option value="">Category</option>
-                      <option value="Programming" className=" text-primaryDark">
-                        Programming
+                      <option value="" selected disabled>
+                        Category
                       </option>
-                      <option value="Political" className=" text-primaryDark">
-                        Political
-                      </option>
+                      {cats?.data.map((cat) => (
+                        <option
+                          key={cat.documentId}
+                          value={cat.documentId}
+                          className=" text-primaryDark"
+                        >
+                          {cat.name}
+                        </option>
+                      ))}
                     </select>
                   </div>
                   <div className=" mt-4">
@@ -309,6 +327,21 @@ const AddArticle = ({ setAddArticle }: AddArticleProps) => {
                       >
                         Add
                       </button>
+                      {errors.title && (
+                        <p className=" text-[14px] font-medium text-orange-700">
+                          {errors.title.message}
+                        </p>
+                      )}
+                      {errors.content && (
+                        <p className=" text-[14px] font-medium text-orange-700">
+                          {errors.content.message}
+                        </p>
+                      )}
+                      {errors.category && (
+                        <p className=" text-[14px] font-medium text-orange-700">
+                          {errors.category.message}
+                        </p>
+                      )}
                     </>
                   )}
                 </div>

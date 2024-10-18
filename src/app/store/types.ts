@@ -283,3 +283,18 @@ export interface allreviewsByUser {
   data: allreviewsByUserData[];
   meta: getAllCatsMeta;
 }
+
+export interface LoginResponse {
+  jwt: string;
+  user: {
+    id: number;
+    username: string;
+    email: string;
+    // Add other user fields as needed
+  };
+}
+
+export interface LoginRequest {
+  identifier: string;
+  password: string;
+}

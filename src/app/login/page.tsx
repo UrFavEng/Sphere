@@ -1,9 +1,28 @@
 "use client";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useState } from "react";
+import { useLoginMutation } from "../store/apislice";
+import Link from "next/link";
+import { PulseLoader } from "react-spinners";
 
 const LogIn = () => {
   const router = useRouter();
+  const [identifier, setIdentifier] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState<boolean>();
+  const [login, { data, error, isLoading }] = useLoginMutation();
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const response = await login({ identifier, password }).unwrap();
+      console.log("Login successful:", response);
+      localStorage.setItem("JWTSphere", response.jwt);
+      router.push("/");
+    } catch (err) {
+      console.error("Login failed:", err);
+    }
+  };
 
   return (
     <>
@@ -36,7 +55,7 @@ const LogIn = () => {
         <div className=" flex flex-col items-center justify-center py-6 px-1 md:px-4">
           <div className="grid lg:grid-cols-2 items-center  lg:gap-16 xl:gap-4  sm:w-[95%] xl:w-[85%] mt-[60px]">
             <div className="border order-2 lg:order-1 bg-lightGraySec border-gray-300 rounded-lg py-[14px] px-[14px] sm:p-6 w-[94%] lg:mt-4 md:mt-auto   mb-12 lg:mb-0 mx-auto lg:w-[90%] xl:w-[65%] shadow-lg max-md:mx-auto">
-              <form className="space-y-4 ">
+              <form className="space-y-4" onSubmit={handleLogin}>
                 <div className="mb-4 sm:mb-8">
                   <h3 className="text-primaryDark text-[22px] sm:text-3xl font-extrabold">
                     Sign in
@@ -53,7 +72,9 @@ const LogIn = () => {
                   </label>
                   <div className="relative flex items-center">
                     <input
-                      name="username"
+                      id="identifier"
+                      value={identifier}
+                      onChange={(e) => setIdentifier(e.target.value)}
                       type="text"
                       required
                       className="w-full text-sm outline-none focus:border-secondaryGreen focus:border-[1.5px] text-gray-800 shadow-lg bg-lightGray placeholder:text-primaryDark border-l-secondaryGreen border-l-[1.5px] px-4 py-3 rounded-lg "
@@ -85,13 +106,16 @@ const LogIn = () => {
                   </label>
                   <div className="relative flex items-center">
                     <input
-                      name="password"
-                      type="password"
+                      type={showPassword ? "text" : "password"}
                       required
+                      id="password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
                       className="w-full text-sm outline-none focus:border-secondaryGreen focus:border-[1.5px] text-gray-800 shadow-lg bg-lightGray placeholder:text-primaryDark border-l-secondaryGreen border-l-[1.5px] px-4 py-3 rounded-lg "
                       placeholder="Enter password"
                     />
                     <svg
+                      onClick={() => setShowPassword(true)}
                       xmlns="http://www.w3.org/2000/svg"
                       fill="#fafcf5"
                       stroke="#bbb"
@@ -118,19 +142,38 @@ const LogIn = () => {
                 </div>
 
                 <div className="sm:!mt-8">
-                  <button
-                    type="button"
-                    className="w-full shadow-xl py-3 px-4 tracking-wide rounded-lg text-lightGraySec  bg-secondaryDark hover:text-primaryDark hover:bg-secondaryGreen transition-all ease-in-out text-[18px] font-semibold outline-none"
-                  >
-                    Log in
-                  </button>
+                  {isLoading ? (
+                    <p className="text-center">
+                      {" "}
+                      <PulseLoader color="#2F3E46" size={12} />
+                    </p>
+                  ) : (
+                    <>
+                      {" "}
+                      <button
+                        type="submit"
+                        className="w-full shadow-xl py-3 px-4 tracking-wide rounded-lg text-lightGraySec  bg-secondaryDark hover:text-primaryDark hover:bg-secondaryGreen transition-all ease-in-out text-[18px] font-semibold outline-none"
+                      >
+                        Log in
+                      </button>
+                    </>
+                  )}
+
+                  {error && (
+                    <p className=" font-bold text-[14px] text-orange-700  ">
+                      Email or password is Invalid
+                    </p>
+                  )}
                 </div>
 
                 <p className="text-sm sm:!mt-8 text-center text-gray-800">
                   Don't have an account ?{" "}
-                  <a className=" cursor-pointer text-secondaryDark font-semibold hover:underline ml-1 whitespace-nowrap">
+                  <Link
+                    href={"/signup"}
+                    className=" cursor-pointer text-secondaryDark font-semibold hover:underline ml-1 whitespace-nowrap"
+                  >
                     Register here
-                  </a>
+                  </Link>
                 </p>
               </form>
             </div>
@@ -144,7 +187,7 @@ const LogIn = () => {
           </div>
         </div>
       </div>
-      <footer className="bg-lightGraySec shadow-xl ">
+      {/* <footer className="bg-lightGraySec shadow-xl ">
         <div className="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 lg:px-8">
           <div className="sm:flex sm:items-center sm:justify-between">
             <div className="flex justify-center text-primaryDark sm:justify-start">
@@ -178,7 +221,7 @@ const LogIn = () => {
             </p>
           </div>
         </div>
-      </footer>
+      </footer> */}
     </>
   );
 };

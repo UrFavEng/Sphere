@@ -143,8 +143,11 @@ const ProfileCard = ({ setSection }: ProfileCardProps) => {
           >
             ({data?.reviews && data?.reviews.length / 2}) Reviews
           </p>
-          <p className="text-[14px] cursor-pointer font-medium text-primaryDark hover:text-secondaryGreen transition-all ease-in-out">
-            ({data?.reviews && data?.reviews.length / 2}) Comments
+          <p
+            onClick={() => setSection("Comments")}
+            className="text-[14px] cursor-pointer font-medium text-primaryDark hover:text-secondaryGreen transition-all ease-in-out"
+          >
+            ({data?.reviews && data?.comments.length / 2}) Comments
           </p>
         </div>{" "}
         <hr className="border-gray-200  dark:border-gray-700 my-2" />

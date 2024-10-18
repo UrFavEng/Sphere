@@ -1,4 +1,5 @@
 import {
+  useGetAllCatsQuery,
   useUpdateArticleContetMutation,
   useUploadImageMutation,
 } from "@/app/store/apislice";
@@ -19,8 +20,11 @@ interface UpdateArticleProps {
 interface data {
   title: string;
   content: string;
+  category: string;
 }
 const UpdateArticle = ({ setEditArticle, art }: UpdateArticleProps) => {
+  const { data: cats } = useGetAllCatsQuery();
+
   const [tags, setTags] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -36,6 +40,7 @@ const UpdateArticle = ({ setEditArticle, art }: UpdateArticleProps) => {
       } // قم بتعيين القيم المبدئية
       setValue("title", art.title);
       setValue("content", art.content);
+      setValue("category", art?.category?.documentId);
       setSelectedImage(art?.image?.url);
     }
   }, [art, setValue]);
@@ -78,6 +83,7 @@ const UpdateArticle = ({ setEditArticle, art }: UpdateArticleProps) => {
       title: data.title,
       content: data.content,
       tags,
+      category: data.category,
     };
     updateArticleContent({ articleId: art.documentId, body })
       .unwrap()
@@ -208,16 +214,22 @@ const UpdateArticle = ({ setEditArticle, art }: UpdateArticleProps) => {
                   </div>
                   <div className="">
                     <select
+                      {...register("category")}
                       className="  mt-2 font-medium h-[34px] pl-3 shadow-md bg-lightGray border-secondaryDark border-l-2  focus:border-2 transition-all ease-in-out duration-75 w-full text-primaryDark placeholder:text-[14px] placeholder:font-medium placeholder:text-secondaryDark outline-none rounded-lg"
                       title="category"
                     >
-                      <option value="">Category</option>
-                      <option value="Programming" className=" text-primaryDark">
-                        Programming
+                      <option value="" selected disabled>
+                        Category
                       </option>
-                      <option value="Political" className=" text-primaryDark">
-                        Political
-                      </option>
+                      {cats?.data.map((cat) => (
+                        <option
+                          key={cat.documentId}
+                          value={cat.documentId}
+                          className=" text-primaryDark"
+                        >
+                          {cat.name}
+                        </option>
+                      ))}
                     </select>
                   </div>
                   <div className=" mt-4">
