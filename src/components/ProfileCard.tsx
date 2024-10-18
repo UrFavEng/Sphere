@@ -13,6 +13,7 @@ const ProfileCard = ({ setSection }: ProfileCardProps) => {
   const [editPropfile, setEditPropfile] = useState<boolean>();
 
   const { data } = useGetMeQuery();
+  console.log(data);
   const handleLogout = () => {
     localStorage.removeItem("JWTSphere");
 
@@ -67,8 +68,11 @@ const ProfileCard = ({ setSection }: ProfileCardProps) => {
             >
               ({data?.reviews && data?.reviews.length / 2}) Reviews
             </p>
-            <p className="text-[14px] cursor-pointer font-medium text-primaryDark hover:text-secondaryGreen transition-all ease-in-out">
-              ({data?.reviews && data?.reviews.length / 2}) Comments
+            <p
+              onClick={() => setSection("Comments")}
+              className="text-[14px] cursor-pointer font-medium text-primaryDark hover:text-secondaryGreen transition-all ease-in-out"
+            >
+              ({data?.comments && data?.comments.length / 2}) Comments
             </p>
           </div>{" "}
           <hr className="border-gray-200  dark:border-gray-700 my-2" />

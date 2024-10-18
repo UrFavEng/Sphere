@@ -7,7 +7,7 @@ import Article from "./Article";
 
 const HomeArticle = () => {
   const { data, error } = useGetAllArticlesQuery();
-  console.log(data, error);
+  console.log("==>>", data, error);
   const [addArticle, setAddArticle] = useState<boolean>(false);
   return (
     <div className="w-full sm:col-span-2 justify-self-center  ">

@@ -65,6 +65,7 @@ export interface GetAllArticlesReview {
   locale: string | null;
   user: GetAllArticlesUser;
   article: GetAllArticlesArticle;
+  content?: string;
 }
 
 interface GetAllArticlesContent {
@@ -234,6 +235,7 @@ export interface getmeRES {
   expertise: string;
   publishedAt: string;
   reviews: GetAllArticlesReview[];
+  comments: GetAllArticlesReview[];
   updatedAt: string;
   username: string;
 }

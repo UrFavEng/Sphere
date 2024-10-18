@@ -136,6 +136,14 @@ const AddArticle = ({ setAddArticle }: AddArticleProps) => {
         });
         console.log("Error creating article:", error);
       }
+    } else {
+      Swal.fire({
+        position: "center",
+        icon: "info",
+        title: "You must login first",
+        timer: 1500,
+        showConfirmButton: false,
+      });
     }
   };
 

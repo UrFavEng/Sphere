@@ -20,6 +20,7 @@ interface ArticleProps {
   art: GetAllArticlesArticle;
 }
 const Article = ({ art }: ArticleProps) => {
+  console.log(art);
   const { data } = useGetMeQuery();
   const [deleteArticle, setDeleteArticle] = useState<boolean>(false);
   const [editArticle, setEditArticle] = useState<boolean>();
@@ -121,7 +122,7 @@ const Article = ({ art }: ArticleProps) => {
             onClick={() => setReviewsArticle(true)}
             className=" text-primaryDark flex items-center gap-1 mt-[1px]  w-fit justify-self-center font-medium text-[14px]"
           >
-            {art.reviews.length} Review{" "}
+            {art?.reviews?.length} Review{" "}
             <Star size={16} className="  mt-[1px]" />
           </button>
           <button
@@ -141,7 +142,11 @@ const Article = ({ art }: ArticleProps) => {
         />
       )}
       {commentsArticle && (
-        <CommentArticle setCommentsArticle={setCommentsArticle} />
+        <CommentArticle
+          setCommentsArticle={setCommentsArticle}
+          comments={art.comments}
+          idArt={art.documentId}
+        />
       )}
       {editArticle && (
         <UpdateArticle setEditArticle={setEditArticle} art={art} />

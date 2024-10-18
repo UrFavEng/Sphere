@@ -145,7 +145,7 @@ const ReviewArticle = ({
               Reviews
             </h3>
             <div className=" mt-4">
-              {reviews.map((review) => (
+              {reviews?.map((review) => (
                 <div
                   key={review.documentId}
                   className=" bg-lightGray my-2 rounded-lg  py-2 px-3"

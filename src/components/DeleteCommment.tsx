@@ -1,18 +1,21 @@
-import { useDeleteArticleMutation } from "@/app/store/apislice";
+import { useDeleteCommentMutation } from "@/app/store/apislice";
 import React from "react";
 import { PulseLoader } from "react-spinners";
 import Swal from "sweetalert2";
-interface PropsDeleteArticle {
-  setDeleteArticle: (val: boolean) => void;
-  id: string;
+interface DeleteCommmentProps {
+  setDeleteComment: (val: boolean) => void;
+  idComment: string;
 }
-const DeleteArticle = ({ setDeleteArticle, id }: PropsDeleteArticle) => {
-  const [deleteArticle, { isLoading: loadingDeleteArticle }] =
-    useDeleteArticleMutation();
+const DeleteCommment = ({
+  setDeleteComment,
+  idComment,
+}: DeleteCommmentProps) => {
+  const [deleteComment, { isLoading: loadingDeleteComment }] =
+    useDeleteCommentMutation();
 
   const handleDelete = async () => {
     try {
-      await deleteArticle(id).unwrap();
+      await deleteComment(idComment).unwrap();
       Swal.fire({
         position: "center",
         icon: "success",
@@ -40,7 +43,7 @@ const DeleteArticle = ({ setDeleteArticle, id }: PropsDeleteArticle) => {
         aria-modal="true"
       >
         <div
-          onClick={() => setDeleteArticle(false)}
+          onClick={() => setDeleteComment(false)}
           className=" cursor-default absolute h-[100%] w-[100%] top-0 left-0 bg-[#00000032]"
         ></div>
         <div className="popup px-8 pt-6 pb-4 relative z-30 bg-lightGraySec shadow-xl  rounded-xl w-[380px]  h-fit border-2 border-t-0 border-r-0 border-primaryDark">
@@ -48,7 +51,7 @@ const DeleteArticle = ({ setDeleteArticle, id }: PropsDeleteArticle) => {
             Delete Article
           </h3>
           <div className=" flex items-center gap-2 mt-6">
-            {loadingDeleteArticle ? (
+            {loadingDeleteComment ? (
               <>
                 {" "}
                 <PulseLoader color="#2F3E46" size={10} />
@@ -56,7 +59,7 @@ const DeleteArticle = ({ setDeleteArticle, id }: PropsDeleteArticle) => {
             ) : (
               <>
                 <button
-                  onClick={() => setDeleteArticle(false)}
+                  onClick={() => setDeleteComment(false)}
                   className="text-lightGraySec py-1 px-3 rounded-lg transition-all ease-in-out hover:scale-105 hover:shadow-xl  bg-primaryDark"
                 >
                   Cancle
@@ -88,4 +91,4 @@ const DeleteArticle = ({ setDeleteArticle, id }: PropsDeleteArticle) => {
   );
 };
 
-export default DeleteArticle;
+export default DeleteCommment;

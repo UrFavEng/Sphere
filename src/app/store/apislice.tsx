@@ -41,7 +41,7 @@ export const apiSlice = createApi({
     }),
     getMe: builder.query<getmeRES, void>({
       query: () => ({
-        url: "users/me?populate[image]=*&populate[articles][populate][image]=*&populate[articles][populate][user][populate]=image&populate[articles][populate][reviews][populate][user][populate]=image&populate[articles][populate][category]=*&populate[reviews][populate][article][populate][image]=*&populate[reviews][populate][article][populate][user][populate]=image&populate[reviews][populate][user][populate]=image",
+        url: "users/me?populate[image]=*&populate[articles][populate][image]=*&populate[articles][populate][user][populate][image]=*&populate[articles][populate][reviews][populate][user][populate][image]=*&populate[articles][populate][comments][populate][user][populate][image]=*&populate[articles][populate][reviews][populate][article][populate][image]=*&populate[reviews][populate][user][populate][image]=*&populate[reviews][populate][article][populate][image]=*&populate[comments][populate][user][populate][image]=*&populate[comments][populate][article][populate][image]=*&populate[comments][populate][article][populate][user][populate][image]=*",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("JWTSphere")}`,
         },
@@ -50,7 +50,7 @@ export const apiSlice = createApi({
     }),
     getAllArticles: builder.query<GetAllArticles, void>({
       query: () =>
-        `articles?populate[image]=*&populate[reviews][populate]=user.image&populate[user][populate]=image&populate[category][populate]=*&populate[comments][populate]=users_permissions_user.image&sort=createdAt:desc`,
+        `articles?populate[image]=*&populate[reviews][populate]=user.image&populate[user][populate]=image&populate[category][populate]=*&populate[comments][populate]=user.image&sort=createdAt:desc`,
       providesTags: ["article"],
     }),
     // getAllReviewsByUser: builder.query<allreviewsByUser, string | undefined>({
@@ -172,6 +172,38 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: ["dataUser"],
     }),
+    addComment: builder.mutation({
+      query: (body) => ({
+        url: `comments`,
+        method: "POST",
+        body: { data: body },
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("JWTSphere")}`,
+        },
+      }),
+      invalidatesTags: ["dataUser", "article"],
+    }),
+    updateComment: builder.mutation({
+      query: ({ body, id }) => ({
+        url: `comments/${id}`,
+        method: "PUT",
+        body: { data: body },
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("JWTSphere")}`,
+        },
+      }),
+      invalidatesTags: ["dataUser", "article"],
+    }),
+    deleteComment: builder.mutation<void, string>({
+      query: (id) => ({
+        url: `comments/${id}`,
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("JWTSphere")}`,
+        },
+      }),
+      invalidatesTags: ["dataUser", "article"],
+    }),
   }),
 });
 
@@ -196,4 +228,7 @@ export const {
   useAddReviewMutation,
   useDeleteReviewMutation,
   useUpdateReviewMutation,
+  useAddCommentMutation,
+  useDeleteCommentMutation,
+  useUpdateCommentMutation,
 } = apiSlice;
