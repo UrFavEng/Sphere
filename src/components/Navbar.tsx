@@ -146,10 +146,13 @@ const Navbar = () => {
             Article
             <Newspaper size={16} className=" " />
           </Link>
-          <span className=" text-[14px] lg:text-[18px] font-medium text-primaryDark hover:text-secondaryGreen transition-all ease-in-out cursor-pointer flex flex-row-reverse items-center gap-1 ">
+          <Link
+            href={"/videos"}
+            className=" text-[14px] lg:text-[18px] font-medium text-primaryDark hover:text-secondaryGreen transition-all ease-in-out cursor-pointer flex flex-row-reverse items-center gap-1 "
+          >
             Video
             <TvMinimalPlay size={16} className=" " />
-          </span>
+          </Link>
           <span className=" text-[14px] lg:text-[18px] font-medium text-primaryDark hover:text-secondaryGreen transition-all ease-in-out cursor-pointer flex flex-row-reverse items-center gap-1 ">
             Audio
             <AudioLines size={16} className=" " />
@@ -284,9 +287,12 @@ const Navbar = () => {
                       </Link>
                     </li>
                     <li>
-                      <a className=" font-semibold text-[20px] hover:text-lightGraySec">
+                      <Link
+                        href={"/videos"}
+                        className=" font-semibold text-[20px] hover:text-lightGraySec"
+                      >
                         Videos
-                      </a>
+                      </Link>
                     </li>
                     <li>
                       <a className=" font-semibold text-[20px] hover:text-lightGraySec">
@@ -469,10 +475,13 @@ const Navbar = () => {
                 Article
                 <Newspaper size={16} className=" " />
               </Link>
-              <span className=" text-[14px] lg:text-[18px] font-medium text-primaryDark hover:text-secondaryGreen transition-all ease-in-out cursor-pointer flex flex-row-reverse items-center gap-1 ">
+              <Link
+                href={"/videos"}
+                className=" text-[14px] lg:text-[18px] font-medium text-primaryDark hover:text-secondaryGreen transition-all ease-in-out cursor-pointer flex flex-row-reverse items-center gap-1 "
+              >
                 Video
                 <TvMinimalPlay size={16} className=" " />
-              </span>
+              </Link>
               <span className=" text-[14px] lg:text-[18px] font-medium text-primaryDark hover:text-secondaryGreen transition-all ease-in-out cursor-pointer flex flex-row-reverse items-center gap-1 ">
                 Audio
                 <AudioLines size={16} className=" " />

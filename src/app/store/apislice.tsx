@@ -8,6 +8,7 @@ import {
   LoginResponse,
   SignupREQ,
   SignupRES,
+  VideoResponse,
 } from "./types";
 
 export const apiSlice = createApi({
@@ -15,7 +16,7 @@ export const apiSlice = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:1337/api/",
   }),
-  tagTypes: ["dataUser", "article"],
+  tagTypes: ["dataUser", "article", "video"],
   endpoints: (builder) => ({
     signUp: builder.mutation<SignupRES, SignupREQ>({
       query: (body) => ({
@@ -128,7 +129,7 @@ export const apiSlice = createApi({
           Authorization: `Bearer ${localStorage.getItem("JWTSphere")}`,
         },
       }),
-      invalidatesTags: ["dataUser", "article"],
+      invalidatesTags: ["dataUser", "article", "video"],
     }),
     deleteArticle: builder.mutation<void, string>({
       query: (id) => ({
@@ -148,7 +149,7 @@ export const apiSlice = createApi({
           Authorization: `Bearer ${localStorage.getItem("JWTSphere")}`,
         },
       }),
-      invalidatesTags: ["dataUser", "article"],
+      invalidatesTags: ["dataUser", "article", "video"],
     }),
     updateReview: builder.mutation({
       query: ({ body, id }) => ({
@@ -159,7 +160,7 @@ export const apiSlice = createApi({
           Authorization: `Bearer ${localStorage.getItem("JWTSphere")}`,
         },
       }),
-      invalidatesTags: ["dataUser", "article"],
+      invalidatesTags: ["dataUser", "article", "video"],
     }),
     updateArticleContet: builder.mutation({
       query: ({ articleId, body }) => ({
@@ -212,6 +213,14 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: ["dataUser", "article"],
     }),
+    getAllVideos: builder.query<VideoResponse, void>({
+      query: () =>
+        `videos?populate[poster]=*&populate[video]=*&populate[reviews][populate]=user.image&populate[user][populate]=image&populate[categoryvideo]=*&populate[comments][populate]=user.image&sort=createdAt:desc`,
+      providesTags: ["video"],
+    }),
+    getAllCatsVideo: builder.query<getAllCats, void>({
+      query: () => `categoryvideos`,
+    }),
   }),
 });
 
@@ -240,4 +249,6 @@ export const {
   useDeleteCommentMutation,
   useUpdateCommentMutation,
   useLoginMutation,
+  useGetAllVideosQuery,
+  useGetAllCatsVideoQuery,
 } = apiSlice;

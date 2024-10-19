@@ -1,5 +1,5 @@
 import { useGetMeQuery, useUpdateReviewMutation } from "@/app/store/apislice";
-import { GetAllArticlesReview } from "@/app/store/types";
+import { GetAllArticlesReview, ReviewVideo } from "@/app/store/types";
 import { Rating } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -7,7 +7,7 @@ import { PulseLoader } from "react-spinners";
 import Swal from "sweetalert2";
 interface EditReviewProps {
   setShowEdit: (val: boolean) => void;
-  review: GetAllArticlesReview;
+  review: GetAllArticlesReview | ReviewVideo;
 }
 interface data {
   comment: string;

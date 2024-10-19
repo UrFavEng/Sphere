@@ -7,6 +7,7 @@ import { Provider } from "react-redux";
 import { store } from "./store/store";
 import Navbar from "@/components/Navbar";
 import { usePathname } from "next/navigation"; // Import the usePathname hook
+import Footer from "@/components/Footer";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -36,11 +37,25 @@ export default function RootLayout({
     <Provider store={store}>
       <html lang="en">
         <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased  min-h-[100vh] bg-lightGray`}
+          className={`${geistSans.variable} ${geistMono.variable} flex justify-between items-center flex-col antialiased  min-h-[100vh] bg-lightGray`}
         >
-          {" "}
-          {!hideNavbarRoutes.includes(pathname) && <Navbar />}
-          {children}
+          <div className=" w-full">
+            {" "}
+            {!hideNavbarRoutes.includes(pathname) && (
+              <div className=" w-full">
+                {" "}
+                <Navbar />
+              </div>
+            )}
+            <div className=" w-full"> {children}</div>{" "}
+          </div>
+
+          {!hideNavbarRoutes.includes(pathname) && (
+            <div className=" w-full">
+              {" "}
+              <Footer />
+            </div>
+          )}
         </body>
       </html>
     </Provider>

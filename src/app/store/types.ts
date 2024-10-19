@@ -298,3 +298,113 @@ export interface LoginRequest {
   identifier: string;
   password: string;
 }
+
+//-------video
+export interface VideoData {
+  poster: GetAllArticlesImage;
+  id: number;
+  documentId: string;
+  title: string;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+  locale: string | null;
+  content: string | null;
+  video: VideoFileData;
+  reviews: ReviewVideo[];
+  user: UserVideo;
+  categoryvideo: CategoryVideo;
+  comments: CommentVideo[];
+}
+
+interface VideoFileData {
+  id: number;
+  documentId: string;
+  name: string;
+  alternativeText: string | null;
+  caption: string | null;
+  width: number | null;
+  height: number | null;
+  formats: any | null; // يمكنك استبداله بنوع أكثر تحديدًا إذا كان لديك تفاصيل.
+  hash: string;
+  ext: string;
+  mime: string;
+  size: number;
+  url: string;
+  previewUrl: string;
+  provider: string;
+  provider_metadata: {
+    public_id: string;
+    resource_type: string;
+  };
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+  locale: string | null;
+}
+
+export interface ReviewVideo {
+  id: number;
+  documentId: string;
+  comment: string;
+  rating: number;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+  locale: string | null;
+  reviewed: string;
+  user: UserVideo;
+}
+
+interface UserVideo {
+  id: number;
+  documentId: string;
+  username: string;
+  email: string;
+  provider: string;
+  confirmed: boolean;
+  blocked: boolean;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+  locale: string | null;
+  bio: string | null;
+  expertise: string | null;
+  location: string | null;
+  image: GetAllArticlesImage | null;
+}
+
+interface CategoryVideo {
+  id: number;
+  documentId: string;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+  locale: string | null;
+}
+
+interface CommentVideo {
+  id: number;
+  documentId: string;
+  content: string;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+  locale: string | null;
+  commented: string;
+  user: UserVideo;
+}
+
+// النتيجة النهائية
+export interface VideoResponse {
+  data: VideoData[];
+  meta: {
+    pagination: {
+      page: number;
+      pageSize: number;
+      pageCount: number;
+      total: number;
+    };
+  };
+}

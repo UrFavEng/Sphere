@@ -91,7 +91,7 @@ const Article = ({ art }: ArticleProps) => {
           {art?.content && <> {art?.content}</>}
         </p>
         <div className="">
-          {art?.tags && art?.tags?.length && (
+          {art?.tags && art?.tags?.length > 0 && (
             <>
               {" "}
               <span className=" text-primaryGreen block w-[8%] mt-3 text-[16px] font-bold border-t-2 border-primaryDark">

@@ -64,7 +64,7 @@ export default function Dropdown() {
           {" "}
           <Link
             href={""}
-            className="flex text-lightGraySec rounded-lg shadow-lg py-2 px-3 bg-primaryDark items-center  mt- text-sm  transition-all duration-300 transform "
+            className="flex text-lightGraySec hover:text-primaryDark rounded-lg shadow-lg py-2 px-3 bg-primaryDark hover:bg-secondaryGreen items-center  mt- text-sm  transition-all duration-300 transform "
           >
             <Image
               width={36}

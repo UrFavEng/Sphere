@@ -763,10 +763,10 @@ const Profile = () => {
           </section>
         </div>
       </div>
-      <div className=" px-4 container mx-auto lg:px-0">
+      {/* <div className=" px-4 container mx-auto lg:px-0">
         {" "}
         <div className=" mb-4 border-b-primaryDark border-b-2 bg-lightGraySec w-full container mx-auto h-[40px] rounded-b-xl shadow-lg"></div>
-      </div>
+      </div> */}
       {addArticle && <AddArticle setAddArticle={setAddArticle} />}
       {editPropfile && (
         <EditProfile
