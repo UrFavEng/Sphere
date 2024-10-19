@@ -1,5 +1,9 @@
 "use client";
-import { useGetAllCatsQuery, useGetMeQuery } from "@/app/store/apislice";
+import {
+  useGetAllCatsQuery,
+  useGetAllCatsVideoQuery,
+  useGetMeQuery,
+} from "@/app/store/apislice";
 import {
   AudioLines,
   Menu,
@@ -23,8 +27,10 @@ const Navbar = () => {
     window.location.href = "/";
   };
   const pathname = usePathname(); // Get the current route
-  const hideNavbarRoutes = ["/profile"]; // List of routes where the Navbar should be hidden
+  const hideNavbarRoutes = ["/profile", "/videos"]; // List of routes where the Navbar should be hidden
   const { data } = useGetAllCatsQuery();
+  const { data: catsVid } = useGetAllCatsVideoQuery();
+  const hideNavbarCatVid = ["/videos"]; // List of routes where the Navbar should be hidden
   const { data: userData } = useGetMeQuery();
   // console.log(data, error);
   const router = useRouter();
@@ -493,6 +499,17 @@ const Navbar = () => {
       {!hideNavbarRoutes.includes(pathname) && (
         <div className="py-3 bg-lightGraySec md:hidden border-t-[1.5px]   overflow-y-auto whitespace-nowrap scroll-hidden">
           {data?.data.map((item) => (
+            <Link key={item.name} href={`/articles/${item.name}`}>
+              <span className="mx-4 capitalize text-primaryDark text-sm leading-5 transition-all ease-in-out duration-300 transform font-medium text-[12px] hover:underline md:my-0">
+                {item.name}
+              </span>
+            </Link>
+          ))}
+        </div>
+      )}
+      {hideNavbarCatVid.includes(pathname) && (
+        <div className="py-3 bg-lightGraySec md:hidden border-t-[1.5px]   overflow-y-auto whitespace-nowrap scroll-hidden">
+          {catsVid?.data.map((item) => (
             <Link key={item.name} href={`/articles/${item.name}`}>
               <span className="mx-4 capitalize text-primaryDark text-sm leading-5 transition-all ease-in-out duration-300 transform font-medium text-[12px] hover:underline md:my-0">
                 {item.name}

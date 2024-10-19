@@ -4,6 +4,7 @@ import {
   GetAllArticles,
   getAllCats,
   getmeRES,
+  GetMeVideos,
   LoginRequest,
   LoginResponse,
   SignupREQ,
@@ -51,6 +52,15 @@ export const apiSlice = createApi({
     getMe: builder.query<getmeRES, void>({
       query: () => ({
         url: "users/me?populate[image]=*&populate[articles][populate][image]=*&populate[articles][populate][category]=*&populate[articles][populate][user][populate][image]=*&populate[articles][populate][reviews][populate][user][populate][image]=*&populate[articles][populate][comments][populate][user][populate][image]=*&populate[articles][populate][reviews][populate][article][populate][image]=*&populate[reviews][populate][user][populate][image]=*&populate[reviews][populate][article][populate][image]=*&populate[comments][populate][user][populate][image]=*&populate[comments][populate][article][populate][image]=*&populate[comments][populate][article][populate][user][populate][image]=*",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("JWTSphere")}`,
+        },
+      }),
+      providesTags: ["dataUser"],
+    }),
+    getMeVideos: builder.query<GetMeVideos, void>({
+      query: () => ({
+        url: "users/me?populate[videos]=*&populate[videos][populate][poster]=*&populate[videos][populate][categoryvideo]=*&populate[videos][populate][video]=*&populate[videos][populate][reviews][populate]=user.image&populate[videos][populate][comments][populate]=user.image",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("JWTSphere")}`,
         },
@@ -274,4 +284,5 @@ export const {
   useGetAllCatsVideoQuery,
   useAddVideoMutation,
   useUpdateVideoMutation,
+  useGetMeVideosQuery,
 } = apiSlice;

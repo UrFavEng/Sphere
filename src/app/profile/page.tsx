@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { useGetMeQuery } from "../store/apislice";
+import { useGetMeQuery, useGetMeVideosQuery } from "../store/apislice";
 import { getmeRES } from "../store/types";
 import Add from "@/components/Add";
 import AddArticle from "@/components/AddArticle";
@@ -15,6 +15,8 @@ import DeleteCommment from "@/components/DeleteCommment";
 import EditComment from "@/components/EditComment";
 import DeleteReview from "@/components/DeleteReview";
 import EditReview from "@/components/EditReview";
+import AddVideo from "@/components/AddVideo";
+import VideoPlayer from "@/components/Video";
 function formatDate(dateStr: string): string {
   const date = new Date(dateStr);
   const options: Intl.DateTimeFormatOptions = {
@@ -31,16 +33,18 @@ const Profile = () => {
   const [updateCommment, setUpdateComment] = useState(false);
   const [section, setSection] = useState<string>("Articles");
   const [addArticle, setAddArticle] = useState<boolean>();
-  const { data, error } = useGetMeQuery();
+  const [addVideo, setAddVideo] = useState<boolean>();
+  const { data } = useGetMeQuery();
   const [showMore, setShowMore] = useState<boolean>(false);
   const [editPropfile, setEditPropfile] = useState<boolean>();
-  console.log("====================>>", data, error);
+  const { data: videos, error } = useGetMeVideosQuery();
+  console.log("==>>--|--<<==", videos, error);
   return (
     <div className=" pb-4">
       <div className="content-start px-4 xl:px-0 container mx-auto  py-6 grid gap-4 md:gap-0  md:grid-cols-3 xl:grid-cols-4 ">
         <ProfileCard setSection={setSection} />
         <div className="w-full col-span-2 justify-self-center md:block hidden ">
-          <Add setAddArticle={setAddArticle} />
+          <Add setAddArticle={setAddArticle} setAddVideo={setAddVideo} />
           <section className="section">
             {" "}
             {section === "Articles" && (
@@ -51,6 +55,19 @@ const Profile = () => {
                     !art.publishedAt && (
                       <div key={art.documentId} className="w-full">
                         <Article art={art} />
+                      </div>
+                    )
+                )}
+              </>
+            )}
+            {section === "Videos" && (
+              <>
+                {" "}
+                {videos?.videos?.map(
+                  (vid) =>
+                    !vid.publishedAt && (
+                      <div key={vid.documentId} className="w-full">
+                        <VideoPlayer video={vid} />
                       </div>
                     )
                 )}
@@ -403,7 +420,7 @@ const Profile = () => {
           <InfoUser />
         </div>
         <div className="w-full md:col-span-2 justify-self-center md:hidden block ">
-          <Add setAddArticle={setAddArticle} />
+          <Add setAddArticle={setAddArticle} setAddVideo={setAddVideo} />
           <section className="section">
             {section === "Articles" && (
               <>
@@ -767,6 +784,7 @@ const Profile = () => {
         <div className=" mb-4 border-b-primaryDark border-b-2 bg-lightGraySec w-full container mx-auto h-[40px] rounded-b-xl shadow-lg"></div>
       </div> */}
       {addArticle && <AddArticle setAddArticle={setAddArticle} />}
+      {addVideo && <AddVideo setAddVideo={setAddVideo} />}
       {editPropfile && (
         <EditProfile
           dataUser={data as getmeRES}

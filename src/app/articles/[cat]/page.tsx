@@ -2,6 +2,7 @@
 import { useGetAllArticlesByCatQuery } from "@/app/store/apislice";
 import Add from "@/components/Add";
 import AddArticle from "@/components/AddArticle";
+import AddVideo from "@/components/AddVideo";
 import ArticlesCatHome from "@/components/ArticlesCat";
 import CategoryArticle from "@/components/CategoryArticle";
 import QuickLinks from "@/components/QuickLinks";
@@ -13,6 +14,7 @@ const ArticlesCat = ({ params }: ArticlesCatProps) => {
   const { data, error } = useGetAllArticlesByCatQuery(params.cat);
   console.log(data, error);
   const [addArticle, setAddArticle] = useState<boolean>(false);
+  const [addVideo, setAddVideo] = useState<boolean>(false);
 
   return (
     <>
@@ -20,13 +22,14 @@ const ArticlesCat = ({ params }: ArticlesCatProps) => {
         <CategoryArticle />
         <div className="w-full col-span-2 justify-self-center  ">
           {" "}
-          <Add setAddArticle={setAddArticle} />{" "}
+          <Add setAddArticle={setAddArticle} setAddVideo={setAddVideo} />{" "}
           {data && <ArticlesCatHome data={data} />}
         </div>
         <div className="justify-self-end hidden xl:block px-4 h-fit    py-4 w-[85%]  rounded-lg shadow-xl bg-lightGraySec">
           <QuickLinks />
         </div>
-        {addArticle && <AddArticle setAddArticle={setAddArticle} />}
+        {addArticle && <AddArticle setAddArticle={setAddArticle} />}{" "}
+        {addVideo && <AddVideo setAddVideo={setAddVideo} />}
       </div>
     </>
   );
