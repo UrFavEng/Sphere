@@ -221,6 +221,28 @@ export const apiSlice = createApi({
     getAllCatsVideo: builder.query<getAllCats, void>({
       query: () => `categoryvideos`,
     }),
+    addVideo: builder.mutation({
+      query: (body) => ({
+        url: `videos`,
+        method: "POST",
+        body: { data: body },
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("JWTSphere")}`,
+        },
+      }),
+      invalidatesTags: ["dataUser", "video"],
+    }),
+    updateVideo: builder.mutation({
+      query: ({ VideoId, body }) => ({
+        url: `videos/${VideoId}`,
+        method: "PUT",
+        body: { data: body },
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("JWTSphere")}`,
+        },
+      }),
+      invalidatesTags: ["dataUser", "video"],
+    }),
   }),
 });
 
@@ -235,7 +257,6 @@ export const {
   useGetAllArticlesByCatQuery,
   useGetAllArticlesByTitleQuery,
   useGetMeQuery,
-  // useGetAllReviewsByUserQuery,
   useUpdataUserMutation,
   useUploadUserImageMutation,
   useUpdateUserMutation,
@@ -251,4 +272,6 @@ export const {
   useLoginMutation,
   useGetAllVideosQuery,
   useGetAllCatsVideoQuery,
+  useAddVideoMutation,
+  useUpdateVideoMutation,
 } = apiSlice;

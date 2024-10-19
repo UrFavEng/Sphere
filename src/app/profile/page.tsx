@@ -404,7 +404,6 @@ const Profile = () => {
         </div>
         <div className="w-full md:col-span-2 justify-self-center md:hidden block ">
           <Add setAddArticle={setAddArticle} />
-
           <section className="section">
             {section === "Articles" && (
               <>

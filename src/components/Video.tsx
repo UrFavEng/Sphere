@@ -5,6 +5,7 @@ import Image from "next/image";
 import React, { useState } from "react";
 import ReviewsVideo from "./ReviewsVideo";
 import CommentsVideo from "./CommentsVideo";
+import UpdateVideo from "./UpdateVideo";
 
 interface VideoPlayerProps {
   video: VideoData;
@@ -89,7 +90,7 @@ const VideoPlayer = ({ video }: VideoPlayerProps) => {
           <div className="w-full m-auto rounded-xl overflow-hidden">
             <video
               src={video?.video.url} // استخدام الفيديو الأصلي
-              poster={video.poster.url}
+              poster={video?.poster?.url}
               controls
               className=" w-full h-auto  cursor-pointer"
             >
@@ -128,6 +129,7 @@ const VideoPlayer = ({ video }: VideoPlayerProps) => {
           idVideo={video.documentId}
         />
       )}
+      {editVideo && <UpdateVideo setUpdateVideo={setEditVideo} vid={video} />}
     </div>
   );
 };

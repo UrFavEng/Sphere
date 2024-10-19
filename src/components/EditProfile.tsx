@@ -94,8 +94,11 @@ const EditProfile = ({ setEditPropfile, dataUser }: EditProfileProps) => {
     if (dataUser) {
       setValue("username", dataUser.username);
       setValue("email", dataUser.email);
+      setValue("bio", dataUser.bio);
+      setValue("expertise", dataUser.expertise);
+      setValue("location", dataUser.location);
     }
-  }, [dataUser, setValue]);
+  }, [dataUser]);
   const [selectedImage, setSelectedImage] = useState(
     dataUser?.image?.formats?.large?.url
       ? dataUser?.image?.formats?.large?.url
