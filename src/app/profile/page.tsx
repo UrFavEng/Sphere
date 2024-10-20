@@ -17,6 +17,7 @@ import DeleteReview from "@/components/DeleteReview";
 import EditReview from "@/components/EditReview";
 import AddVideo from "@/components/AddVideo";
 import VideoPlayer from "@/components/Video";
+import AddAudio from "@/components/AddAudio";
 function formatDate(dateStr: string): string {
   const date = new Date(dateStr);
   const options: Intl.DateTimeFormatOptions = {
@@ -38,13 +39,19 @@ const Profile = () => {
   const [showMore, setShowMore] = useState<boolean>(false);
   const [editPropfile, setEditPropfile] = useState<boolean>();
   const { data: videos, error } = useGetMeVideosQuery();
+  const [addAudio, setAddAudio] = useState<boolean>(false);
+
   console.log("==>>--|--<<==", videos?.videos, error);
   return (
     <div className=" pb-4">
       <div className="content-start px-4 xl:px-0 container mx-auto  py-6 grid gap-4 md:gap-0  md:grid-cols-3 xl:grid-cols-4 ">
         <ProfileCard setSection={setSection} />
         <div className="w-full col-span-2 justify-self-center md:block hidden ">
-          <Add setAddArticle={setAddArticle} setAddVideo={setAddVideo} />
+          <Add
+            setAddArticle={setAddArticle}
+            setAddVideo={setAddVideo}
+            setAddAudio={setAddAudio}
+          />
           <section className="section">
             {" "}
             {section === "Articles" && (
@@ -420,7 +427,11 @@ const Profile = () => {
           <InfoUser />
         </div>
         <div className="w-full md:col-span-2 justify-self-center md:hidden block ">
-          <Add setAddArticle={setAddArticle} setAddVideo={setAddVideo} />
+          <Add
+            setAddArticle={setAddArticle}
+            setAddVideo={setAddVideo}
+            setAddAudio={setAddAudio}
+          />
           <section className="section">
             {section === "Articles" && (
               <>
@@ -797,7 +808,8 @@ const Profile = () => {
         <div className=" mb-4 border-b-primaryDark border-b-2 bg-lightGraySec w-full container mx-auto h-[40px] rounded-b-xl shadow-lg"></div>
       </div> */}
       {addArticle && <AddArticle setAddArticle={setAddArticle} />}
-      {addVideo && <AddVideo setAddVideo={setAddVideo} />}
+      {addVideo && <AddVideo setAddVideo={setAddVideo} />}{" "}
+      {addAudio && <AddAudio setAddAudio={setAddAudio} />}
       {editPropfile && (
         <EditProfile
           dataUser={data as getmeRES}

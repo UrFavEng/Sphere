@@ -1,12 +1,12 @@
-import { useGetAllCatsVideoQuery } from "@/app/store/apislice";
-import { ChartBarStacked } from "lucide-react";
-import Link from "next/link";
+"use client";
 import React from "react";
 import QuickLinks from "./QuickLinks";
+import Link from "next/link";
+import { ChartBarStacked } from "lucide-react";
+import { useGetAllCatsAudioQuery } from "@/app/store/apislice";
 
-const CategoryVideos = () => {
-  const { data } = useGetAllCatsVideoQuery();
-  // console.log(data?.data[0].name);
+const CategoryAudio = () => {
+  const { data } = useGetAllCatsAudioQuery();
 
   return (
     <>
@@ -39,4 +39,4 @@ const CategoryVideos = () => {
   );
 };
 
-export default CategoryVideos;
+export default CategoryAudio;

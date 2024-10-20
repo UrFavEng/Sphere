@@ -3,8 +3,9 @@ import React from "react";
 interface AddProps {
   setAddArticle: (val: boolean) => void;
   setAddVideo: (val: boolean) => void;
+  setAddAudio: (val: boolean) => void;
 }
-const Add = ({ setAddArticle, setAddVideo }: AddProps) => {
+const Add = ({ setAddArticle, setAddVideo, setAddAudio }: AddProps) => {
   return (
     <div className=" grid grid-cols-3 justify-items-center bg-lightGraySec mb-4 rounded-lg px-2 sm:px-4 py-4 shadow-xl">
       <h1
@@ -21,7 +22,10 @@ const Add = ({ setAddArticle, setAddVideo }: AddProps) => {
         <TvMinimalPlay size={16} className=" mt-[1px]" />
         Add Video
       </h1>
-      <h1 className=" flex items-center gap-1 text-primaryDark  font-medium md:font-bold text-[14px] md:text-[16px] cursor-pointer hover:text-secondaryGreen transition-all ease-in-out">
+      <h1
+        onClick={() => setAddAudio(true)}
+        className=" flex items-center gap-1 text-primaryDark  font-medium md:font-bold text-[14px] md:text-[16px] cursor-pointer hover:text-secondaryGreen transition-all ease-in-out"
+      >
         <AudioLines size={16} className=" mt-[1px]" />
         Add Audio
       </h1>

@@ -1,4 +1,5 @@
 "use client";
+
 import {
   useGetAllCatsQuery,
   useGetAllCatsVideoQuery,
@@ -38,11 +39,22 @@ const Navbar = () => {
     e.preventDefault();
     const form = e.target as HTMLFormElement;
     const firstInputValue = (form.elements[0] as HTMLInputElement).value;
-    console.log(firstInputValue);
-    if (firstInputValue) {
-      router.push("/search/" + firstInputValue);
+
+    // Allowed routes: "/", "/search/[cat]", or "/articles/[name]"
+    const isRootRoute = pathname === "/";
+    const isSearchRoute = pathname.startsWith("/search/");
+    const isArticleRoute = pathname.startsWith("/articles/");
+
+    // Check if we're on one of the allowed routes
+    if (isRootRoute || isSearchRoute || isArticleRoute) {
+      console.log(firstInputValue);
+      if (firstInputValue) {
+        router.push("/search/" + firstInputValue);
+      } else {
+        router.push("/");
+      }
     } else {
-      router.push("/");
+      router.push("/videos/search/" + firstInputValue);
     }
   };
 

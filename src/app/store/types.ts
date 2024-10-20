@@ -209,6 +209,7 @@ interface User {
   updatedAt: string; // يمكن استخدام Date إذا كنت ستقوم بتحويلها لاحقاً
   publishedAt: string; // يمكن استخدام Date إذا كنت ستقوم بتحويلها لاحقاً
   locale: string | null;
+  image: GetAllArticlesImage;
 }
 
 export interface SignupRES {
@@ -425,4 +426,153 @@ export interface GetMeVideos {
   locale: string | null; // قد يكون هناك استخدام null
   provider: string;
   videos: VideoData[];
+}
+
+//------
+//------
+//------
+//------
+interface AudioMedia {
+  id: number;
+  documentId: string;
+  name: string;
+  alternativeText: string | null;
+  caption: string | null;
+  width: number | null;
+  height: number | null;
+  formats: FormatsAudio | null;
+  hash: string;
+  ext: string;
+  mime: string;
+  size: number;
+  url: string;
+  previewUrl: string | null;
+  provider: string;
+  provider_metadata: ProviderMetadataAudio;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+  locale: string | null;
+}
+
+interface FormatsAudio {
+  thumbnail: FormatDetailAudio;
+  small: FormatDetailAudio;
+  large: FormatDetailAudio;
+  medium: FormatDetailAudio;
+}
+
+interface FormatDetailAudio {
+  name: string;
+  hash: string;
+  ext: string;
+  mime: string;
+  path: string | null;
+  width: number;
+  height: number;
+  size: number;
+  sizeInBytes: number;
+  url: string;
+  provider_metadata: ProviderMetadataAudio;
+}
+
+interface ProviderMetadataAudio {
+  public_id: string;
+  resource_type: string;
+}
+
+interface UserImageAudio {
+  id: number;
+  documentId: string;
+  name: string;
+  alternativeText: string | null;
+  caption: string | null;
+  width: number;
+  height: number;
+  formats: FormatsAudio;
+  hash: string;
+  ext: string;
+  mime: string;
+  size: number;
+  url: string;
+  previewUrl: string | null;
+  provider: string;
+  provider_metadata: ProviderMetadataAudio;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+  locale: string | null;
+}
+
+interface UserAudio {
+  id: number;
+  documentId: string;
+  username: string;
+  email: string;
+  provider: string;
+  confirmed: boolean;
+  blocked: boolean;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+  locale: string | null;
+  bio: string | null;
+  expertise: string | null;
+  location: string | null;
+  image: UserImageAudio;
+}
+
+export interface ReviewAudio {
+  id: number;
+  documentId: string;
+  comment: string;
+  rating: number;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+  locale: string | null;
+  reviewed: string;
+  user: User;
+}
+
+interface CategoryAudio {
+  id: number;
+  documentId: string;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+  locale: string | null;
+}
+
+interface CommentAudio {
+  id: number;
+  documentId: string;
+  content: string;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+  locale: string | null;
+  commented: string;
+  user: User;
+}
+
+export interface DataItemAudoi {
+  id: number;
+  documentId: string;
+  title: string;
+  content: string;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+  locale: string | null;
+  audioMedia: AudioMedia;
+  reviews: ReviewAudio[];
+  user: UserAudio;
+  categoryaudio: CategoryAudio;
+  comments: CommentAudio[];
+}
+
+export interface ApiResAudio {
+  data: DataItemAudoi[];
 }

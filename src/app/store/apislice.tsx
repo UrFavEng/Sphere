@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
+  ApiResAudio,
   // allreviewsByUser,
   GetAllArticles,
   getAllCats,
@@ -17,7 +18,7 @@ export const apiSlice = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:1337/api/",
   }),
-  tagTypes: ["dataUser", "article", "video"],
+  tagTypes: ["dataUser", "article", "video", "audio"],
   endpoints: (builder) => ({
     signUp: builder.mutation<SignupRES, SignupREQ>({
       query: (body) => ({
@@ -139,7 +140,7 @@ export const apiSlice = createApi({
           Authorization: `Bearer ${localStorage.getItem("JWTSphere")}`,
         },
       }),
-      invalidatesTags: ["dataUser", "article", "video"],
+      invalidatesTags: ["dataUser", "article", "video", "audio"],
     }),
     deleteArticle: builder.mutation<void, string>({
       query: (id) => ({
@@ -149,7 +150,7 @@ export const apiSlice = createApi({
           Authorization: `Bearer ${localStorage.getItem("JWTSphere")}`,
         },
       }),
-      invalidatesTags: ["dataUser", "article"],
+      invalidatesTags: ["dataUser", "article", "video", "audio"],
     }),
     deleteReview: builder.mutation<void, string>({
       query: (id) => ({
@@ -159,7 +160,7 @@ export const apiSlice = createApi({
           Authorization: `Bearer ${localStorage.getItem("JWTSphere")}`,
         },
       }),
-      invalidatesTags: ["dataUser", "article", "video"],
+      invalidatesTags: ["dataUser", "article", "video", "audio"],
     }),
     updateReview: builder.mutation({
       query: ({ body, id }) => ({
@@ -170,7 +171,7 @@ export const apiSlice = createApi({
           Authorization: `Bearer ${localStorage.getItem("JWTSphere")}`,
         },
       }),
-      invalidatesTags: ["dataUser", "article", "video"],
+      invalidatesTags: ["dataUser", "article", "video", "audio"],
     }),
     updateArticleContet: builder.mutation({
       query: ({ articleId, body }) => ({
@@ -200,7 +201,7 @@ export const apiSlice = createApi({
           Authorization: `Bearer ${localStorage.getItem("JWTSphere")}`,
         },
       }),
-      invalidatesTags: ["dataUser", "article"],
+      invalidatesTags: ["dataUser", "article", "video", "audio"],
     }),
     updateComment: builder.mutation({
       query: ({ body, id }) => ({
@@ -211,7 +212,7 @@ export const apiSlice = createApi({
           Authorization: `Bearer ${localStorage.getItem("JWTSphere")}`,
         },
       }),
-      invalidatesTags: ["dataUser", "article"],
+      invalidatesTags: ["dataUser", "article", "video", "audio"],
     }),
     deleteComment: builder.mutation<void, string>({
       query: (id) => ({
@@ -221,12 +222,17 @@ export const apiSlice = createApi({
           Authorization: `Bearer ${localStorage.getItem("JWTSphere")}`,
         },
       }),
-      invalidatesTags: ["dataUser", "article"],
+      invalidatesTags: ["dataUser", "article", "video", "audio"],
     }),
     getAllVideos: builder.query<VideoResponse, void>({
       query: () =>
         `videos?populate[poster]=*&populate[video]=*&populate[reviews][populate]=user.image&populate[user][populate]=image&populate[categoryvideo]=*&populate[comments][populate]=user.image&sort=createdAt:desc`,
       providesTags: ["video"],
+    }),
+    getAllAudios: builder.query<ApiResAudio, void>({
+      query: () =>
+        `audioos?&populate[audioMedia]=*&populate[reviews][populate]=user.image&populate[user][populate]=image&populate[categoryaudio]=*&populate[comments][populate]=user.image&sort=createdAt:desc`,
+      providesTags: ["audio"],
     }),
     getAllVideosByCat: builder.query<VideoResponse, string>({
       query: (cat) =>
@@ -242,6 +248,10 @@ export const apiSlice = createApi({
     getAllCatsVideo: builder.query<getAllCats, void>({
       query: () => `categoryvideos`,
     }),
+    getAllCatsAudio: builder.query<getAllCats, void>({
+      query: () => `categoryaudios`,
+      providesTags: ["audio"],
+    }),
     addVideo: builder.mutation({
       query: (body) => ({
         url: `videos`,
@@ -252,6 +262,17 @@ export const apiSlice = createApi({
         },
       }),
       invalidatesTags: ["dataUser", "video"],
+    }),
+    addAudio: builder.mutation({
+      query: (body) => ({
+        url: `audioos`,
+        method: "POST",
+        body: { data: body },
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("JWTSphere")}`,
+        },
+      }),
+      invalidatesTags: ["dataUser", "audio"],
     }),
     updateVideo: builder.mutation({
       query: ({ VideoId, body }) => ({
@@ -273,6 +294,16 @@ export const apiSlice = createApi({
         },
       }),
       invalidatesTags: ["dataUser", "video"],
+    }),
+    deleteAudio: builder.mutation<void, string>({
+      query: (id) => ({
+        url: `audioos/${id}`,
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("JWTSphere")}`,
+        },
+      }),
+      invalidatesTags: ["dataUser", "audio"],
     }),
   }),
 });
@@ -309,4 +340,8 @@ export const {
   useDeleteVideoMutation,
   useGetAllVideosByCatQuery,
   useGetAllVideosByTitleQuery,
+  useGetAllCatsAudioQuery,
+  useGetAllAudiosQuery,
+  useAddAudioMutation,
+  useDeleteAudioMutation,
 } = apiSlice;
