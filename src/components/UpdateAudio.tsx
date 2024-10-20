@@ -3,98 +3,85 @@ import React, { useEffect, useState } from "react";
 //@ts-ignore
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import "@splidejs/react-splide/css"; // أو استيراد نمط معين
+import { PulseLoader } from "react-spinners";
 import {
-  useUploadImageMutation,
-  useGetAllCatsVideoQuery,
+  useGetAllCatsAudioQuery,
   useGetMeQuery,
-  useUpdateVideoMutation,
+  useUpdateAudioMutation,
+  useUploadImageMutation,
 } from "@/app/store/apislice";
 import { SubmitHandler, useForm } from "react-hook-form";
 import Swal from "sweetalert2";
-import Image from "next/image";
-import { PulseLoader } from "react-spinners";
-import { VideoData } from "@/app/store/types";
-interface UpdateVideoProps {
-  setUpdateVideo: (val: boolean) => void;
-  vid: VideoData;
+import { DataItemAudoi } from "@/app/store/types";
+interface UpdateAudioProps {
+  setUpdateAudio: (val: boolean) => void;
+  aud: DataItemAudoi;
 }
 interface data {
   title: string;
-  video: string;
+  audioMedia: string;
   user: string;
   content: string;
-  poster: string;
-  categoryvideo: string;
+  categoryaudio: string;
 }
-const UpdateVideo = ({ setUpdateVideo, vid }: UpdateVideoProps) => {
-  const [selectedVideo, setSelectedVideo] = useState<string | undefined>(
-    undefined
-  );
-  const [selectedImage, setSelectedImage] = useState<string | undefined>(
-    undefined
-  );
-  const {
-    handleSubmit,
-    register,
-    formState: { errors },
-    setValue,
-  } = useForm<data>();
-  useEffect(() => {
-    if (vid) {
-      setValue("title", vid?.title);
-      if (vid?.content) setValue("content", vid?.content);
-      setValue("categoryvideo", vid?.categoryvideo?.documentId);
-      setSelectedImage(vid?.poster?.url);
-      setSelectedVideo(vid?.video.url);
-    }
-  }, [vid, setValue]);
+const UpdateAudio = ({ setUpdateAudio, aud }: UpdateAudioProps) => {
+  const { data: user } = useGetMeQuery();
+
   const [currentSlide, setCurrentSlide] = useState<number>(0);
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-ignore
   const onSlideChanged = (splide, newIndex) => {
     setCurrentSlide(newIndex.index);
   };
-  const { data: cats } = useGetAllCatsVideoQuery();
-
-  const { data: user } = useGetMeQuery();
-
-  const [image, setImage] = useState<File | null>(null);
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // console.log(e?.target?.files?.[0]);
-    const file = e.target.files?.[0] ?? null;
-    if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setSelectedImage(imageUrl);
-      setImage(file);
+  const { data: cats } = useGetAllCatsAudioQuery();
+  const {
+    handleSubmit,
+    register,
+    setValue,
+    formState: { errors },
+  } = useForm<data>();
+  useEffect(() => {
+    if (aud) {
+      setValue("title", aud?.title);
+      if (aud?.content) setValue("content", aud?.content);
+      setValue("categoryaudio", aud?.categoryaudio?.documentId);
+      setSelectedAudio(aud?.audioMedia.url);
     }
-  };
-
-  const [video, setVideo] = useState<File | null>(null);
+  }, [aud, setValue]);
+  const [selectedAudio, setSelectedAudio] = useState<string | undefined>(
+    undefined
+  );
+  const [audio, setAudio] = useState<File | null>(null);
 
   const handleVideoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     // console.log(e?.target?.files?.[0]);
     const file = e.target.files?.[0] ?? null;
     if (file) {
-      const videoUrl = URL.createObjectURL(file);
-      setSelectedVideo(videoUrl);
-      setVideo(file);
+      const audioUrl = URL.createObjectURL(file);
+      setSelectedAudio(audioUrl);
+      setAudio(file);
     }
   };
-  const [uploadImageAndVideo, { isLoading: loadingUploadImage }] =
+  const [uploadImageAndVideoAndAudio, { isLoading: loadingUploadImage }] =
     useUploadImageMutation();
-  const [addVideo, { isLoading: loadingAddVideo }] = useUpdateVideoMutation();
+  const [updateAudio, { isLoading: loadingAddAudio, error }] =
+    useUpdateAudioMutation();
+  console.log(error);
   const onSubmit: SubmitHandler<data> = async (data) => {
-    if (video || selectedVideo) {
-      let idImage;
-      let idVid;
-      if (image && user) {
+    if (audio || selectedAudio) {
+      let idAud;
+
+      if (audio && user) {
         try {
           const formData = new FormData();
-          formData.append("files", image);
+          formData.append("files", audio);
 
           // انتظار رفع الصورة والحصول على idImage
-          const fulfilled = await uploadImageAndVideo(formData).unwrap();
-          idImage = fulfilled[0].id; // تأكد من استخدام المفتاح الصحيح للـ ID
+          const fulfilled = await uploadImageAndVideoAndAudio(
+            formData
+          ).unwrap();
+          idAud = fulfilled[0].id; // تأكد من استخدام المفتاح الصحيح للـ ID
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (error) {
           Swal.fire({
             position: "center",
@@ -103,43 +90,27 @@ const UpdateVideo = ({ setUpdateVideo, vid }: UpdateVideoProps) => {
             timer: 1500,
             showConfirmButton: false,
           });
-          console.log("Error uploading image:", error);
-          return; // إيقاف العملية إذا حدث خطأ في رفع الصورة
-        }
-      }
-      if (video && user) {
-        try {
-          const formData = new FormData();
-          formData.append("files", video);
-
-          // انتظار رفع الصورة والحصول على idImage
-          const fulfilled = await uploadImageAndVideo(formData).unwrap();
-          idVid = fulfilled[0].id; // تأكد من استخدام المفتاح الصحيح للـ ID
-        } catch (error) {
-          Swal.fire({
-            position: "center",
-            icon: "error",
-            title: "Error uploading image, try later",
-            timer: 1500,
-            showConfirmButton: false,
-          });
-          console.log("Error uploading image:", error);
+          // console.log("Error uploading image:", error);
           return; // إيقاف العملية إذا حدث خطأ في رفع الصورة
         }
       }
       if (user) {
         const body = {
           title: data.title,
-          categoryvideo: data.categoryvideo,
+          categoryaudio: data.categoryaudio,
           content: data.content,
-          poster: idImage,
-          video: idVid,
+          user: user?.documentId,
+          audioMedia: idAud,
         };
         try {
-          const fulfilled = await addVideo({ VideoId: vid.documentId, body })
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          const fulfilled = await updateAudio({
+            VideoId: aud.documentId,
+            body: body,
+          })
             .unwrap()
             .then(() => {
-              setUpdateVideo(false);
+              setUpdateAudio(false);
               Swal.fire({
                 position: "center",
                 icon: "success",
@@ -147,18 +118,18 @@ const UpdateVideo = ({ setUpdateVideo, vid }: UpdateVideoProps) => {
                 timer: 1500,
                 showConfirmButton: false,
               });
-              console.log(fulfilled);
             });
           // console.log("Article created successfully:", fulfilled);
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (error) {
           Swal.fire({
             position: "center",
             icon: "error",
-            title: "Error add article , try later",
+            title: "Error add audio , try later",
             timer: 1500,
             showConfirmButton: false,
           });
-          console.log("Error creating video:", error);
+          // console.log("Error creating article:", error);
         }
       } else {
         Swal.fire({
@@ -173,7 +144,7 @@ const UpdateVideo = ({ setUpdateVideo, vid }: UpdateVideoProps) => {
       Swal.fire({
         position: "center",
         icon: "info",
-        title: "You must choose video",
+        title: "You must choose audio",
         timer: 1500,
         showConfirmButton: false,
       });
@@ -188,7 +159,7 @@ const UpdateVideo = ({ setUpdateVideo, vid }: UpdateVideoProps) => {
         aria-modal="true"
       >
         <div
-          onClick={() => setUpdateVideo(false)}
+          onClick={() => setUpdateAudio(false)}
           className=" cursor-default absolute h-[100%] w-[100%] top-0 left-0 bg-[#00000032]"
         ></div>
         <div className="popup mx-4 px-8 pt-6 pb-4 relative z-30 bg-lightGraySec shadow-xl  rounded-xl w-[780px] min-h-[200px] border-2 border-b-0 border-t-0 border-r-0 border-primaryDark">
@@ -218,7 +189,7 @@ const UpdateVideo = ({ setUpdateVideo, vid }: UpdateVideoProps) => {
                       {...register("title", { required: "Title is required" })}
                       className=" mt-2 font-medium h-[34px] pl-3 shadow-md bg-lightGray border-secondaryDark border-l-2  focus:border-2 transition-all ease-in-out duration-75 w-full text-primaryDark placeholder:text-[14px] placeholder:font-medium placeholder:text-secondaryDark outline-none rounded-lg"
                       type="text"
-                      placeholder="Title of video"
+                      placeholder="Title of audio"
                       id="title"
                     />
                   </div>
@@ -234,13 +205,13 @@ const UpdateVideo = ({ setUpdateVideo, vid }: UpdateVideoProps) => {
                         required: "Content is required",
                       })}
                       className=" pt-3 mt-2 font-medium h-[134px] pl-3 shadow-md bg-lightGray border-secondaryDark  border-l-2  focus:border-2 transition-all ease-in-out duration-75 w-full text-primaryDark placeholder:text-[14px] placeholder:font-medium placeholder:text-secondaryDark outline-none rounded-lg"
-                      placeholder="Content of video"
+                      placeholder="Content of audio"
                       id="content"
                     ></textarea>
                   </div>
                   <div className="">
                     <select
-                      {...register("categoryvideo", {
+                      {...register("categoryaudio", {
                         required: "Category is required",
                       })}
                       className="  mt-2 font-medium h-[34px] pl-3 shadow-md bg-lightGray border-secondaryDark border-l-2  focus:border-2 transition-all ease-in-out duration-75 w-full text-primaryDark placeholder:text-[14px] placeholder:font-medium placeholder:text-secondaryDark outline-none rounded-lg"
@@ -263,71 +234,34 @@ const UpdateVideo = ({ setUpdateVideo, vid }: UpdateVideoProps) => {
                 </div>
               </SplideSlide>
               <SplideSlide>
-                {" "}
-                <div className={`${currentSlide == 0 && "h-0"} pb-12`}>
-                  {" "}
-                  <div className="mt-4">
-                    <label
-                      htmlFor="image"
-                      className=" mb-2 font-semibold text-primaryGreen text-[18px] "
-                    >
-                      Poster
-                    </label>
-                  </div>
-                  <input
-                    onChange={handleFileChange}
-                    id="image"
-                    accept="image/*"
-                    type="file"
-                    className="file-input mt-1 file-input-bordered file-input-md w-full max-w-full file:bg-primaryGreen"
-                  />{" "}
-                  {selectedImage ? (
-                    <div className=" mb-8 w-[550px] m-auto">
-                      {" "}
-                      <Image
-                        width={800}
-                        height={300}
-                        src={selectedImage}
-                        alt=""
-                        className=" max-h-[300px] w-fit m-auto mt-8 shadow-lg rounded-lg  object-contain"
-                      />{" "}
-                    </div>
-                  ) : (
-                    <></>
-                  )}
-                </div>
-              </SplideSlide>
-              <SplideSlide>
                 <div className={`${currentSlide == 0 && "h-0"} pb-12`}>
                   <div className="mt-4">
                     <label
-                      htmlFor="video"
+                      htmlFor="audio"
                       className=" mb-2 font-semibold text-primaryGreen text-[18px]"
                     >
-                      Video
+                      Audio
                     </label>
                   </div>
                   <input
-                    onChange={handleVideoChange}
-                    id="video"
-                    accept="video/*"
+                    onChange={handleVideoChange} // You may want to rename this to `handleAudioChange`
+                    id="audio"
+                    accept="audio/*"
                     type="file"
                     className="file-input mt-1 file-input-bordered file-input-md w-full max-w-full file:bg-primaryGreen"
                   />
-                  {selectedVideo ? (
+                  {selectedAudio ? (
                     <div className="mb-8  min-w-[550px] m-auto">
-                      <video
-                        width={800}
-                        height={800}
+                      <audio
                         controls
-                        src={selectedVideo}
-                        className="min-h-[300px] w-fit m-auto mt-8 shadow-lg rounded-lg object-contain"
+                        src={selectedAudio}
+                        className="  w-full bg-primaryDark m-auto mt-8 shadow-lg rounded-lg object-contain"
                       />
                     </div>
                   ) : (
                     <></>
                   )}
-                  {loadingUploadImage || loadingAddVideo ? (
+                  {loadingUploadImage || loadingAddAudio ? (
                     <div className="absolute bottom-4 left-3">
                       <PulseLoader color="#2F3E46" size={10} />
                     </div>
@@ -349,9 +283,9 @@ const UpdateVideo = ({ setUpdateVideo, vid }: UpdateVideoProps) => {
                           {errors.content.message}
                         </p>
                       )}
-                      {errors.categoryvideo && (
+                      {errors.categoryaudio && (
                         <p className="text-[14px] font-medium text-orange-700">
-                          {errors.categoryvideo.message}
+                          {errors.categoryaudio.message}
                         </p>
                       )}
                     </>
@@ -378,4 +312,4 @@ transform: translateY(0); /* تتحرك لمكانها الطبيعي */
   );
 };
 
-export default UpdateVideo;
+export default UpdateAudio;

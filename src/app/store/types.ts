@@ -576,3 +576,22 @@ export interface DataItemAudoi {
 export interface ApiResAudio {
   data: DataItemAudoi[];
 }
+
+//---
+export interface GetMeAudios {
+  id: number;
+  username: string;
+  email: string;
+  bio: string;
+  expertise: string;
+  documentId: string;
+  location: string;
+  blocked: boolean;
+  confirmed: boolean;
+  createdAt: string; // يمكن استخدام `Date` بدلاً من `string` إذا كانت قيمة التاريخ تحتاج إلى معالجة
+  updatedAt: string; // يمكن تحويلها إلى `Date` أيضًا
+  publishedAt: string; // يمكن تحويلها إلى `Date`
+  locale: string | null; // قد يكون هناك استخدام null
+  provider: string;
+  audioos: DataItemAudoi[];
+}

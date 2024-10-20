@@ -26,7 +26,7 @@ const CategoryAudio = () => {
                 key={cat.documentId}
                 className=" capitalize hover:underline w-fit cursor-pointer text-[16px] font-semibold text-primaryGreen"
               >
-                <Link href={"/videos/" + cat.name}>{cat.name}</Link>
+                <Link href={"/audio/" + cat.name}>{cat.name}</Link>
               </li>
             ))}
           </ul>

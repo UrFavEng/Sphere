@@ -10,7 +10,7 @@ const LogIn = () => {
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState<boolean>();
-  const [login, { data, error, isLoading }] = useLoginMutation();
+  const [login, { error, isLoading }] = useLoginMutation();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -167,7 +167,7 @@ const LogIn = () => {
                 </div>
 
                 <p className="text-sm sm:!mt-8 text-center text-gray-800">
-                  Don't have an account ?{" "}
+                  Don&apos;t have an account ?{" "}
                   <Link
                     href={"/signup"}
                     className=" cursor-pointer text-secondaryDark font-semibold hover:underline ml-1 whitespace-nowrap"

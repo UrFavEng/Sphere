@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  useGetAllCatsAudioQuery,
   useGetAllCatsQuery,
   useGetAllCatsVideoQuery,
   useGetMeQuery,
@@ -20,8 +21,12 @@ import Image from "next/image";
 import AddArticle from "./AddArticle";
 import EditProfile from "./EditProfile";
 import { getmeRES } from "@/app/store/types";
+import AddVideo from "./AddVideo";
+import AddAudio from "./AddAudio";
 
 const Navbar = () => {
+  const { data: catAudio } = useGetAllCatsAudioQuery();
+
   const handleLogout = () => {
     localStorage.removeItem("JWTSphere");
 
@@ -44,6 +49,7 @@ const Navbar = () => {
     const isRootRoute = pathname === "/";
     const isSearchRoute = pathname.startsWith("/search/");
     const isArticleRoute = pathname.startsWith("/articles/");
+    const isAudioRoute = pathname.includes("/audio");
 
     // Check if we're on one of the allowed routes
     if (isRootRoute || isSearchRoute || isArticleRoute) {
@@ -53,6 +59,8 @@ const Navbar = () => {
       } else {
         router.push("/");
       }
+    } else if (isAudioRoute) {
+      router.push("/audio/search/" + firstInputValue);
     } else {
       router.push("/videos/search/" + firstInputValue);
     }
@@ -65,6 +73,8 @@ const Navbar = () => {
     setIsOpen(!isOpen);
   };
   const [addArticle, setAddArticle] = useState(false);
+  const [addVideo, setAddVideo] = useState(false);
+  const [addAudio, setAddAudio] = useState(false);
   const [editPropfile, setEditPropfile] = useState(false);
   return (
     <>
@@ -170,10 +180,13 @@ const Navbar = () => {
             Video
             <TvMinimalPlay size={16} className=" " />
           </Link>
-          <span className=" text-[14px] lg:text-[18px] font-medium text-primaryDark hover:text-secondaryGreen transition-all ease-in-out cursor-pointer flex flex-row-reverse items-center gap-1 ">
+          <Link
+            href={"/audio"}
+            className=" text-[14px] lg:text-[18px] font-medium text-primaryDark hover:text-secondaryGreen transition-all ease-in-out cursor-pointer flex flex-row-reverse items-center gap-1 "
+          >
             Audio
             <AudioLines size={16} className=" " />
-          </span>
+          </Link>
         </div>
       </div>
       <>
@@ -312,9 +325,12 @@ const Navbar = () => {
                       </Link>
                     </li>
                     <li>
-                      <a className=" font-semibold text-[20px] hover:text-lightGraySec">
+                      <Link
+                        href={"/audio"}
+                        className=" font-semibold text-[20px] hover:text-lightGraySec"
+                      >
                         Audios
-                      </a>
+                      </Link>
                     </li>
                   </ul>
                   <hr className="border-gray-200 dark:border-gray-700" />
@@ -334,12 +350,24 @@ const Navbar = () => {
                       </a>
                     </li>
                     <li>
-                      <a className=" font-semibold text-[20px] hover:text-lightGraySec">
+                      <a
+                        onClick={() => {
+                          setAddVideo(true);
+                          setIsOpen(false);
+                        }}
+                        className=" font-semibold text-[20px] hover:text-lightGraySec"
+                      >
                         Video
                       </a>
                     </li>
                     <li>
-                      <a className=" font-semibold text-[20px] hover:text-lightGraySec">
+                      <a
+                        onClick={() => {
+                          setAddAudio(true);
+                          setIsOpen(false);
+                        }}
+                        className=" font-semibold text-[20px] hover:text-lightGraySec"
+                      >
                         Audio
                       </a>
                     </li>
@@ -499,16 +527,20 @@ const Navbar = () => {
                 Video
                 <TvMinimalPlay size={16} className=" " />
               </Link>
-              <span className=" text-[14px] lg:text-[18px] font-medium text-primaryDark hover:text-secondaryGreen transition-all ease-in-out cursor-pointer flex flex-row-reverse items-center gap-1 ">
+              <Link
+                href={"/audio"}
+                className=" text-[14px] lg:text-[18px] font-medium text-primaryDark hover:text-secondaryGreen transition-all ease-in-out cursor-pointer flex flex-row-reverse items-center gap-1 "
+              >
                 Audio
                 <AudioLines size={16} className=" " />
-              </span>
+              </Link>
             </div>
           </div>
         )}
       </>
       {!hideNavbarRoutes.includes(pathname) &&
-        !pathname.includes("/videos") && (
+        !pathname.includes("/videos") &&
+        !pathname.includes("/audio") && (
           <div className="py-3 bg-lightGraySec md:hidden border-t-[1.5px] overflow-y-auto whitespace-nowrap scroll-hidden">
             {data?.data.map((item) => (
               <Link key={item.name} href={`/articles/${item.name}`}>
@@ -530,7 +562,20 @@ const Navbar = () => {
           ))}
         </div>
       )}
+      {pathname.includes("/audio") && (
+        <div className="py-3 bg-lightGraySec md:hidden border-t-[1.5px] overflow-y-auto whitespace-nowrap scroll-hidden">
+          {catAudio?.data.map((item) => (
+            <Link key={item.name} href={`/videos/${item.name}`}>
+              <span className="mx-4 capitalize text-primaryDark text-sm leading-5 transition-all ease-in-out duration-300 transform font-medium text-[12px] hover:underline md:my-0">
+                {item.name}
+              </span>
+            </Link>
+          ))}
+        </div>
+      )}
       {addArticle && <AddArticle setAddArticle={setAddArticle} />}
+      {addVideo && <AddVideo setAddVideo={setAddVideo} />}
+      {addAudio && <AddAudio setAddAudio={setAddAudio} />}
       {editPropfile && (
         <EditProfile
           setEditPropfile={setEditPropfile}

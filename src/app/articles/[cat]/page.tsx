@@ -8,11 +8,14 @@ import ArticlesCatHome from "@/components/ArticlesCat";
 import CategoryArticle from "@/components/CategoryArticle";
 import QuickLinks from "@/components/QuickLinks";
 import React, { useState } from "react";
+import { PulseLoader } from "react-spinners";
 interface ArticlesCatProps {
   params: { cat: string };
 }
 const ArticlesCat = ({ params }: ArticlesCatProps) => {
-  const { data } = useGetAllArticlesByCatQuery(params.cat);
+  const { data, isLoading: loadingArtByCat } = useGetAllArticlesByCatQuery(
+    params.cat
+  );
   // console.log(data, error);
   const [addArticle, setAddArticle] = useState<boolean>(false);
   const [addVideo, setAddVideo] = useState<boolean>(false);
@@ -29,7 +32,17 @@ const ArticlesCat = ({ params }: ArticlesCatProps) => {
             setAddArticle={setAddArticle}
             setAddVideo={setAddVideo}
           />{" "}
-          {data && <ArticlesCatHome data={data} />}
+          {loadingArtByCat ? (
+            <>
+              {" "}
+              <p className="text-center">
+                {" "}
+                <PulseLoader color="#2F3E46" size={12} />
+              </p>
+            </>
+          ) : (
+            <> {data && <ArticlesCatHome data={data} />}</>
+          )}
         </div>
         <div className="justify-self-end hidden xl:block px-4 h-fit    py-4 w-[85%]  rounded-lg shadow-xl bg-lightGraySec">
           <QuickLinks />

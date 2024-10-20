@@ -90,7 +90,7 @@ const VideoPlayer = ({ video }: VideoPlayerProps) => {
         <div className="mt-4 shadow-sm rounded-lg overflow-hidden">
           <div className="w-full m-auto rounded-xl overflow-hidden">
             <video
-              src={video?.video.url} // استخدام الفيديو الأصلي
+              src={video?.video?.url} // استخدام الفيديو الأصلي
               poster={video?.poster?.url}
               controls
               className=" w-full h-auto  cursor-pointer"

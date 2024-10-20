@@ -4,6 +4,7 @@ import {
   // allreviewsByUser,
   GetAllArticles,
   getAllCats,
+  GetMeAudios,
   getmeRES,
   GetMeVideos,
   LoginRequest,
@@ -68,6 +69,15 @@ export const apiSlice = createApi({
       }),
       providesTags: ["dataUser", "video"],
     }),
+    getMeAudios: builder.query<GetMeAudios, void>({
+      query: () => ({
+        url: "users/me?populate[audioos][populate][audioMedia]=*&populate[audioos][populate][reviews][populate][user][populate]=image&populate[audioos][populate][comments][populate][user][populate]=image",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("JWTSphere")}`,
+        },
+      }),
+      providesTags: ["dataUser", "video"],
+    }),
     getAllArticles: builder.query<GetAllArticles, void>({
       query: () =>
         `articles?populate[image]=*&populate[reviews][populate]=user.image&populate[user][populate]=image&populate[category][populate]=*&populate[comments][populate]=user.image&sort=createdAt:desc`,
@@ -80,12 +90,12 @@ export const apiSlice = createApi({
 
     getAllArticlesByCat: builder.query<GetAllArticles, string>({
       query: (cat) =>
-        `articles?populate[image]=*&populate[reviews][populate]=user.image&populate[user][populate]=image&populate[category][populate]=*&populate[comments][populate]=users_permissions_user.image&filters[category][name][$eq]=${cat}&sort=createdAt:desc`,
+        `articles?populate[image]=*&populate[reviews][populate]=user.image&populate[user][populate]=image&populate[category][populate]=*&populate[comments][populate]=user.image&filters[category][name][$eq]=${cat}&sort=createdAt:desc`,
       providesTags: ["article"],
     }),
     getAllArticlesByTitle: builder.query<GetAllArticles, string>({
       query: (name) =>
-        `articles?populate[image]=*&populate[reviews][populate]=user.image&populate[user][populate]=image&populate[category][populate]=*&populate[comments][populate]=users_permissions_user.image&filters[$or][0][title][$contains]=${name}&filters[$or][1][content][$contains]=${name}&sort=createdAt:desc`,
+        `articles?populate[image]=*&populate[reviews][populate]=user.image&populate[user][populate]=image&populate[category][populate]=*&populate[comments][populate]=user.image&filters[$or][0][title][$contains]=${name}&filters[$or][1][content][$contains]=${name}&sort=createdAt:desc`,
       providesTags: ["article"],
     }),
     getAllCats: builder.query<getAllCats, void>({
@@ -234,6 +244,11 @@ export const apiSlice = createApi({
         `audioos?&populate[audioMedia]=*&populate[reviews][populate]=user.image&populate[user][populate]=image&populate[categoryaudio]=*&populate[comments][populate]=user.image&sort=createdAt:desc`,
       providesTags: ["audio"],
     }),
+    getAllAudiosByCat: builder.query<ApiResAudio, string>({
+      query: (cat) =>
+        `audioos?&populate[audioMedia]=*&populate[reviews][populate]=user.image&populate[user][populate]=image&populate[categoryaudio]=*&populate[comments][populate]=user.image&filters[categoryaudio][name][$eq]=${cat}&sort=createdAt:desc`,
+      providesTags: ["audio"],
+    }),
     getAllVideosByCat: builder.query<VideoResponse, string>({
       query: (cat) =>
         `videos?populate[poster]=*&populate[video]=*&populate[reviews][populate]=user.image&populate[user][populate]=image&populate[categoryvideo]=*&populate[comments][populate]=user.image&filters[categoryvideo][name][$eq]=${cat}&sort=createdAt:desc`,
@@ -243,6 +258,11 @@ export const apiSlice = createApi({
       query: (name) =>
         `videos?populate[poster]=*&populate[video]=*&populate[reviews][populate]=user.image&populate[user][populate]=image&populate[categoryvideo]=*&populate[comments][populate]=user.image&filters[title][$contains]=${name}&sort=createdAt:desc`,
       providesTags: ["video"],
+    }),
+    getAllAudiosByTitle: builder.query<ApiResAudio, string>({
+      query: (name) =>
+        `audioos?&populate[audioMedia]=*&populate[reviews][populate]=user.image&populate[user][populate]=image&populate[categoryaudio]=*&populate[comments][populate]=user.image&filters[title][$contains]=${name}&sort=createdAt:desc`,
+      providesTags: ["audio"],
     }),
 
     getAllCatsVideo: builder.query<getAllCats, void>({
@@ -284,6 +304,17 @@ export const apiSlice = createApi({
         },
       }),
       invalidatesTags: ["dataUser", "video"],
+    }),
+    updateAudio: builder.mutation({
+      query: ({ VideoId, body }) => ({
+        url: `audioos/${VideoId}`,
+        method: "PUT",
+        body: { data: body },
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("JWTSphere")}`,
+        },
+      }),
+      invalidatesTags: ["dataUser", "audio"],
     }),
     deleteVideo: builder.mutation<void, string>({
       query: (id) => ({
@@ -344,4 +375,8 @@ export const {
   useGetAllAudiosQuery,
   useAddAudioMutation,
   useDeleteAudioMutation,
+  useUpdateAudioMutation,
+  useGetAllAudiosByCatQuery,
+  useGetAllAudiosByTitleQuery,
+  useGetMeAudiosQuery,
 } = apiSlice;

@@ -6,6 +6,7 @@ import React, { useState } from "react";
 import ReviewsAudio from "./ReviewsAudio";
 import CommentsAudio from "./CommentsAudio";
 import DeleteAudio from "./DeleteAudio";
+import UpdateAudio from "./UpdateAudio";
 interface AudioProps {
   audio: DataItemAudoi;
 }
@@ -22,6 +23,7 @@ function formatDate(dateStr: string): string {
 const Audio = ({ audio }: AudioProps) => {
   const [reviews, setReviews] = useState<boolean>(false);
   const [deleteAudio, setDeleteAudio] = useState<boolean>(false);
+  const [editAudio, setEditAudio] = useState<boolean>(false);
   const [comments, setComments] = useState<boolean>(false);
   const [showMore, setShowMore] = useState<boolean>(false);
   const { data } = useGetMeQuery();
@@ -58,7 +60,7 @@ const Audio = ({ audio }: AudioProps) => {
             <p className=" flex items-center gap-2">
               <Pencil
                 size={16}
-                // onClick={() => setEditVideo(true)}
+                onClick={() => setEditAudio(true)}
                 className="text-primaryDark mt-[2px]  cursor-pointer"
               />
               <Trash2
@@ -132,7 +134,7 @@ const Audio = ({ audio }: AudioProps) => {
           idAudio={audio.documentId}
         />
       )}
-      {/* {editVideo && <UpdateVideo setUpdateVideo={setEditVideo} vid={video} />} */}
+      {editAudio && <UpdateAudio setUpdateAudio={setEditAudio} aud={audio} />}
       {deleteAudio && (
         <DeleteAudio setDeleteAudio={setDeleteAudio} id={audio.documentId} />
       )}

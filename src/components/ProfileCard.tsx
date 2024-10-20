@@ -1,5 +1,9 @@
 "use client";
-import { useGetMeQuery, useGetMeVideosQuery } from "@/app/store/apislice";
+import {
+  useGetMeAudiosQuery,
+  useGetMeQuery,
+  useGetMeVideosQuery,
+} from "@/app/store/apislice";
 import Image from "next/image";
 import EditProfile from "./EditProfile";
 import { getmeRES } from "@/app/store/types";
@@ -19,6 +23,8 @@ const ProfileCard = ({ setSection }: ProfileCardProps) => {
 
     window.location.href = "/";
   };
+  const { data: audios } = useGetMeAudiosQuery();
+
   return (
     <>
       <div className="  hidden sm:block">
@@ -67,6 +73,12 @@ const ProfileCard = ({ setSection }: ProfileCardProps) => {
               className=" text-[14px] cursor-pointer font-medium text-primaryDark hover:text-secondaryGreen transition-all ease-in-out"
             >
               ({videos?.videos && videos?.videos?.length / 2}) Videos
+            </p>
+            <p
+              onClick={() => setSection("Audios")}
+              className=" text-[14px] cursor-pointer font-medium text-primaryDark hover:text-secondaryGreen transition-all ease-in-out"
+            >
+              ({audios?.audioos && audios?.audioos?.length / 2}) Audio
             </p>
             <p
               onClick={() => setSection("Reviews")}
@@ -148,6 +160,12 @@ const ProfileCard = ({ setSection }: ProfileCardProps) => {
             className=" text-[14px] cursor-pointer font-medium text-primaryDark hover:text-secondaryGreen transition-all ease-in-out"
           >
             ({videos?.videos && videos?.videos?.length / 2}) Videos
+          </p>
+          <p
+            onClick={() => setSection("Audios")}
+            className=" text-[14px] cursor-pointer font-medium text-primaryDark hover:text-secondaryGreen transition-all ease-in-out"
+          >
+            ({audios?.audioos && audios?.audioos?.length / 2}) Audio
           </p>
           <p
             onClick={() => setSection("Reviews")}
