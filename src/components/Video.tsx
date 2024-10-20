@@ -6,6 +6,7 @@ import React, { useState } from "react";
 import ReviewsVideo from "./ReviewsVideo";
 import CommentsVideo from "./CommentsVideo";
 import UpdateVideo from "./UpdateVideo";
+import DeleteVideo from "./DeleteVideo";
 
 interface VideoPlayerProps {
   video: VideoData;
@@ -28,7 +29,7 @@ const VideoPlayer = ({ video }: VideoPlayerProps) => {
   const [reviews, setReviews] = useState<boolean>(false);
   const [comments, setComments] = useState<boolean>(false);
   const { data } = useGetMeQuery();
-  console.log(video);
+  console.log(video, data?.documentId);
   return (
     <div className=" relative w-[100%] h-auto bg-lightGraySec mb-4 md:mb-5 place-self-start shadow-xl py-4 px-4 rounded-lg">
       <div className=" flex items-start justify-between">
@@ -130,6 +131,9 @@ const VideoPlayer = ({ video }: VideoPlayerProps) => {
         />
       )}
       {editVideo && <UpdateVideo setUpdateVideo={setEditVideo} vid={video} />}
+      {deleteVideo && (
+        <DeleteVideo setDeleteViddeo={setDeleteViddeo} id={video.documentId} />
+      )}
     </div>
   );
 };

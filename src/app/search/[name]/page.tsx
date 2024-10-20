@@ -8,8 +8,8 @@ interface SearchArticlesProps {
   params: { name: string };
 }
 const SearchArticles = ({ params }: SearchArticlesProps) => {
-  const { data, error } = useGetAllArticlesByTitleQuery(params.name);
-  console.log(data, error);
+  const { data } = useGetAllArticlesByTitleQuery(params.name);
+  // console.log(data, error);
   return (
     <>
       <div className=" container mx-auto px-4 xl:px-0  py-6 grid md:grid-cols-3 xl:grid-cols-4 ">

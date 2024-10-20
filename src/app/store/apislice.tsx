@@ -60,12 +60,12 @@ export const apiSlice = createApi({
     }),
     getMeVideos: builder.query<GetMeVideos, void>({
       query: () => ({
-        url: "users/me?populate[videos]=*&populate[videos][populate][poster]=*&populate[videos][populate][categoryvideo]=*&populate[videos][populate][video]=*&populate[videos][populate][reviews][populate]=user.image&populate[videos][populate][comments][populate]=user.image",
+        url: "users/me?populate[videos]=*&populate[videos][populate][poster]=*&populate[videos][populate][categoryvideo]=*&populate[videos][populate][video]=*&populate[videos][populate][user][populate]=image&populate[videos][populate][reviews][populate]=user.image&populate[videos][populate][comments][populate]=user.image",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("JWTSphere")}`,
         },
       }),
-      providesTags: ["dataUser"],
+      providesTags: ["dataUser", "video"],
     }),
     getAllArticles: builder.query<GetAllArticles, void>({
       query: () =>
@@ -228,6 +228,17 @@ export const apiSlice = createApi({
         `videos?populate[poster]=*&populate[video]=*&populate[reviews][populate]=user.image&populate[user][populate]=image&populate[categoryvideo]=*&populate[comments][populate]=user.image&sort=createdAt:desc`,
       providesTags: ["video"],
     }),
+    getAllVideosByCat: builder.query<VideoResponse, string>({
+      query: (cat) =>
+        `videos?populate[poster]=*&populate[video]=*&populate[reviews][populate]=user.image&populate[user][populate]=image&populate[categoryvideo]=*&populate[comments][populate]=user.image&filters[categoryvideo][name][$eq]=${cat}&sort=createdAt:desc`,
+      providesTags: ["video"],
+    }),
+    getAllVideosByTitle: builder.query<VideoResponse, string>({
+      query: (name) =>
+        `videos?populate[poster]=*&populate[video]=*&populate[reviews][populate]=user.image&populate[user][populate]=image&populate[categoryvideo]=*&populate[comments][populate]=user.image&filters[title][$contains]=${name}&sort=createdAt:desc`,
+      providesTags: ["video"],
+    }),
+
     getAllCatsVideo: builder.query<getAllCats, void>({
       query: () => `categoryvideos`,
     }),
@@ -247,6 +258,16 @@ export const apiSlice = createApi({
         url: `videos/${VideoId}`,
         method: "PUT",
         body: { data: body },
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("JWTSphere")}`,
+        },
+      }),
+      invalidatesTags: ["dataUser", "video"],
+    }),
+    deleteVideo: builder.mutation<void, string>({
+      query: (id) => ({
+        url: `videos/${id}`,
+        method: "DELETE",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("JWTSphere")}`,
         },
@@ -285,4 +306,7 @@ export const {
   useAddVideoMutation,
   useUpdateVideoMutation,
   useGetMeVideosQuery,
+  useDeleteVideoMutation,
+  useGetAllVideosByCatQuery,
+  useGetAllVideosByTitleQuery,
 } = apiSlice;

@@ -20,7 +20,7 @@ interface ArticleProps {
   art: GetAllArticlesArticle;
 }
 const Article = ({ art }: ArticleProps) => {
-  console.log(art);
+  // console.log(art);
   const { data } = useGetMeQuery();
   const [deleteArticle, setDeleteArticle] = useState<boolean>(false);
   const [editArticle, setEditArticle] = useState<boolean>();
@@ -31,7 +31,7 @@ const Article = ({ art }: ArticleProps) => {
   return (
     <div
       key={art.documentId}
-      className=" bg-lightGraySec mb-4 md:mb-5 place-self-start shadow-xl py-4 px-4 rounded-lg"
+      className=" bg-lightGraySec mb-4 w-full md:mb-5 place-self-start shadow-xl py-4 px-4 rounded-lg"
     >
       <div className=" flex items-start justify-between">
         <div className=" flex items-start gap-2">

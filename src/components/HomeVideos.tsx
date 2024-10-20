@@ -15,7 +15,7 @@ const HomeVideos = () => {
     <div className="w-full sm:col-span-2 justify-self-center  ">
       <Add setAddArticle={setAddArticle} setAddVideo={setAddVideo} />
       {data?.data.map((video) => (
-        <VideoPlayer video={video} />
+        <VideoPlayer video={video} key={video.documentId} />
       ))}
       {addArticle && <AddArticle setAddArticle={setAddArticle} />}
       {addVideo && <AddVideo setAddVideo={setAddVideo} />}

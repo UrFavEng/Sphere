@@ -38,7 +38,7 @@ const Profile = () => {
   const [showMore, setShowMore] = useState<boolean>(false);
   const [editPropfile, setEditPropfile] = useState<boolean>();
   const { data: videos, error } = useGetMeVideosQuery();
-  console.log("==>>--|--<<==", videos, error);
+  console.log("==>>--|--<<==", videos?.videos, error);
   return (
     <div className=" pb-4">
       <div className="content-start px-4 xl:px-0 container mx-auto  py-6 grid gap-4 md:gap-0  md:grid-cols-3 xl:grid-cols-4 ">
@@ -774,6 +774,19 @@ const Profile = () => {
                     )}
                   </section>
                 </>
+              </>
+            )}{" "}
+            {section === "Videos" && (
+              <>
+                {" "}
+                {videos?.videos?.map(
+                  (vid) =>
+                    !vid.publishedAt && (
+                      <div key={vid.documentId} className="w-full">
+                        <VideoPlayer video={vid} />
+                      </div>
+                    )
+                )}
               </>
             )}
           </section>

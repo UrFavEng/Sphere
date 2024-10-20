@@ -61,7 +61,7 @@ const UpdateVideo = ({ setUpdateVideo, vid }: UpdateVideoProps) => {
 
   const [image, setImage] = useState<File | null>(null);
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e?.target?.files?.[0]);
+    // console.log(e?.target?.files?.[0]);
     const file = e.target.files?.[0] ?? null;
     if (file) {
       const imageUrl = URL.createObjectURL(file);
@@ -73,7 +73,7 @@ const UpdateVideo = ({ setUpdateVideo, vid }: UpdateVideoProps) => {
   const [video, setVideo] = useState<File | null>(null);
 
   const handleVideoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e?.target?.files?.[0]);
+    // console.log(e?.target?.files?.[0]);
     const file = e.target.files?.[0] ?? null;
     if (file) {
       const videoUrl = URL.createObjectURL(file);
@@ -149,7 +149,7 @@ const UpdateVideo = ({ setUpdateVideo, vid }: UpdateVideoProps) => {
                 showConfirmButton: false,
               });
             });
-          console.log("Article created successfully:", fulfilled);
+          // console.log("Article created successfully:", fulfilled);
         } catch (error) {
           Swal.fire({
             position: "center",
@@ -158,7 +158,7 @@ const UpdateVideo = ({ setUpdateVideo, vid }: UpdateVideoProps) => {
             timer: 1500,
             showConfirmButton: false,
           });
-          console.log("Error creating article:", error);
+          // console.log("Error creating article:", error);
         }
       } else {
         Swal.fire({

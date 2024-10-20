@@ -11,10 +11,9 @@ interface ProfileCardProps {
 }
 const ProfileCard = ({ setSection }: ProfileCardProps) => {
   const [editPropfile, setEditPropfile] = useState<boolean>();
-  const { data: videos, error } = useGetMeVideosQuery();
+  const { data: videos } = useGetMeVideosQuery();
 
   const { data } = useGetMeQuery();
-  console.log(data);
   const handleLogout = () => {
     localStorage.removeItem("JWTSphere");
 
@@ -143,6 +142,12 @@ const ProfileCard = ({ setSection }: ProfileCardProps) => {
             className=" text-[14px] cursor-pointer font-medium text-primaryDark hover:text-secondaryGreen transition-all ease-in-out"
           >
             ({data?.articles && data?.articles.length / 2}) Articles
+          </p>
+          <p
+            onClick={() => setSection("Videos")}
+            className=" text-[14px] cursor-pointer font-medium text-primaryDark hover:text-secondaryGreen transition-all ease-in-out"
+          >
+            ({videos?.videos && videos?.videos?.length / 2}) Videos
           </p>
           <p
             onClick={() => setSection("Reviews")}

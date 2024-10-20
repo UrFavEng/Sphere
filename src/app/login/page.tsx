@@ -16,7 +16,7 @@ const LogIn = () => {
     e.preventDefault();
     try {
       const response = await login({ identifier, password }).unwrap();
-      console.log("Login successful:", response);
+      // console.log("Login successful:", response);
       localStorage.setItem("JWTSphere", response.jwt);
       router.push("/");
     } catch (err) {

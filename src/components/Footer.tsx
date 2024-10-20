@@ -1,5 +1,4 @@
 "use client";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
 
@@ -16,7 +15,7 @@ const Footer = () => {
                 onClick={() => {
                   router.push("/");
                 }}
-                className="flex  py-4    main-logo items-center gap-1 text-primaryDark cursor-pointer hover:text-secondaryGreen transition-all ease-in-out font-bold tracking-[1px] text-[24px]"
+                className="flex  pt-2    main-logo items-center gap-1 text-primaryDark cursor-pointer hover:text-secondaryGreen transition-all ease-in-out font-bold tracking-[1px] text-[24px]"
               >
                 <svg
                   id="logo-84"

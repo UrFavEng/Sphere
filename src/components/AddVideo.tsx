@@ -32,7 +32,7 @@ const AddVideo = ({ setAddVideo }: AddVideoProps) => {
   );
   const [image, setImage] = useState<File | null>(null);
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e?.target?.files?.[0]);
+    // console.log(e?.target?.files?.[0]);
     const file = e.target.files?.[0] ?? null;
     if (file) {
       const imageUrl = URL.createObjectURL(file);
@@ -47,7 +47,7 @@ const AddVideo = ({ setAddVideo }: AddVideoProps) => {
   const [video, setVideo] = useState<File | null>(null);
 
   const handleVideoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e?.target?.files?.[0]);
+    // console.log(e?.target?.files?.[0]);
     const file = e.target.files?.[0] ?? null;
     if (file) {
       const videoUrl = URL.createObjectURL(file);
@@ -91,7 +91,7 @@ const AddVideo = ({ setAddVideo }: AddVideoProps) => {
             timer: 1500,
             showConfirmButton: false,
           });
-          console.log("Error uploading image:", error);
+          // console.log("Error uploading image:", error);
           return; // إيقاف العملية إذا حدث خطأ في رفع الصورة
         }
       }
@@ -111,7 +111,7 @@ const AddVideo = ({ setAddVideo }: AddVideoProps) => {
             timer: 1500,
             showConfirmButton: false,
           });
-          console.log("Error uploading image:", error);
+          // console.log("Error uploading image:", error);
           return; // إيقاف العملية إذا حدث خطأ في رفع الصورة
         }
       }
@@ -137,7 +137,7 @@ const AddVideo = ({ setAddVideo }: AddVideoProps) => {
                 showConfirmButton: false,
               });
             });
-          console.log("Article created successfully:", fulfilled);
+          // console.log("Article created successfully:", fulfilled);
         } catch (error) {
           Swal.fire({
             position: "center",
@@ -146,7 +146,7 @@ const AddVideo = ({ setAddVideo }: AddVideoProps) => {
             timer: 1500,
             showConfirmButton: false,
           });
-          console.log("Error creating article:", error);
+          // console.log("Error creating article:", error);
         }
       } else {
         Swal.fire({

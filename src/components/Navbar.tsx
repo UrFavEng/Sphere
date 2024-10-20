@@ -30,7 +30,6 @@ const Navbar = () => {
   const hideNavbarRoutes = ["/profile", "/videos"]; // List of routes where the Navbar should be hidden
   const { data } = useGetAllCatsQuery();
   const { data: catsVid } = useGetAllCatsVideoQuery();
-  const hideNavbarCatVid = ["/videos"]; // List of routes where the Navbar should be hidden
   const { data: userData } = useGetMeQuery();
   // console.log(data, error);
   const router = useRouter();
@@ -470,7 +469,7 @@ const Navbar = () => {
             </button>
           </form>
         </div>
-        {!hideNavbarRoutes.includes(pathname) && (
+        {!hideNavbarRoutes.includes(pathname) || (
           <div className="hidden md:block lg:hidden  sm:shadow-lg bg-lightGraySec py-[10px] sm:border-b-[1.5px]  border-solid border-secondaryDark">
             {" "}
             <div className=" w-full hidden md:flex items-center justify-center gap-10">
@@ -496,21 +495,22 @@ const Navbar = () => {
           </div>
         )}
       </>
-      {!hideNavbarRoutes.includes(pathname) && (
-        <div className="py-3 bg-lightGraySec md:hidden border-t-[1.5px]   overflow-y-auto whitespace-nowrap scroll-hidden">
-          {data?.data.map((item) => (
-            <Link key={item.name} href={`/articles/${item.name}`}>
-              <span className="mx-4 capitalize text-primaryDark text-sm leading-5 transition-all ease-in-out duration-300 transform font-medium text-[12px] hover:underline md:my-0">
-                {item.name}
-              </span>
-            </Link>
-          ))}
-        </div>
-      )}
-      {hideNavbarCatVid.includes(pathname) && (
-        <div className="py-3 bg-lightGraySec md:hidden border-t-[1.5px]   overflow-y-auto whitespace-nowrap scroll-hidden">
+      {!hideNavbarRoutes.includes(pathname) &&
+        !pathname.includes("/videos") && (
+          <div className="py-3 bg-lightGraySec md:hidden border-t-[1.5px] overflow-y-auto whitespace-nowrap scroll-hidden">
+            {data?.data.map((item) => (
+              <Link key={item.name} href={`/articles/${item.name}`}>
+                <span className="mx-4 capitalize text-primaryDark text-sm leading-5 transition-all ease-in-out duration-300 transform font-medium text-[12px] hover:underline md:my-0">
+                  {item.name}
+                </span>
+              </Link>
+            ))}
+          </div>
+        )}
+      {pathname.includes("/videos") && (
+        <div className="py-3 bg-lightGraySec md:hidden border-t-[1.5px] overflow-y-auto whitespace-nowrap scroll-hidden">
           {catsVid?.data.map((item) => (
-            <Link key={item.name} href={`/articles/${item.name}`}>
+            <Link key={item.name} href={`/videos/${item.name}`}>
               <span className="mx-4 capitalize text-primaryDark text-sm leading-5 transition-all ease-in-out duration-300 transform font-medium text-[12px] hover:underline md:my-0">
                 {item.name}
               </span>

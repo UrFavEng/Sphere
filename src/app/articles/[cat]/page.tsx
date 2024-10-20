@@ -11,8 +11,8 @@ interface ArticlesCatProps {
   params: { cat: string };
 }
 const ArticlesCat = ({ params }: ArticlesCatProps) => {
-  const { data, error } = useGetAllArticlesByCatQuery(params.cat);
-  console.log(data, error);
+  const { data } = useGetAllArticlesByCatQuery(params.cat);
+  // console.log(data, error);
   const [addArticle, setAddArticle] = useState<boolean>(false);
   const [addVideo, setAddVideo] = useState<boolean>(false);
 

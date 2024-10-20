@@ -29,10 +29,10 @@ const CategoryArticle = () => {
             ))}
           </ul>
         </div>
-        <div className="block xl:hidden sm:mt-5  justify-self-end px-4 h-fit   py-4 w-full md:w-[95%] lg:w-[85%]  rounded-lg shadow-xl bg-lightGraySec">
+        <div className="block xl:hidden sm:mt-5 !justify-self-start  md:justify-self-end px-4 h-fit   py-4 w-full md:w-[95%] lg:w-[85%]  rounded-lg shadow-xl bg-lightGraySec">
           <QuickLinks />
         </div>
-      </div>{" "}
+      </div>
     </>
   );
 };

@@ -1,7 +1,7 @@
 "use client";
 import {
   useAddReviewMutation,
-  useDeleteReviewMutation,
+  // useDeleteReviewMutation,
   useGetMeQuery,
 } from "@/app/store/apislice";
 import { ReviewVideo } from "@/app/store/types";
@@ -95,44 +95,44 @@ const ReviewsVideo = ({
         });
     }
   };
-  const [deleteRevire] = useDeleteReviewMutation();
-  const handleDelete = ({
-    idRev,
-    idUser,
-  }: {
-    idRev: string;
-    idUser: string;
-  }) => {
-    if (idUser == userData?.documentId) {
-      console.log("object");
-      deleteRevire(idRev)
-        .unwrap()
-        .then((fulfilled) => {
-          console.log(fulfilled);
-        })
-        .catch((rejected) => {
-          console.log(rejected);
-          if (rejected.status == 401) {
-            Swal.fire({
-              icon: "warning",
-              title: "Oops...",
-              text: "You don't login",
-              showConfirmButton: false,
-              timer: 1500,
-            });
-          }
-          if (rejected.status == 500) {
-            Swal.fire({
-              icon: "error",
-              title: "Oops...",
-              text: "Error, try later",
-              showConfirmButton: false,
-              timer: 1500,
-            });
-          }
-        });
-    }
-  };
+  // const [deleteRevire] = useDeleteReviewMutation();
+  // const handleDelete = ({
+  //   idRev,
+  //   idUser,
+  // }: {
+  //   idRev: string;
+  //   idUser: string;
+  // }) => {
+  //   if (idUser == userData?.documentId) {
+  //     console.log("object");
+  //     deleteRevire(idRev)
+  //       .unwrap()
+  //       .then((fulfilled) => {
+  //         console.log(fulfilled);
+  //       })
+  //       .catch((rejected) => {
+  //         console.log(rejected);
+  //         if (rejected.status == 401) {
+  //           Swal.fire({
+  //             icon: "warning",
+  //             title: "Oops...",
+  //             text: "You don't login",
+  //             showConfirmButton: false,
+  //             timer: 1500,
+  //           });
+  //         }
+  //         if (rejected.status == 500) {
+  //           Swal.fire({
+  //             icon: "error",
+  //             title: "Oops...",
+  //             text: "Error, try later",
+  //             showConfirmButton: false,
+  //             timer: 1500,
+  //           });
+  //         }
+  //       });
+  //   }
+  // };
   return (
     <div className="relative z-20 flex justify-center">
       <div
@@ -169,9 +169,9 @@ const ReviewsVideo = ({
                   <div className=" flex justify-between">
                     {" "}
                     <div className=" flex gap-3">
-                      <div>
+                      <div className=" h-[35px] w-[35px]">
                         <Image
-                          className=" rounded-full"
+                          className=" rounded-full  object-contain w-[35px] h-[35px]"
                           alt="photo"
                           width={35}
                           height={35}
