@@ -3,9 +3,10 @@ import { ChartBarStacked } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 import QuickLinks from "./QuickLinks";
+import { PulseLoader } from "react-spinners";
 
 const CategoryVideos = () => {
-  const { data } = useGetAllCatsVideoQuery();
+  const { data, isLoading } = useGetAllCatsVideoQuery();
   // console.log(data?.data[0].name);
 
   return (
@@ -21,14 +22,27 @@ const CategoryVideos = () => {
             </span>{" "}
           </h1>{" "}
           <ul className=" mt-1">
-            {data?.data.map((cat) => (
-              <li
-                key={cat.documentId}
-                className=" capitalize hover:underline w-fit cursor-pointer text-[16px] font-semibold text-primaryGreen"
-              >
-                <Link href={"/videos/" + cat.name}>{cat.name}</Link>
-              </li>
-            ))}
+            {" "}
+            {isLoading ? (
+              <>
+                {" "}
+                <p className="text-center mt-4">
+                  {" "}
+                  <PulseLoader color="#2F3E46" size={12} />
+                </p>
+              </>
+            ) : (
+              <>
+                {data?.data.map((cat) => (
+                  <li
+                    key={cat.documentId}
+                    className=" capitalize hover:underline w-fit cursor-pointer text-[16px] font-semibold text-primaryGreen"
+                  >
+                    <Link href={"/videos/" + cat.name}>{cat.name}</Link>
+                  </li>
+                ))}
+              </>
+            )}
           </ul>
         </div>{" "}
         <div className="block xl:hidden sm:mt-5 !justify-self-start  md:justify-self-end px-4 h-fit   py-4 w-full md:w-[95%] lg:w-[85%]  rounded-lg shadow-xl bg-lightGraySec">

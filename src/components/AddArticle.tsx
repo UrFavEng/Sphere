@@ -28,8 +28,8 @@ const AddArticle = ({ setAddArticle }: AddArticleProps) => {
   const [tags, setTags] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const { data: user } = useGetMeQuery();
-  const { data: cats } = useGetAllCatsQuery();
+  const { data: user, isLoading: loadingGetUser } = useGetMeQuery();
+  const { data: cats, isLoading: loadingGetCats } = useGetAllCatsQuery();
 
   // Handle adding new tags
   const addTag = (event: KeyboardEvent<HTMLInputElement>) => {
@@ -105,7 +105,7 @@ const AddArticle = ({ setAddArticle }: AddArticleProps) => {
           timer: 1500,
           showConfirmButton: false,
         });
-        // console.log("Error uploading image:", error);
+        console.log("Error uploading image:", error);
         return; // إيقاف العملية إذا حدث خطأ في رفع الصورة
       }
     }
@@ -133,7 +133,7 @@ const AddArticle = ({ setAddArticle }: AddArticleProps) => {
               showConfirmButton: false,
             });
           });
-        // console.log("Article created successfully:", fulfilled);
+        console.log("Article created successfully:", fulfilled);
       } catch (e) {
         Swal.fire({
           position: "center",
@@ -172,181 +172,196 @@ const AddArticle = ({ setAddArticle }: AddArticleProps) => {
             Add article
           </h3>
           <form className=" relative" onSubmit={handleSubmit(onSubmit)}>
-            <Splide
-              options={{
-                type: "fade",
-                arrows: false,
-              }}
-              onActive={onSlideChanged}
-            >
-              {" "}
-              <SplideSlide>
-                <div className=" pb-12">
-                  {" "}
-                  <div className=" mt-4">
-                    <label
-                      htmlFor="title"
-                      className=" mb-2 font-semibold text-primaryGreen text-[18px] "
-                    >
-                      Title
-                    </label>
-                    <input
-                      {...register("title", { required: "Title is required" })}
-                      className=" mt-2 font-medium h-[34px] pl-3 shadow-md bg-lightGray border-secondaryDark border-l-2  focus:border-2 transition-all ease-in-out duration-75 w-full text-primaryDark placeholder:text-[14px] placeholder:font-medium placeholder:text-secondaryDark outline-none rounded-lg"
-                      type="text"
-                      placeholder="Title of article"
-                      id="title"
-                    />
-                  </div>
-                  <div className=" mt-4">
-                    <label
-                      htmlFor="content"
-                      className=" mb-2 font-semibold text-primaryGreen text-[18px] "
-                    >
-                      Content
-                    </label>
-                    <textarea
-                      {...register("content", {
-                        required: "Content is required",
-                      })}
-                      className=" pt-3 mt-2 font-medium h-[134px] pl-3 shadow-md bg-lightGray border-secondaryDark  border-l-2  focus:border-2 transition-all ease-in-out duration-75 w-full text-primaryDark placeholder:text-[14px] placeholder:font-medium placeholder:text-secondaryDark outline-none rounded-lg"
-                      placeholder="Content of article"
-                      id="content"
-                    ></textarea>
-                  </div>
-                  <div className="">
-                    <select
-                      {...register("category", {
-                        required: "Category is required",
-                      })}
-                      className="  mt-2 font-medium h-[34px] pl-3 shadow-md bg-lightGray border-secondaryDark border-l-2  focus:border-2 transition-all ease-in-out duration-75 w-full text-primaryDark placeholder:text-[14px] placeholder:font-medium placeholder:text-secondaryDark outline-none rounded-lg"
-                      title="category"
-                    >
-                      <option value="" selected disabled>
-                        Category
-                      </option>
-                      {cats?.data.map((cat) => (
-                        <option
-                          key={cat.documentId}
-                          value={cat.documentId}
-                          className=" text-primaryDark"
-                        >
-                          {cat.name}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div className=" mt-4">
-                    {" "}
-                    <label
-                      htmlFor="tag"
-                      className=" font-semibold text-primaryGreen text-[18px] "
-                    >
-                      Tag
-                    </label>
-                    <div className="flex flex-col space-y-2">
-                      <div className=" rounded-md flex items-center flex-wrap">
-                        {tags.map((tag, index) => (
-                          <div
-                            key={index}
-                            className="bg-lightGray   text-primaryDark rounded-full px-3 py-1 mr-2  flex items-center"
-                          >
-                            {tag}
-                            <button
-                              type="button"
-                              className="ml-2 text-red-600 hover:text-red-800"
-                              onClick={() => removeTag(index)}
-                            >
-                              &times;
-                            </button>
-                          </div>
-                        ))}
-                        {tags.length < 4 && (
-                          <input
-                            className="flex-grow mt-2 font-medium h-[34px]  pl-3 shadow-md bg-lightGray border-secondaryDark border-l-2   focus:border-2 transition-all ease-in-out duration-75  text-primaryDark placeholder:text-[14px] placeholder:font-medium placeholder:text-secondaryDark outline-none rounded-lg"
-                            type="text"
-                            // className="flex-grow outline-none p-1 text-gray-700"
-                            placeholder="Enter a tag and press Enter"
-                            value={inputValue}
-                            onChange={(e) => setInputValue(e.target.value)}
-                            onKeyDown={addTag}
-                            id="tag"
-                          />
-                        )}
-                      </div>
-                      {errorMessage && (
-                        <p className="text-red-500">{errorMessage}</p>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </SplideSlide>
-              <SplideSlide>
+            {loadingGetUser || loadingGetCats ? (
+              <>
                 {" "}
-                <div className={`${currentSlide == 0 && "h-0"} pb-12`}>
+                <p className="text-center mt-4">
                   {" "}
-                  <div className="mt-4">
-                    <label
-                      htmlFor="image"
-                      className=" mb-2 font-semibold text-primaryGreen text-[18px] "
-                    >
-                      Image
-                    </label>
-                  </div>
-                  <input
-                    onChange={handleFileChange}
-                    id="image"
-                    accept="image/*"
-                    type="file"
-                    className="file-input mt-1 file-input-bordered file-input-md w-full max-w-full file:bg-primaryGreen"
-                  />{" "}
-                  {selectedImage ? (
-                    <div className=" mb-8 w-[550px] m-auto">
+                  <PulseLoader color="#2F3E46" size={12} />
+                </p>
+              </>
+            ) : (
+              <>
+                {" "}
+                <Splide
+                  options={{
+                    type: "fade",
+                    arrows: false,
+                  }}
+                  onActive={onSlideChanged}
+                >
+                  {" "}
+                  <SplideSlide>
+                    <div className=" pb-12">
                       {" "}
-                      <Image
-                        width={800}
-                        height={300}
-                        src={selectedImage}
-                        alt=""
-                        className=" max-h-[300px] w-fit m-auto mt-8 shadow-lg rounded-lg  object-contain"
+                      <div className=" mt-4">
+                        <label
+                          htmlFor="title"
+                          className=" mb-2 font-semibold text-primaryGreen text-[18px] "
+                        >
+                          Title
+                        </label>
+                        <input
+                          {...register("title", {
+                            required: "Title is required",
+                          })}
+                          className=" mt-2 font-medium h-[34px] pl-3 shadow-md bg-lightGray border-secondaryDark border-l-2  focus:border-2 transition-all ease-in-out duration-75 w-full text-primaryDark placeholder:text-[14px] placeholder:font-medium placeholder:text-secondaryDark outline-none rounded-lg"
+                          type="text"
+                          placeholder="Title of article"
+                          id="title"
+                        />
+                      </div>
+                      <div className=" mt-4">
+                        <label
+                          htmlFor="content"
+                          className=" mb-2 font-semibold text-primaryGreen text-[18px] "
+                        >
+                          Content
+                        </label>
+                        <textarea
+                          {...register("content", {
+                            required: "Content is required",
+                          })}
+                          className=" pt-3 mt-2 font-medium h-[134px] pl-3 shadow-md bg-lightGray border-secondaryDark  border-l-2  focus:border-2 transition-all ease-in-out duration-75 w-full text-primaryDark placeholder:text-[14px] placeholder:font-medium placeholder:text-secondaryDark outline-none rounded-lg"
+                          placeholder="Content of article"
+                          id="content"
+                        ></textarea>
+                      </div>
+                      <div className="">
+                        <select
+                          {...register("category", {
+                            required: "Category is required",
+                          })}
+                          className="  mt-2 font-medium h-[34px] pl-3 shadow-md bg-lightGray border-secondaryDark border-l-2  focus:border-2 transition-all ease-in-out duration-75 w-full text-primaryDark placeholder:text-[14px] placeholder:font-medium placeholder:text-secondaryDark outline-none rounded-lg"
+                          title="category"
+                        >
+                          <option value="" selected disabled>
+                            Category
+                          </option>
+                          {cats?.data.map((cat) => (
+                            <option
+                              key={cat.documentId}
+                              value={cat.documentId}
+                              className=" text-primaryDark"
+                            >
+                              {cat.name}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                      <div className=" mt-4">
+                        {" "}
+                        <label
+                          htmlFor="tag"
+                          className=" font-semibold text-primaryGreen text-[18px] "
+                        >
+                          Tag
+                        </label>
+                        <div className="flex flex-col space-y-2">
+                          <div className=" rounded-md flex items-center flex-wrap">
+                            {tags.map((tag, index) => (
+                              <div
+                                key={index}
+                                className="bg-lightGray   text-primaryDark rounded-full px-3 py-1 mr-2  flex items-center"
+                              >
+                                {tag}
+                                <button
+                                  type="button"
+                                  className="ml-2 text-red-600 hover:text-red-800"
+                                  onClick={() => removeTag(index)}
+                                >
+                                  &times;
+                                </button>
+                              </div>
+                            ))}
+                            {tags.length < 4 && (
+                              <input
+                                className="flex-grow mt-2 font-medium h-[34px]  pl-3 shadow-md bg-lightGray border-secondaryDark border-l-2   focus:border-2 transition-all ease-in-out duration-75  text-primaryDark placeholder:text-[14px] placeholder:font-medium placeholder:text-secondaryDark outline-none rounded-lg"
+                                type="text"
+                                // className="flex-grow outline-none p-1 text-gray-700"
+                                placeholder="Enter a tag and press Enter"
+                                value={inputValue}
+                                onChange={(e) => setInputValue(e.target.value)}
+                                onKeyDown={addTag}
+                                id="tag"
+                              />
+                            )}
+                          </div>
+                          {errorMessage && (
+                            <p className="text-red-500">{errorMessage}</p>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </SplideSlide>
+                  <SplideSlide>
+                    {" "}
+                    <div className={`${currentSlide == 0 && "h-0"} pb-12`}>
+                      {" "}
+                      <div className="mt-4">
+                        <label
+                          htmlFor="image"
+                          className=" mb-2 font-semibold text-primaryGreen text-[18px] "
+                        >
+                          Image
+                        </label>
+                      </div>
+                      <input
+                        onChange={handleFileChange}
+                        id="image"
+                        accept="image/*"
+                        type="file"
+                        className="file-input mt-1 file-input-bordered file-input-md w-full max-w-full file:bg-primaryGreen"
                       />{" "}
+                      {selectedImage ? (
+                        <div className=" mb-8 w-[550px] m-auto">
+                          {" "}
+                          <Image
+                            width={800}
+                            height={300}
+                            src={selectedImage}
+                            alt=""
+                            className=" max-h-[300px] w-fit m-auto mt-8 shadow-lg rounded-lg  object-contain"
+                          />{" "}
+                        </div>
+                      ) : (
+                        <></>
+                      )}
+                      {loadingUploadImage || loadingAddArticle ? (
+                        <div className="absolute bottom-4 left-3">
+                          <PulseLoader color="#2F3E46" size={10} />
+                        </div>
+                      ) : (
+                        <>
+                          {" "}
+                          <button
+                            type="submit"
+                            className=" font-semibold text-[18px] bg-primaryDark hover:bg-secondaryDark transition-all ease-in-out text-lightGraySec hover:text-white py-2 px-5 rounded-lg shadow-sm absolute bottom-4 left-3"
+                          >
+                            Add
+                          </button>
+                          {errors.title && (
+                            <p className=" text-[14px] font-medium text-orange-700">
+                              {errors.title.message}
+                            </p>
+                          )}
+                          {errors.content && (
+                            <p className=" text-[14px] font-medium text-orange-700">
+                              {errors.content.message}
+                            </p>
+                          )}
+                          {errors.category && (
+                            <p className=" text-[14px] font-medium text-orange-700">
+                              {errors.category.message}
+                            </p>
+                          )}
+                        </>
+                      )}
                     </div>
-                  ) : (
-                    <></>
-                  )}
-                  {loadingUploadImage || loadingAddArticle ? (
-                    <div className="absolute bottom-4 left-3">
-                      <PulseLoader color="#2F3E46" size={10} />
-                    </div>
-                  ) : (
-                    <>
-                      {" "}
-                      <button
-                        type="submit"
-                        className=" font-semibold text-[18px] bg-primaryDark hover:bg-secondaryDark transition-all ease-in-out text-lightGraySec hover:text-white py-2 px-5 rounded-lg shadow-sm absolute bottom-4 left-3"
-                      >
-                        Add
-                      </button>
-                      {errors.title && (
-                        <p className=" text-[14px] font-medium text-orange-700">
-                          {errors.title.message}
-                        </p>
-                      )}
-                      {errors.content && (
-                        <p className=" text-[14px] font-medium text-orange-700">
-                          {errors.content.message}
-                        </p>
-                      )}
-                      {errors.category && (
-                        <p className=" text-[14px] font-medium text-orange-700">
-                          {errors.category.message}
-                        </p>
-                      )}
-                    </>
-                  )}
-                </div>
-              </SplideSlide>
-            </Splide>
+                  </SplideSlide>
+                </Splide>
+              </>
+            )}
           </form>
         </div>
       </div>

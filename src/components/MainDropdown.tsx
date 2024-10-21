@@ -5,11 +5,12 @@ import EditProfile from "./EditProfile";
 import { getmeRES } from "@/app/store/types";
 import { CircleUser } from "lucide-react";
 import Image from "next/image";
+import { PulseLoader } from "react-spinners";
 
 export default function Dropdown() {
   const [editPropfile, setEditPropfile] = useState<boolean>();
   const [isOpen, setIsOpen] = useState(false);
-  const { data } = useGetMeQuery();
+  const { data, isLoading } = useGetMeQuery();
 
   const dropdownRef = useRef<HTMLDivElement>(null); // Ref for dropdown container
 
@@ -61,27 +62,39 @@ export default function Dropdown() {
           />
         </span>
         <p className=" hidden lg:block">
-          {" "}
-          <Link
-            href={""}
-            className="flex text-lightGraySec hover:text-primaryDark rounded-lg shadow-lg py-2 px-3 bg-primaryDark hover:bg-secondaryGreen items-center  mt- text-sm  transition-all duration-300 transform "
-          >
-            <Image
-              width={36}
-              height={36}
-              className="flex-shrink-0 border-[1px] border-white border-solid object-cover mx-1 rounded-full w-9 h-9"
-              src={data?.image?.url ? data?.image?.url : "/mainPhoto.svg"}
-              alt="jane avatar"
-            />
-            <span className="mx-1 block text-start">
-              <span className="text-[13px] font-medium block">
-                {data?.username}
-              </span>
-              <span className="text-[9px] mt-[-4px]  block ">
-                {data?.email}
-              </span>
-            </span>
-          </Link>
+          {isLoading ? (
+            <>
+              {" "}
+              <p className="text-center mt-4">
+                {" "}
+                <PulseLoader color="#2F3E46" size={10} />
+              </p>
+            </>
+          ) : (
+            <>
+              {" "}
+              <Link
+                href={""}
+                className="flex text-lightGraySec hover:text-primaryDark rounded-lg shadow-lg py-2 px-3 bg-primaryDark hover:bg-secondaryGreen items-center  mt- text-sm  transition-all duration-300 transform "
+              >
+                <Image
+                  width={36}
+                  height={36}
+                  className="flex-shrink-0 border-[1px] border-white border-solid object-cover mx-1 rounded-full w-9 h-9"
+                  src={data?.image?.url ? data?.image?.url : "/mainPhoto.svg"}
+                  alt="jane avatar"
+                />
+                <span className="mx-1 block text-start">
+                  <span className="text-[13px] font-medium block">
+                    {data?.username}
+                  </span>
+                  <span className="text-[9px] mt-[-4px]  block ">
+                    {data?.email}
+                  </span>
+                </span>
+              </Link>
+            </>
+          )}
         </p>
       </button>
       {/* Apply transition classes to dropdown */}

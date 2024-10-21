@@ -200,37 +200,37 @@ const UpdateArticle = ({ setEditArticle, art }: UpdateArticleProps) => {
   };
   const [uploadImage, { isLoading: loadingUploadImage }] =
     useUploadImageMutation();
-  const handleUploadImage = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    const formData = new FormData();
-    if (image) {
-      formData.append("files", image);
-    }
-    formData.append("ref", "api::article.article");
-    formData.append("refId", `${art?.id}`);
-    formData.append("field", "image");
+  // const handleUploadImage = async (e: React.MouseEvent<HTMLButtonElement>) => {
+  //   e.preventDefault();
+  //   const formData = new FormData();
+  //   if (image) {
+  //     formData.append("files", image);
+  //   }
+  //   formData.append("ref", "api::article.article");
+  //   formData.append("refId", `${art?.id}`);
+  //   formData.append("field", "image");
 
-    try {
-      const result = await uploadImage(formData).unwrap();
-      console.log("Upload successful:", result);
-      Swal.fire({
-        position: "center",
-        icon: "success",
-        title: "Done",
-        timer: 1500,
-        showConfirmButton: false,
-      });
-    } catch (error) {
-      Swal.fire({
-        position: "center",
-        icon: "error",
-        title: "Error, try later",
-        timer: 1500,
-        showConfirmButton: false,
-      });
-      console.error("Upload failed:", error);
-    }
-  };
+  //   try {
+  //     const result = await uploadImage(formData).unwrap();
+  //     console.log("Upload successful:", result);
+  //     Swal.fire({
+  //       position: "center",
+  //       icon: "success",
+  //       title: "Done",
+  //       timer: 1500,
+  //       showConfirmButton: false,
+  //     });
+  //   } catch (error) {
+  //     Swal.fire({
+  //       position: "center",
+  //       icon: "error",
+  //       title: "Error, try later",
+  //       timer: 1500,
+  //       showConfirmButton: false,
+  //     });
+  //     console.error("Upload failed:", error);
+  //   }
+  // };
   const pathname = usePathname(); // Get the current route
   const hideNavbarRoutes = ["/profile"]; // List of routes where the Navbar should be hidden
 

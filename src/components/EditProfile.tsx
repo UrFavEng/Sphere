@@ -88,7 +88,7 @@ const EditProfile = ({ setEditPropfile, dataUser }: EditProfileProps) => {
     }
   };
   /////////////
-  const [updataUser] = useUpdataUserMutation();
+  const [updataUser, { isLoading }] = useUpdataUserMutation();
   const { handleSubmit, register, setValue } = useForm<data>();
   useEffect(() => {
     if (dataUser) {
@@ -277,7 +277,7 @@ const EditProfile = ({ setEditPropfile, dataUser }: EditProfileProps) => {
                     />
                   </div>
                 </div>
-                {loadingUpdateUser ? (
+                {loadingUpdateUser || isLoading ? (
                   <>
                     {" "}
                     <PulseLoader color="#2F3E46" size={12} className=" mt-4" />

@@ -24,7 +24,7 @@ interface data {
   categoryaudio: string;
 }
 const AddAudio = ({ setAddAudio }: AddAudioProps) => {
-  const { data: user } = useGetMeQuery();
+  const { data: user, isLoading: loadingGetMe } = useGetMeQuery();
 
   const [currentSlide, setCurrentSlide] = useState<number>(0);
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -32,7 +32,7 @@ const AddAudio = ({ setAddAudio }: AddAudioProps) => {
   const onSlideChanged = (splide, newIndex) => {
     setCurrentSlide(newIndex.index);
   };
-  const { data: cats } = useGetAllCatsAudioQuery();
+  const { data: cats, isLoading: loadingAllCat } = useGetAllCatsAudioQuery();
   const {
     handleSubmit,
     register,
@@ -154,132 +154,147 @@ const AddAudio = ({ setAddAudio }: AddAudioProps) => {
             Add video
           </h3>
           <form className=" relative" onSubmit={handleSubmit(onSubmit)}>
-            <Splide
-              options={{
-                type: "fade",
-                arrows: false,
-              }}
-              onActive={onSlideChanged}
-            >
-              {" "}
-              <SplideSlide>
-                <div className=" pb-12">
+            {loadingGetMe || loadingAllCat ? (
+              <>
+                {" "}
+                <p className="text-center mt-4">
                   {" "}
-                  <div className=" mt-4">
-                    <label
-                      htmlFor="title"
-                      className=" mb-2 font-semibold text-primaryGreen text-[18px] "
-                    >
-                      Title
-                    </label>
-                    <input
-                      {...register("title", { required: "Title is required" })}
-                      className=" mt-2 font-medium h-[34px] pl-3 shadow-md bg-lightGray border-secondaryDark border-l-2  focus:border-2 transition-all ease-in-out duration-75 w-full text-primaryDark placeholder:text-[14px] placeholder:font-medium placeholder:text-secondaryDark outline-none rounded-lg"
-                      type="text"
-                      placeholder="Title of audio"
-                      id="title"
-                    />
-                  </div>
-                  <div className=" mt-4">
-                    <label
-                      htmlFor="content"
-                      className=" mb-2 font-semibold text-primaryGreen text-[18px] "
-                    >
-                      Content
-                    </label>
-                    <textarea
-                      {...register("content", {
-                        required: "Content is required",
-                      })}
-                      className=" pt-3 mt-2 font-medium h-[134px] pl-3 shadow-md bg-lightGray border-secondaryDark  border-l-2  focus:border-2 transition-all ease-in-out duration-75 w-full text-primaryDark placeholder:text-[14px] placeholder:font-medium placeholder:text-secondaryDark outline-none rounded-lg"
-                      placeholder="Content of audio"
-                      id="content"
-                    ></textarea>
-                  </div>
-                  <div className="">
-                    <select
-                      {...register("categoryaudio", {
-                        required: "Category is required",
-                      })}
-                      className="  mt-2 font-medium h-[34px] pl-3 shadow-md bg-lightGray border-secondaryDark border-l-2  focus:border-2 transition-all ease-in-out duration-75 w-full text-primaryDark placeholder:text-[14px] placeholder:font-medium placeholder:text-secondaryDark outline-none rounded-lg"
-                      title="category"
-                    >
-                      <option value="" selected disabled>
-                        Category
-                      </option>
-                      {cats?.data.map((cat) => (
-                        <option
-                          key={cat.documentId}
-                          value={cat.documentId}
-                          className=" text-primaryDark"
+                  <PulseLoader color="#2F3E46" size={12} />
+                </p>
+              </>
+            ) : (
+              <>
+                {" "}
+                <Splide
+                  options={{
+                    type: "fade",
+                    arrows: false,
+                  }}
+                  onActive={onSlideChanged}
+                >
+                  {" "}
+                  <SplideSlide>
+                    <div className=" pb-12">
+                      {" "}
+                      <div className=" mt-4">
+                        <label
+                          htmlFor="title"
+                          className=" mb-2 font-semibold text-primaryGreen text-[18px] "
                         >
-                          {cat.name}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-              </SplideSlide>
-              <SplideSlide>
-                <div className={`${currentSlide == 0 && "h-0"} pb-12`}>
-                  <div className="mt-4">
-                    <label
-                      htmlFor="audio"
-                      className=" mb-2 font-semibold text-primaryGreen text-[18px]"
-                    >
-                      Audio
-                    </label>
-                  </div>
-                  <input
-                    onChange={handleVideoChange} // You may want to rename this to `handleAudioChange`
-                    id="audio"
-                    accept="audio/*"
-                    type="file"
-                    className="file-input mt-1 file-input-bordered file-input-md w-full max-w-full file:bg-primaryGreen"
-                  />
-                  {selectedAudio ? (
-                    <div className="mb-8  min-w-[550px] m-auto">
-                      <audio
-                        controls
-                        src={selectedAudio}
-                        className="  w-full bg-primaryDark m-auto mt-8 shadow-lg rounded-lg object-contain"
+                          Title
+                        </label>
+                        <input
+                          {...register("title", {
+                            required: "Title is required",
+                          })}
+                          className=" mt-2 font-medium h-[34px] pl-3 shadow-md bg-lightGray border-secondaryDark border-l-2  focus:border-2 transition-all ease-in-out duration-75 w-full text-primaryDark placeholder:text-[14px] placeholder:font-medium placeholder:text-secondaryDark outline-none rounded-lg"
+                          type="text"
+                          placeholder="Title of audio"
+                          id="title"
+                        />
+                      </div>
+                      <div className=" mt-4">
+                        <label
+                          htmlFor="content"
+                          className=" mb-2 font-semibold text-primaryGreen text-[18px] "
+                        >
+                          Content
+                        </label>
+                        <textarea
+                          {...register("content", {
+                            required: "Content is required",
+                          })}
+                          className=" pt-3 mt-2 font-medium h-[134px] pl-3 shadow-md bg-lightGray border-secondaryDark  border-l-2  focus:border-2 transition-all ease-in-out duration-75 w-full text-primaryDark placeholder:text-[14px] placeholder:font-medium placeholder:text-secondaryDark outline-none rounded-lg"
+                          placeholder="Content of audio"
+                          id="content"
+                        ></textarea>
+                      </div>
+                      <div className="">
+                        <select
+                          {...register("categoryaudio", {
+                            required: "Category is required",
+                          })}
+                          className="  mt-2 font-medium h-[34px] pl-3 shadow-md bg-lightGray border-secondaryDark border-l-2  focus:border-2 transition-all ease-in-out duration-75 w-full text-primaryDark placeholder:text-[14px] placeholder:font-medium placeholder:text-secondaryDark outline-none rounded-lg"
+                          title="category"
+                        >
+                          <option value="" selected disabled>
+                            Category
+                          </option>
+                          {cats?.data.map((cat) => (
+                            <option
+                              key={cat.documentId}
+                              value={cat.documentId}
+                              className=" text-primaryDark"
+                            >
+                              {cat.name}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    </div>
+                  </SplideSlide>
+                  <SplideSlide>
+                    <div className={`${currentSlide == 0 && "h-0"} pb-12`}>
+                      <div className="mt-4">
+                        <label
+                          htmlFor="audio"
+                          className=" mb-2 font-semibold text-primaryGreen text-[18px]"
+                        >
+                          Audio
+                        </label>
+                      </div>
+                      <input
+                        onChange={handleVideoChange} // You may want to rename this to `handleAudioChange`
+                        id="audio"
+                        accept="audio/*"
+                        type="file"
+                        className="file-input mt-1 file-input-bordered file-input-md w-full max-w-full file:bg-primaryGreen"
                       />
+                      {selectedAudio ? (
+                        <div className="mb-8  min-w-[550px] m-auto">
+                          <audio
+                            controls
+                            src={selectedAudio}
+                            className="  w-full bg-primaryDark m-auto mt-8 shadow-lg rounded-lg object-contain"
+                          />
+                        </div>
+                      ) : (
+                        <></>
+                      )}
+                      {loadingUploadImage || loadingAddAudio ? (
+                        <div className="absolute bottom-4 left-3">
+                          <PulseLoader color="#2F3E46" size={10} />
+                        </div>
+                      ) : (
+                        <>
+                          <button
+                            type="submit"
+                            className="font-semibold text-[18px] bg-primaryDark hover:bg-secondaryDark transition-all ease-in-out text-lightGraySec hover:text-white py-2 px-5 rounded-lg shadow-sm absolute bottom-4 left-3"
+                          >
+                            Add
+                          </button>
+                          {errors.title && (
+                            <p className="text-[14px] font-medium text-orange-700">
+                              {errors.title.message}
+                            </p>
+                          )}
+                          {errors.content && (
+                            <p className="text-[14px] font-medium text-orange-700">
+                              {errors.content.message}
+                            </p>
+                          )}
+                          {errors.categoryaudio && (
+                            <p className="text-[14px] font-medium text-orange-700">
+                              {errors.categoryaudio.message}
+                            </p>
+                          )}
+                        </>
+                      )}
                     </div>
-                  ) : (
-                    <></>
-                  )}
-                  {loadingUploadImage || loadingAddAudio ? (
-                    <div className="absolute bottom-4 left-3">
-                      <PulseLoader color="#2F3E46" size={10} />
-                    </div>
-                  ) : (
-                    <>
-                      <button
-                        type="submit"
-                        className="font-semibold text-[18px] bg-primaryDark hover:bg-secondaryDark transition-all ease-in-out text-lightGraySec hover:text-white py-2 px-5 rounded-lg shadow-sm absolute bottom-4 left-3"
-                      >
-                        Add
-                      </button>
-                      {errors.title && (
-                        <p className="text-[14px] font-medium text-orange-700">
-                          {errors.title.message}
-                        </p>
-                      )}
-                      {errors.content && (
-                        <p className="text-[14px] font-medium text-orange-700">
-                          {errors.content.message}
-                        </p>
-                      )}
-                      {errors.categoryaudio && (
-                        <p className="text-[14px] font-medium text-orange-700">
-                          {errors.categoryaudio.message}
-                        </p>
-                      )}
-                    </>
-                  )}
-                </div>
-              </SplideSlide>
-            </Splide>
+                  </SplideSlide>
+                </Splide>
+              </>
+            )}
           </form>
         </div>
       </div>

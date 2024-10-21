@@ -6,9 +6,10 @@ import Add from "./Add";
 import Article from "./Article";
 import AddVideo from "./AddVideo";
 import AddAudio from "./AddAudio";
+import { PulseLoader } from "react-spinners";
 
 const HomeArticle = () => {
-  const { data, error } = useGetAllArticlesQuery();
+  const { data, error, isLoading } = useGetAllArticlesQuery();
   console.log("==>>", data, error);
   const [addArticle, setAddArticle] = useState<boolean>(false);
   const [addAudio, setAddAudio] = useState<boolean>(false);
@@ -21,10 +22,22 @@ const HomeArticle = () => {
         setAddVideo={setAddVideo}
         setAddAudio={setAddAudio}
       />
-
-      {data?.data.map((art) => (
-        <Article art={art} key={art.documentId} />
-      ))}
+      {isLoading ? (
+        <>
+          {" "}
+          <p className="text-center mt-4">
+            {" "}
+            <PulseLoader color="#2F3E46" size={12} />
+          </p>
+        </>
+      ) : (
+        <>
+          {" "}
+          {data?.data.map((art) => (
+            <Article art={art} key={art.documentId} />
+          ))}
+        </>
+      )}
 
       {addArticle && <AddArticle setAddArticle={setAddArticle} />}
       {addVideo && <AddVideo setAddVideo={setAddVideo} />}

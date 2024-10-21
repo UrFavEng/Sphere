@@ -4,9 +4,10 @@ import { ChartBarStacked } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 import QuickLinks from "./QuickLinks";
+import { PulseLoader } from "react-spinners";
 
 const CategoryArticle = () => {
-  const { data } = useGetAllCatsQuery();
+  const { data, isLoading } = useGetAllCatsQuery();
   return (
     <>
       <div className=" hidden md:block">
@@ -19,14 +20,26 @@ const CategoryArticle = () => {
             </span>{" "}
           </h1>
           <ul className=" mt-1">
-            {data?.data.map((cat) => (
-              <li
-                key={cat.documentId}
-                className=" hover:underline w-fit cursor-pointer text-[16px] font-semibold text-primaryGreen"
-              >
-                <Link href={"/articles/" + cat.name}> {cat.name}</Link>
-              </li>
-            ))}
+            {isLoading ? (
+              <>
+                {" "}
+                <p className="text-center mt-4">
+                  {" "}
+                  <PulseLoader color="#2F3E46" size={12} />
+                </p>
+              </>
+            ) : (
+              <>
+                {data?.data.map((cat) => (
+                  <li
+                    key={cat.documentId}
+                    className=" hover:underline w-fit cursor-pointer text-[16px] font-semibold text-primaryGreen"
+                  >
+                    <Link href={"/articles/" + cat.name}> {cat.name}</Link>
+                  </li>
+                ))}
+              </>
+            )}
           </ul>
         </div>
         <div className="block xl:hidden sm:mt-5 !justify-self-start  md:justify-self-end px-4 h-fit   py-4 w-full md:w-[95%] lg:w-[85%]  rounded-lg shadow-xl bg-lightGraySec">

@@ -6,9 +6,10 @@ import AddArticle from "./AddArticle";
 import Audio from "./Audio";
 import Add from "./Add";
 import { useGetAllAudiosByCatQuery } from "@/app/store/apislice";
+import { PulseLoader } from "react-spinners";
 
 const AudiosCatHome = ({ cat }: { cat: string }) => {
-  const { data } = useGetAllAudiosByCatQuery(cat);
+  const { data, isLoading: loadingAudios } = useGetAllAudiosByCatQuery(cat);
   console.log(cat);
   const [addArticle, setAddArticle] = useState<boolean>(false);
   const [addVideo, setAddVideo] = useState<boolean>(false);
@@ -20,9 +21,22 @@ const AudiosCatHome = ({ cat }: { cat: string }) => {
         setAddVideo={setAddVideo}
         setAddAudio={setAddAudio}
       />
-      {data?.data.map((audio) => (
-        <Audio audio={audio} key={audio.documentId} />
-      ))}
+      {loadingAudios ? (
+        <>
+          {" "}
+          <p className="text-center mt-4">
+            {" "}
+            <PulseLoader color="#2F3E46" size={12} />
+          </p>
+        </>
+      ) : (
+        <>
+          {" "}
+          {data?.data.map((audio) => (
+            <Audio audio={audio} key={audio.documentId} />
+          ))}
+        </>
+      )}
       {addArticle && <AddArticle setAddArticle={setAddArticle} />}
       {addVideo && <AddVideo setAddVideo={setAddVideo} />}{" "}
       {addAudio && <AddAudio setAddAudio={setAddAudio} />}
