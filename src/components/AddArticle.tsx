@@ -113,7 +113,7 @@ const AddArticle = ({ setAddArticle }: AddArticleProps) => {
         category: data.category,
         content: data.content,
         tags, // يجب أن تكون tags معرّفة مسبقًا
-        user: user,
+        user: user.documentId,
         image: idImage, // ربط المقال بالصورة المرفوعة
       };
 
