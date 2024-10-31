@@ -35,7 +35,7 @@ export default function RootLayout({
     <Provider store={store}>
       <html lang="en">
         <body
-          className={`${geistSans.variable} ${geistMono.variable} flex justify-between items-center flex-col antialiased  min-h-[100vh] bg-lightGray`}
+          className={`${geistSans.variable} px-4 ${geistMono.variable} flex justify-between items-center flex-col antialiased  min-h-[100vh] bg-lightGray`}
         >
           <div className=" w-full">
             {" "}
