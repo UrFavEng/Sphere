@@ -161,147 +161,160 @@ const EditProfile = ({ setEditPropfile, dataUser }: EditProfileProps) => {
           onClick={() => setEditPropfile(false)}
           className=" cursor-default absolute h-[100%] w-[100%] top-0 left-0 bg-[#00000032]"
         ></div>
-        <div className="popup mx-4 px-8 pt-6 pb-4 relative z-30 bg-lightGraySec shadow-xl  rounded-xl w-[780px]  h-fit border-2 border-b-0 border-t-0 border-r-0 border-primaryDark">
-          <h3 className=" font-bold text-secondaryDark text-[28px]">
-            Edit Profile
-          </h3>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <Splide
-              options={{
-                type: "fade",
-                arrows: false,
-              }}
-              onActive={onSlideChanged}
-            >
-              <SplideSlide>
-                <div
-                  className={` relative w-fit max-w-[300px] m-auto ${
-                    currentSlide == 1 && "h-0"
-                  }`}
+        {dataUser ? (
+          <>
+            {" "}
+            <div className="popup mx-4 px-8 pt-6 pb-4 relative z-30 bg-lightGraySec shadow-xl  rounded-xl w-[780px]  h-fit border-2 border-b-0 border-t-0 border-r-0 border-primaryDark">
+              <h3 className=" font-bold text-secondaryDark text-[28px]">
+                Edit Profile
+              </h3>
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <Splide
+                  options={{
+                    type: "fade",
+                    arrows: false,
+                  }}
+                  onActive={onSlideChanged}
                 >
-                  {selectedImage && (
-                    <Image
-                      src={selectedImage}
-                      alt="photo"
-                      width={120}
-                      height={120}
-                      className="rounded-full object-cover w-32 h-32"
+                  <SplideSlide>
+                    <div
+                      className={` relative w-fit max-w-[300px] m-auto ${
+                        currentSlide == 1 && "h-0"
+                      }`}
+                    >
+                      {selectedImage && (
+                        <Image
+                          src={selectedImage}
+                          alt="photo"
+                          width={120}
+                          height={120}
+                          className="rounded-full object-cover w-32 h-32"
+                        />
+                      )}
+                      {!selectedImage && (
+                        <div className=" w-32 h-32 rounded-full shadow-lg border-2"></div>
+                      )}
+                      <label htmlFor="photo">
+                        {" "}
+                        <Pencil className=" text-primaryDark absolute top-1 right-1 cursor-pointer" />
+                      </label>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleFileChange}
+                        id="photo"
+                        className="hidden"
+                      />
+                      {loadingUploadImage ? (
+                        <>
+                          {" "}
+                          <PulseLoader color="#2F3E46" size={10} />
+                        </>
+                      ) : (
+                        <>
+                          <p
+                            className=" text-center cursor-pointer bg-primaryDark hover:bg-secondaryGreen hover:text-primaryDark transition-all ease-in-out font-medium text-lightGraySec py-2 w-fit mx-auto px-3 rounded-lg shadow-xl mt-2"
+                            onClick={handleImageUpload}
+                          >
+                            Upload
+                          </p>
+                        </>
+                      )}
+                    </div>
+                    <input
+                      {...register("username")}
+                      type="text"
+                      placeholder="FullName"
+                      className=" h-[34px] text-primaryDark pl-3 shadow-md bg-lightGray border-secondaryDark border-l-2  focus:border-2 transition-all ease-in-out duration-75 w-full mt-2 placeholder:text-secondaryDark placeholder:text-[14px] placeholder:font-medium  outline-none rounded-lg"
                     />
-                  )}
-                  {!selectedImage && (
-                    <div className=" w-32 h-32 rounded-full shadow-lg border-2"></div>
-                  )}
-                  <label htmlFor="photo">
-                    {" "}
-                    <Pencil className=" text-primaryDark absolute top-1 right-1 cursor-pointer" />
-                  </label>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleFileChange}
-                    id="photo"
-                    className="hidden"
-                  />
-                  {loadingUploadImage ? (
-                    <>
-                      {" "}
-                      <PulseLoader color="#2F3E46" size={10} />
-                    </>
-                  ) : (
-                    <>
-                      <p
-                        className=" text-center cursor-pointer bg-primaryDark hover:bg-secondaryGreen hover:text-primaryDark transition-all ease-in-out font-medium text-lightGraySec py-2 w-fit mx-auto px-3 rounded-lg shadow-xl mt-2"
-                        onClick={handleImageUpload}
+                    <input
+                      {...register("email")}
+                      type="email"
+                      placeholder="Email"
+                      className=" h-[34px] text-primaryDark mt-4 pl-3 shadow-md bg-lightGray border-secondaryDark  border-l-2  focus:border-2 transition-all ease-in-out duration-75 w-full  placeholder:text-secondaryDark placeholder:text-[14px] placeholder:font-medium  outline-none rounded-lg"
+                    />
+                    <textarea
+                      {...register("bio")}
+                      placeholder="Bio"
+                      className="text-primaryDark h-[110px] mt-4 pl-3 shadow-md bg-lightGray border-secondaryDark  border-l-2  focus:border-2 transition-all ease-in-out duration-75 w-full  placeholder:text-secondaryDark placeholder:text-[14px] placeholder:font-medium  outline-none rounded-lg"
+                    ></textarea>
+                    <input
+                      {...register("expertise")}
+                      type="text"
+                      placeholder="Expertise"
+                      className=" h-[34px] text-primaryDark mt-4 pl-3 shadow-md bg-lightGray border-secondaryDark  border-l-2  focus:border-2 transition-all ease-in-out duration-75 w-full  placeholder:text-secondaryDark placeholder:text-[14px] placeholder:font-medium  outline-none rounded-lg"
+                    />
+                    <input
+                      {...register("location")}
+                      type="text"
+                      placeholder="Location"
+                      className=" mb-12 h-[34px] text-primaryDark mt-4 pl-3 shadow-md bg-lightGray border-secondaryDark  border-l-2  focus:border-2 transition-all ease-in-out duration-75 w-full  placeholder:text-secondaryDark placeholder:text-[14px] placeholder:font-medium  outline-none rounded-lg"
+                    />
+                  </SplideSlide>
+                  <SplideSlide>
+                    <div>
+                      <label
+                        className=" text-secondaryGreen font-medium text-[14px] mt-4 block"
+                        htmlFor="password"
                       >
-                        Upload
-                      </p>
-                    </>
-                  )}
-                </div>
-                <input
-                  {...register("username")}
-                  type="text"
-                  placeholder="FullName"
-                  className=" h-[34px] text-primaryDark pl-3 shadow-md bg-lightGray border-secondaryDark border-l-2  focus:border-2 transition-all ease-in-out duration-75 w-full mt-2 placeholder:text-secondaryDark placeholder:text-[14px] placeholder:font-medium  outline-none rounded-lg"
-                />
-                <input
-                  {...register("email")}
-                  type="email"
-                  placeholder="Email"
-                  className=" h-[34px] text-primaryDark mt-4 pl-3 shadow-md bg-lightGray border-secondaryDark  border-l-2  focus:border-2 transition-all ease-in-out duration-75 w-full  placeholder:text-secondaryDark placeholder:text-[14px] placeholder:font-medium  outline-none rounded-lg"
-                />
-                <textarea
-                  {...register("bio")}
-                  placeholder="Bio"
-                  className="text-primaryDark h-[110px] mt-4 pl-3 shadow-md bg-lightGray border-secondaryDark  border-l-2  focus:border-2 transition-all ease-in-out duration-75 w-full  placeholder:text-secondaryDark placeholder:text-[14px] placeholder:font-medium  outline-none rounded-lg"
-                ></textarea>
-                <input
-                  {...register("expertise")}
-                  type="text"
-                  placeholder="Expertise"
-                  className=" h-[34px] text-primaryDark mt-4 pl-3 shadow-md bg-lightGray border-secondaryDark  border-l-2  focus:border-2 transition-all ease-in-out duration-75 w-full  placeholder:text-secondaryDark placeholder:text-[14px] placeholder:font-medium  outline-none rounded-lg"
-                />
-                <input
-                  {...register("location")}
-                  type="text"
-                  placeholder="Location"
-                  className=" mb-12 h-[34px] text-primaryDark mt-4 pl-3 shadow-md bg-lightGray border-secondaryDark  border-l-2  focus:border-2 transition-all ease-in-out duration-75 w-full  placeholder:text-secondaryDark placeholder:text-[14px] placeholder:font-medium  outline-none rounded-lg"
-                />
-              </SplideSlide>
-              <SplideSlide>
-                <div>
-                  <label
-                    className=" text-secondaryGreen font-medium text-[14px] mt-4 block"
-                    htmlFor="password"
-                  >
-                    Password
-                  </label>
-                  <div className=" relative">
-                    <input
-                      className=" h-[34px] text-primaryDark mt-1 pl-3 shadow-md bg-lightGray border-secondaryDark border-l-2  focus:border-2 transition-all ease-in-out duration-75 w-full  placeholder:text-secondaryDark placeholder:text-[14px] placeholder:font-medium  outline-none rounded-lg"
-                      type={showPass ? "text" : "password"}
-                      id="password"
-                      {...register("password")}
-                    />
-                    <Eye
-                      onClick={() => setShowPass(!showPass)}
-                      size={18}
-                      className=" absolute top-[50%] translate-y-[-50%] right-4"
-                    />
-                  </div>
-                  <div className=" relative">
-                    {" "}
-                    <input
-                      className=" text-primaryDark h-[34px] placeholder:text-[12px]  mt-3 pl-3 shadow-md bg-lightGray border-secondaryDark border-l-2  focus:border-2 transition-all ease-in-out duration-75 w-full  placeholder:text-secondaryDark  placeholder:font-medium  outline-none rounded-lg"
-                      placeholder="Confirm password"
-                      type={showPass ? "text" : "password"}
-                    />{" "}
-                    <Eye
-                      onClick={() => setShowPass(!showPass)}
-                      size={18}
-                      className=" absolute top-[60%] translate-y-[-50%] right-4"
-                    />
-                  </div>
-                </div>
-                {loadingUpdateUser || isLoading ? (
-                  <>
-                    {" "}
-                    <PulseLoader color="#2F3E46" size={12} className=" mt-4" />
-                  </>
-                ) : (
-                  <>
-                    {" "}
-                    <input
-                      type="submit"
-                      value="Save"
-                      className=" bg-primaryDark hover:bg-secondaryGreen py-2 px-4 text-lightGraySec cursor-pointer hover:text-primaryDark rounded-lg mt-4 transition-all ease-in-out font-medium text-[18px]"
-                    />
-                  </>
-                )}
-              </SplideSlide>
-            </Splide>{" "}
-          </form>
-        </div>
+                        Password
+                      </label>
+                      <div className=" relative">
+                        <input
+                          className=" h-[34px] text-primaryDark mt-1 pl-3 shadow-md bg-lightGray border-secondaryDark border-l-2  focus:border-2 transition-all ease-in-out duration-75 w-full  placeholder:text-secondaryDark placeholder:text-[14px] placeholder:font-medium  outline-none rounded-lg"
+                          type={showPass ? "text" : "password"}
+                          id="password"
+                          {...register("password")}
+                        />
+                        <Eye
+                          onClick={() => setShowPass(!showPass)}
+                          size={18}
+                          className=" absolute top-[50%] translate-y-[-50%] right-4"
+                        />
+                      </div>
+                      <div className=" relative">
+                        {" "}
+                        <input
+                          className=" text-primaryDark h-[34px] placeholder:text-[12px]  mt-3 pl-3 shadow-md bg-lightGray border-secondaryDark border-l-2  focus:border-2 transition-all ease-in-out duration-75 w-full  placeholder:text-secondaryDark  placeholder:font-medium  outline-none rounded-lg"
+                          placeholder="Confirm password"
+                          type={showPass ? "text" : "password"}
+                        />{" "}
+                        <Eye
+                          onClick={() => setShowPass(!showPass)}
+                          size={18}
+                          className=" absolute top-[60%] translate-y-[-50%] right-4"
+                        />
+                      </div>
+                    </div>
+                    {loadingUpdateUser || isLoading ? (
+                      <>
+                        {" "}
+                        <PulseLoader
+                          color="#2F3E46"
+                          size={12}
+                          className=" mt-4"
+                        />
+                      </>
+                    ) : (
+                      <>
+                        {" "}
+                        <input
+                          type="submit"
+                          value="Save"
+                          className=" bg-primaryDark hover:bg-secondaryGreen py-2 px-4 text-lightGraySec cursor-pointer hover:text-primaryDark rounded-lg mt-4 transition-all ease-in-out font-medium text-[18px]"
+                        />
+                      </>
+                    )}
+                  </SplideSlide>
+                </Splide>{" "}
+              </form>
+            </div>
+          </>
+        ) : (
+          <p className=" text-center text-[24px] font-bold text-red-600 mt-8 ">
+            You must login first!
+          </p>
+        )}
       </div>
       <style>{`
   .popup {
