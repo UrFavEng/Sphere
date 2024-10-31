@@ -96,7 +96,7 @@ const EditProfile = ({ setEditPropfile, dataUser }: EditProfileProps) => {
       setValue("email", dataUser.email);
       setValue("bio", dataUser.bio);
       setValue("expertise", dataUser.expertise);
-      setSelectedImage(dataUser.image.url);
+      setSelectedImage(dataUser?.image?.url);
       setValue("location", dataUser.location);
     }
   }, [dataUser]);
@@ -179,13 +179,18 @@ const EditProfile = ({ setEditPropfile, dataUser }: EditProfileProps) => {
                     currentSlide == 1 && "h-0"
                   }`}
                 >
-                  <Image
-                    src={selectedImage}
-                    alt="photo"
-                    width={120}
-                    height={120}
-                    className="rounded-full object-cover w-32 h-32"
-                  />
+                  {selectedImage && (
+                    <Image
+                      src={selectedImage}
+                      alt="photo"
+                      width={120}
+                      height={120}
+                      className="rounded-full object-cover w-32 h-32"
+                    />
+                  )}
+                  {!selectedImage && (
+                    <div className=" w-32 h-32 rounded-full shadow-lg border-2"></div>
+                  )}
                   <label htmlFor="photo">
                     {" "}
                     <Pencil className=" text-primaryDark absolute top-1 right-1 cursor-pointer" />
