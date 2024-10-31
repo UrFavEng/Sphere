@@ -45,7 +45,14 @@ export default function RootLayout({
                 <Navbar />
               </div>
             )}
-            <div className=" px-4 w-full"> {children}</div>{" "}
+            <div
+              className={`${
+                !hideNavbarRoutes.includes(pathname) ? " px-4" : "px-0"
+              } w-full`}
+            >
+              {" "}
+              {children}
+            </div>{" "}
           </div>
 
           {!hideNavbarRoutes.includes(pathname) && (
