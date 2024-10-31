@@ -17,6 +17,7 @@ import {
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
+    // baseUrl: "http://localhost:1337/api/",
     baseUrl: "https://spherestrapi-production-4806.up.railway.app/api/",
   }),
   tagTypes: ["dataUser", "article", "video", "audio"],

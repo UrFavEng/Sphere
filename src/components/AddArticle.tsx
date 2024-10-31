@@ -85,18 +85,15 @@ const AddArticle = ({ setAddArticle }: AddArticleProps) => {
     useAddArticleMutation();
   const [uploadImage, { isLoading: loadingUploadImage }] =
     useUploadImageMutation();
+  console.log(user);
   const onSubmit: SubmitHandler<data> = async (data) => {
     let idImage;
-
-    // رفع الصورة إذا كانت موجودة
     if (image && user) {
       try {
         const formData = new FormData();
         formData.append("files", image);
-
-        // انتظار رفع الصورة والحصول على idImage
         const fulfilled = await uploadImage(formData).unwrap();
-        idImage = fulfilled[0].id; // تأكد من استخدام المفتاح الصحيح للـ ID
+        idImage = fulfilled[0].id;
       } catch (error) {
         Swal.fire({
           position: "center",
@@ -106,17 +103,17 @@ const AddArticle = ({ setAddArticle }: AddArticleProps) => {
           showConfirmButton: false,
         });
         console.log("Error uploading image:", error);
-        return; // إيقاف العملية إذا حدث خطأ في رفع الصورة
+        return;
       }
     }
-    // إنشاء المقال إذا كان المستخدم موجودًا
     if (user) {
+      console.log(user);
       const body = {
         title: data.title,
         category: data.category,
         content: data.content,
         tags, // يجب أن تكون tags معرّفة مسبقًا
-        user: user?.documentId, // أو أي مفتاح يمثل ID المستخدم
+        user: user,
         image: idImage, // ربط المقال بالصورة المرفوعة
       };
 
