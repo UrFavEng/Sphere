@@ -6,11 +6,8 @@ import Add from "./Add";
 import { useGetAllVideosByCatQuery } from "@/app/store/apislice";
 import AddAudio from "./AddAudio";
 import { PulseLoader } from "react-spinners";
-
 const VideosCatHome = ({ cat }: { cat: string }) => {
-  const { data, isLoading } = useGetAllVideosByCatQuery(
-    cat.toLocaleLowerCase()
-  );
+  const { data, isLoading } = useGetAllVideosByCatQuery(cat);
   console.log(data);
   const [addArticle, setAddArticle] = useState<boolean>(false);
   const [addVideo, setAddVideo] = useState<boolean>(false);

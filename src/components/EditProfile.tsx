@@ -96,6 +96,7 @@ const EditProfile = ({ setEditPropfile, dataUser }: EditProfileProps) => {
       setValue("email", dataUser.email);
       setValue("bio", dataUser.bio);
       setValue("expertise", dataUser.expertise);
+      setSelectedImage(dataUser.image.url);
       setValue("location", dataUser.location);
     }
   }, [dataUser]);
