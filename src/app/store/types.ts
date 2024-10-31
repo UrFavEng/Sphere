@@ -326,7 +326,7 @@ interface VideoFileData {
   caption: string | null;
   width: number | null;
   height: number | null;
-  formats: any | null; // يمكنك استبداله بنوع أكثر تحديدًا إذا كان لديك تفاصيل.
+  formats: FormatsAudio | null; // يمكنك استبداله بنوع أكثر تحديدًا إذا كان لديك تفاصيل.
   hash: string;
   ext: string;
   mime: string;
